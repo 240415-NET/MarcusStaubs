@@ -14,10 +14,13 @@ class Program
         string currentGuess = "";
         int wrongGuesses = 0;
         bool didYouWin = false;
+        bool validInput = false;
+        List<string> myPuzzles = new();
 
         Console.WriteLine("Welcome to hangman, let's start a new game!");
-        string puzzleAnswer = GetThePuzzleString();
-        char[] charsInPuzzle = firstTest.ToCharArray();
+        LoadThePuzzleString(ref myPuzzles);
+        string puzzleAnswer = GetANewPuzzle(ref myPuzzles);
+        char[] charsInPuzzle = puzzleAnswer.ToCharArray();
         char[] puzzleDisplay = new char[charsInPuzzle.Count()];
         for(int i=0;i<charsInPuzzle.Count();i++)
         {
@@ -33,10 +36,36 @@ class Program
         ShowHangmanStatus(ref hangBoard, ref puzzleDisplay,guessesMade);
         do
         {
+            validInput = false;
             Console.WriteLine("Guess a letter!");
-            currentGuess = Console.ReadLine();
+            do
+            {
+                currentGuess = Console.ReadLine();
+                if(String.IsNullOrEmpty(currentGuess))
+                {
+                    Console.WriteLine("That wasn't anything. Enter a letter.");
+                }
+                else if(currentGuess.Count()>1)
+                {
+                    Console.WriteLine("No! Enter. A. Single. Letter.");
+                }
+                else if(guessesMade.ToLower().Contains(currentGuess))
+                {
+                    Console.WriteLine("You picked that already. Try a letter you haven't picked yet. That might be more productive...");
+                }
+                else if(Char.IsDigit(Convert.ToChar(currentGuess)))
+                {
+                    Console.WriteLine($"Yep, you caught me. The number {currentGuess} is absolutely in one of these words...");
+                    Console.WriteLine("Give me a letter. Like from the alphabet. In English. Please.");
+                }
+                else
+                {
+                    validInput = true;
+                }
+
+            }while(!validInput);
             guessesMade = guessesMade + " " + currentGuess;
-            if(!DidIGetOne(currentGuess,ref charsInPuzzle,ref puzzleDisplay,firstTest,wrongGuesses))
+            if(!DidIGetOne(currentGuess,ref charsInPuzzle,ref puzzleDisplay,puzzleAnswer,wrongGuesses))
             {
                 wrongGuesses++;
                 ThatWasNotRight(ref hangBoard,wrongGuesses);
@@ -65,11 +94,34 @@ class Program
         Console.ReadKey();
 
     }
-    public static string GetThePuzzleString()
+    public static void LoadThePuzzleString(ref List<string> thePuzzles)
     {
-        string puzzleString="";
+        
+        thePuzzles.Add("There are four lights");
+        thePuzzles.Add("There are five lights");
+        thePuzzles.Add("So long, and thanks for all the fish");
+        thePuzzles.Add("I think you ought to know I'm feeling very depressed");
+        thePuzzles.Add("Reality is frequently inaccurate");
+        thePuzzles.Add("Here, for whatever reason, is the world. And here it stays. With me on it");
+        thePuzzles.Add("Don't panic");
+        thePuzzles.Add("Time is an illusion. Lunchtime doubly so");
+        thePuzzles.Add("I'd far rather be happy than right any day");
+        thePuzzles.Add("The ships hung in the sky in much the same way that bricks don't");
+        thePuzzles.Add("We demand rigidly defined areas of doubt and uncertainty!");
+        thePuzzles.Add("What's so unpleasant about being drunk? Ask a glass of water!");
+        thePuzzles.Add("The best drink in existence is the Pan Galactic Gargle Blaster");
+        thePuzzles.Add("Would it save you a lot of time if I just gave up and went mad now?");
+        thePuzzles.Add("A towel is about the most massively useful thing an interstellar hitchhiker can have");
+        thePuzzles.Add("Anyone who is capable of getting themselves made President should on no account be allowed to do the job");
 
-        return puzzleString;
+    }
+
+    public static string GetANewPuzzle(ref List<string> thePuzzles)
+    {
+        Random rnd = new Random();
+        int myPick = rnd.Next(0,thePuzzles.Count()+1);
+        string pickedPuzzle = thePuzzles[myPick];
+        return pickedPuzzle;
     }
     public static bool DidYouWin(ref char[] puzzleDisplay)
     {
