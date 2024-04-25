@@ -66,6 +66,28 @@
                 "A phone",
                 "A local pizza shop"
             ]
+        },
+        {
+            "MealName": "Smoky Pork Posole",
+            "PrepTime": 10,
+            "CookTime": 30,
+            "Ingredients": [
+                "3 dried guajillo chile peppers, stemmed and seeded",
+                "4 cups chicken broth",
+                "2 tablespoons vegetable oil",
+                "2 10oz bone in smoked pork chops, diced (bones reserved)",
+                "1 white onion, diced, plus more for topping",
+                "5 cloves garlic, chopped",
+                "1 bay leaf",
+                "1 tablespoon dried oregano",
+                "1 teaspoon ground cumin",
+                "2 15oz cans white hominy, drained and rinsed",
+                "Kosher salt",
+                "Ground pepper",
+                "Sliced radishes and fresh cilantro for topping",
+                "Lime wedges for serving"
+            ]
         }        
+
     ]
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace FirstFridayGroupProject;
+namespace FirstFridayGroupProject.Dinner;
 
 public class DinnerIdea
 {

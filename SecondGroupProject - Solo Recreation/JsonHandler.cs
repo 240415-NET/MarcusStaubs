@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
+using FirstFridayGroupProject.Dinner;
 
-namespace FirstFridayGroupProject;
+namespace FirstFridayGroupProject.JsonHandle;
 
 public class JsonHandler
 {
