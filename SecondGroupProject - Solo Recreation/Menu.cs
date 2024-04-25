@@ -164,12 +164,19 @@ public class Menu()
                                                     int ingredientToUpdate;
                                                     do
                                                     {
-                                                        numberInput = EnforceUserInput("Which ingredient needs to be updated?","integerOnly",loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients,false,true);
+                                                        numberInput = EnforceUserInput("Which ingredient needs to be updated?","integerOnly",loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients,false,true,true);
                                                         ingredientToUpdate = Convert.ToInt32(numberInput)-1;
-                                                        strTempInput = EnforceUserInput($"Current Ingredient: {loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients[ingredientToUpdate]}\nEnter the new ingredient","alphaNumeric");
-                                                        loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients[ingredientToUpdate] = strTempInput;
-                                                        strTempInput = EnforceUserInput("Would you like to update another ingredient? (y/n)","alphaOnly",true);
-                                                        if(strTempInput.ToLower() == "n")
+                                                        if(ingredientToUpdate < loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients.Count())
+                                                        {
+                                                            strTempInput = EnforceUserInput($"Current Ingredient: {loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients[ingredientToUpdate]}\nEnter the new ingredient","alphaNumeric");
+                                                            loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients[ingredientToUpdate] = strTempInput;
+                                                            strTempInput = EnforceUserInput("Would you like to update another ingredient? (y/n)","alphaOnly",true);
+                                                            if(strTempInput.ToLower() == "n")
+                                                            {
+                                                                doneWithIngredientUpdates = true;
+                                                            }
+                                                        }
+                                                        else
                                                         {
                                                             doneWithIngredientUpdates = true;
                                                         }
@@ -182,11 +189,14 @@ public class Menu()
                                                         Console.ReadKey();
                                                     break;
                                                 case 6:
-                                                        numberInput = EnforceUserInput("Which ingredient needs to be removed?","integerOnly",loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients,false,true);
+                                                        numberInput = EnforceUserInput("Which ingredient needs to be removed?","integerOnly",loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients,false,true,true);
                                                         ingredientToUpdate = Convert.ToInt32(numberInput)-1;
-                                                        loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients.RemoveAt(ingredientToUpdate);
-                                                        Console.WriteLine("The chosen ingredient has been removed from the meal");
-                                                        Console.ReadKey();                                                        
+                                                        if(ingredientToUpdate < loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients.Count())
+                                                        {    
+                                                            loadedMeals.AvailableDinnerIdeas[mealToUpdate].Ingredients.RemoveAt(ingredientToUpdate);
+                                                            Console.WriteLine("The chosen ingredient has been removed from the meal");
+                                                            Console.ReadKey();                                                        
+                                                        }
                                                     break;                                                    
                                                 case 7:
                                                     breakCondition = true;
@@ -223,7 +233,7 @@ public class Menu()
         }while(!exitProgram);
     }
 
-    public static int DisplayMenu(List<string> menuList, bool withNumbers = false)
+    public static int DisplayMenu(List<string> menuList, bool withNumbers = false, bool includeExitOption = false)
     {
         for(int i=0;i<menuList.Count();i++)
         {
@@ -235,6 +245,10 @@ public class Menu()
             {
                 Console.WriteLine(menuList[i]);
             }
+        }
+        if(withNumbers && includeExitOption)
+        {
+            Console.WriteLine($"{menuList.Count()+1}: Exit without changes");
         }
         return menuList.Count();
     }
@@ -345,7 +359,7 @@ public class Menu()
         }while(keepAsking);
         return strUserInput;
     }
-        public static string EnforceUserInput(string strMessage, string validationType, List<string> menuList, bool valIsSingleChar = false, bool withNumbers = false)
+        public static string EnforceUserInput(string strMessage, string validationType, List<string> menuList, bool valIsSingleChar = false, bool withNumbers = false, bool includeExitOption = false)
     {
         string strUserInput;
         bool isValid;
@@ -353,12 +367,16 @@ public class Menu()
         do
         {
             Console.Clear();
-            int valNumberLimited = DisplayMenu(menuList, withNumbers);
+            int valNumberLimited = DisplayMenu(menuList, withNumbers,includeExitOption);
             if(strMessage != "noMessage")
             {
                 Console.WriteLine(strMessage);
             }
             strUserInput = Console.ReadLine().Trim();
+            if(includeExitOption)
+            {
+                valNumberLimited++; 
+            }
             isValid = ValidateUserInput(strUserInput,validationType,valIsSingleChar,valNumberLimited);
             if(!isValid)
             {
@@ -371,7 +389,7 @@ public class Menu()
         }while(keepAsking);
         return strUserInput;
     }
-        public static string EnforceUserInput(string strMessage, string validationType, ref PreLoadMeals loadedMeals, bool withNumbers=true, bool valIsSingleChar = false)
+        public static string EnforceUserInput(string strMessage, string validationType, ref PreLoadMeals loadedMeals, bool withNumbers=true, bool valIsSingleChar = false, bool includeExitOption = false)
     {
         string strUserInput;
         bool isValid;
@@ -382,6 +400,10 @@ public class Menu()
             int valNumberLimited = DisplayMenu(ref loadedMeals,withNumbers);
             Console.WriteLine(strMessage);
             strUserInput = Console.ReadLine().Trim();
+            if(includeExitOption)
+            {
+                valNumberLimited++;
+            }
             isValid = ValidateUserInput(strUserInput,validationType,valIsSingleChar,valNumberLimited);
             if(!isValid)
             {
