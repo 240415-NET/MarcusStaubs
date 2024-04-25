@@ -1,0 +1,71 @@
+{
+    "AvailableDinnerIdeas":[
+        {
+            "MealName": "Street Tacos",
+            "PrepTime": 120,
+            "CookTime": 6,
+            "Ingredients": [
+                "2 lbs flank steak or skirt steak cut into 1/2 inch pieces",
+                "Freshly chopped cilantro",
+                "Freshly diced red onion",
+                "Fresh limes cut into wedges",
+                "Shredded Cheese",
+                "Sour cream",
+                "12 street taco sized tortillas",
+                "1 Tablespoon vegetable oil",
+                "3 Tablespoons fresh lime juide",
+                "3 Tablespoons soy sauce",
+                "4 cloves garlic, minced",
+                "2 1/2 teaspoons chili powder",
+                "1 1/2 teaspoons ground cumin",
+                "1 1/2 teaspoons dried oregano"
+            ]
+        },
+        {
+            "MealName": "Huevos Rancheros",
+            "PrepTime": 10,
+            "CookTime": 15,
+            "Ingredients": [
+                "1 small onion, chopped",
+                "1 Tablespoon oil",
+                "2 cups chopped bell peppers",
+                "1 14oz can of black beans",
+                "1 cup salsa, your choice",
+                "4 eggs",
+                "8 small tortillas",
+                "1 Tablespoon chopped cilantro",
+                "Optional toppings: shredded cheese, avocado, sour cream, salsa"
+            ]
+        },
+        {
+            "MealName": "Shredded BBQ Chicken Sandwiches",
+            "PrepTime": 5,
+            "CookTime": 20,
+            "Ingredients": [
+                "1 cup chicken stock",
+                "1 bottle mexican beer",
+                "4 6oz boneless chicken breast",
+                "2 tablespoons extra virgin olive oil",
+                "2 cloves garlic, chopped",
+                "1 medium onion, peeled and chopped",
+                "2 tablespoons worcestershire sauce",
+                "1 tablespoon hot sauce",
+                "2 tablespoons grill seasoning blend",
+                "3 tablespoons dark brown sugar",
+                "4 tablespoons tomato paste",
+                "1 large sour deli pickle, chopped",
+                "6 to 8 clises sweet break and butter pickles, chopped",
+                "6 soft sandwich buns"
+            ]
+        },
+        {
+            "MealName": "Pizza",
+            "PrepTime": 2,
+            "CookTime": 0,
+            "Ingredients": [
+                "A phone",
+                "A local pizza shop"
+            ]
+        }        
+    ]
+}
