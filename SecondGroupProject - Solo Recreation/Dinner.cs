@@ -58,7 +58,7 @@ public class DinnerIdea
     public List<string> GetIngredients()
     {
         return this.Ingredients;
-    }    
+    }
     public void AddIngredientToList(string Ingredient)
     {
         this.Ingredients.Add(Ingredient);
@@ -72,14 +72,52 @@ public class DinnerIdea
     {
         string returnString = "";
         returnString = $"{MealName}\nPrep Time: {PrepTime} minutes\nCook Time: {CookTime} minutes\n\nIngredients:\n";
-        for(int i=0; i<this.Ingredients.Count(); i++)
+        for (int i = 0; i < this.Ingredients.Count(); i++)
         {
             returnString += $"{this.Ingredients[i]}\n";
         }
         return returnString;
-    }  
+    }
 }
 public class PreLoadMeals()
 {
     public List<DinnerIdea> AvailableDinnerIdeas = new List<DinnerIdea>();
+
+    public int CountOfRemainingMeals()
+    {
+        return this.AvailableDinnerIdeas.Count();
+    }
+
+    public bool DoIStillHaveMeals()
+    {
+        if (this.AvailableDinnerIdeas.Count() > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void ChooseARandomDinnerOption()
+    {
+        if (!this.DoIStillHaveMeals())
+        {
+            Console.WriteLine("You're out of options. Please add more.");
+            Console.ReadKey();
+        }
+        else
+        {
+            Random rnd = new Random();
+            int choice = rnd.Next(0, this.AvailableDinnerIdeas.Count());
+            Console.WriteLine("Tonight for dinner, we are having:");
+            DisplayDinnerDetails(choice);
+        }
+    }
+    public void DisplayDinnerDetails(int choice)
+    {
+        Console.WriteLine(this.AvailableDinnerIdeas[choice]);
+        Console.ReadKey();
+    }
+
 }
