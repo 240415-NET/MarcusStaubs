@@ -112,6 +112,7 @@ public class PreLoadMeals()
             int choice = rnd.Next(0, this.AvailableDinnerIdeas.Count());
             Console.WriteLine("Tonight for dinner, we are having:");
             DisplayDinnerDetails(choice);
+            Console.ReadKey();
         }
     }
     public void DisplayDinnerDetails(int choice)
