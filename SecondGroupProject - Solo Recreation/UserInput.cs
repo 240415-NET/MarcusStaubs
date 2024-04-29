@@ -53,7 +53,7 @@ public class HandleUserInput()
         //bool keepAsking = true;
         //do
         //{
-            strUserInput = Console.ReadLine().Trim();
+            strUserInput = (Console.ReadLine()??"").Trim();
             Console.ForegroundColor = ConsoleColor.Red;
             isValid = ValidateUserInput(strUserInput, validationType, valIsSingleChar, limiter, lowerlimit);
             Console.ResetColor();

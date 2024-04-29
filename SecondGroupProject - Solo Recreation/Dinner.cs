@@ -103,6 +103,7 @@ public class PreLoadMeals()
     {
         if (!this.DoIStillHaveMeals())
         {
+            Console.Clear();
             Console.WriteLine("You're out of options. Please add more.");
             Console.ReadKey();
         }
@@ -112,7 +113,6 @@ public class PreLoadMeals()
             int choice = rnd.Next(0, this.AvailableDinnerIdeas.Count());
             Console.WriteLine("Tonight for dinner, we are having:");
             DisplayDinnerDetails(choice);
-            Console.ReadKey();
         }
     }
     public void DisplayDinnerDetails(int choice)
