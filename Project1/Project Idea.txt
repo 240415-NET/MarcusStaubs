@@ -1,0 +1,34 @@
+Instance Dungeon
+
+Login screen
+	If new: create character
+	If current: load character into current room
+
+Random monster spawns - On room change if monster spawn change input options
+	Fight random monsters
+	Flee from random monsters in random direction
+
+Level locked area - Static boss monster
+	Can't enter until player is x level
+	Starts a locked encounter. No running away
+
+Ability to move from room to room
+	Present acceptable directions to user
+
+Gain XP and level up - update user stats
+	Tell user when they have leveled up and stat changes
+
+View player stats
+	Option to view player stats/level and info on request
+
+Rest to heal
+	Can spawn monster but low chance
+
+Optional time permitting:
+	Use items from inventory
+	Equip weapons/armor
+	View equipment/inventory
+	Save/Load game - for save scumming of course
+
+
+
