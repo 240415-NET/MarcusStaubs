@@ -2,18 +2,22 @@ namespace Project1.Entities;
 
 public class Player : LivingThing
 {
+    public int PlayerLevel {get; set;}
     public int Strength {get; set;}
     public int Dexterity {get; set;}
     public int Constitution {get; set;}
+    public int PlayerXP {get;set;}
     public int CurrentRoom {get; set;}
     public int CurrentRoomIndex {get; set;}
     public bool InCombat {get; set;} = false;
 
-    public Player(string Name, int MaxHitPoints, int CurrentHitPoints, int Strength, int Dexterity, int Constitution, int CurrentRoom, int CurrentRoomIndex) : base(Name,MaxHitPoints,CurrentHitPoints)
+    public Player(string Name, int MaxHitPoints, int CurrentHitPoints,int PlayerLevel, int Strength, int Dexterity, int Constitution, int PlayerXP, int CurrentRoom, int CurrentRoomIndex) : base(Name,MaxHitPoints,CurrentHitPoints)
     {
+        this.PlayerLevel = PlayerLevel;
         this.Strength = Strength;
         this.Dexterity = Dexterity;
         this.Constitution = Constitution;
+        this.PlayerXP = PlayerXP;
         this.CurrentRoom = CurrentRoom;
         this.CurrentRoomIndex = CurrentRoomIndex;
         InCombat = false;
