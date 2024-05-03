@@ -5,10 +5,11 @@ namespace Project1.Data;
 
 public class MonsterStorage
 {
+    public static readonly string filePath = "./TempDataStorage/Monsters.json";
     public static Dictionary<int, MonsterData> GetMonsterList()
     {
         Dictionary<int, MonsterData> monsterCatalog = new Dictionary<int, MonsterData>();
-        string filePath = "./TempDataStorage/Monsters.json";
+        //string filePath = "./TempDataStorage/Monsters.json";
         List<MonsterData> monsterDataList = JsonSerializer.Deserialize<List<MonsterData>>(File.ReadAllText(filePath));
         foreach(MonsterData myMonster in monsterDataList)
         {
@@ -19,7 +20,7 @@ public class MonsterStorage
 
     public static void ReadAndDisplayMonsters()
     {
-        string filePath = "./TempDataStorage/Monsters.json";
+        //string filePath = "./TempDataStorage/Monsters.json";
         List<MonsterData> monsterDataList = JsonSerializer.Deserialize<List<MonsterData>>(File.ReadAllText(filePath));
         foreach(MonsterData myMonster in monsterDataList)
         {
@@ -109,7 +110,7 @@ public class MonsterStorage
         giantSpiderPic.Add("                                   ||".PadRight(50, ' '));
         giantSpiderPic.Add("                                   \\\\".PadRight(50, ' '));
         giantSpiderPic.Add("                                    '".PadRight(50, ' '));
-        MonsterData newGiantSpider = new MonsterData("Giant Spider", 10, 10, 1272, 7, 15, 15, 3, "bites", "sways to the side", "Skreee!", 75, giantSpiderPic);
+        MonsterData newGiantSpider = new MonsterData("Giant Spider", 10, 10, 1272, 8, 15, 15, 3, "bites", "sways to the side", "Skreee!", 75, giantSpiderPic);
         monsterList.Add(newGiantSpider);
 
         List<string> kWorkerPic = new List<string>();
@@ -137,7 +138,7 @@ public class MonsterStorage
         kScoutPic.Add("        | Y |   | /".PadRight(50, ' '));
         kScoutPic.Add("       /  |  \\  |/".PadRight(50, ' '));
         kScoutPic.Add("       \"\"\" \"\"\"".PadRight(50, ' '));
-        MonsterData newKoboldScout = new MonsterData("Kobold Scout", 10, 10, 1321, 7, 10, 15, 3, "fires its bow", "ducks", "grrk!", 75, kScoutPic);
+        MonsterData newKoboldScout = new MonsterData("Kobold Scout", 10, 10, 1321, 8, 10, 15, 3, "fires its bow", "ducks", "grrk!", 75, kScoutPic);
         monsterList.Add(newKoboldScout);
 
         List<string> kWarriorPic = new List<string>();
@@ -151,7 +152,7 @@ public class MonsterStorage
         kWarriorPic.Add("   \\___/| Y |   || ".PadRight(50, ' '));
         kWarriorPic.Add("       /  |  \\  ||".PadRight(50, ' '));
         kWarriorPic.Add("       \"\"\" \"\"\"".PadRight(50, ' '));
-        MonsterData newKoboldWarrior = new MonsterData("Kobold Warrior", 15, 15, 1471, 10, 25, 25, 5, "swings its sword", "swats the attack away", "...", 50, kWarriorPic);
+        MonsterData newKoboldWarrior = new MonsterData("Kobold Warrior", 15, 15, 1471, 12, 25, 25, 5, "swings its sword", "swats the attack away", "...", 50, kWarriorPic);
         monsterList.Add(newKoboldWarrior);
 
         List<string> kChiefPic = new List<string>();
@@ -167,11 +168,11 @@ public class MonsterStorage
         kChiefPic.Add("    \\ _\\| //".PadRight(50, ' '));
         kChiefPic.Add("     | |_\\/_".PadRight(50, ' '));
         kChiefPic.Add("     \\_,_>-'".PadRight(50, ' '));
-        MonsterData newKoboldChief = new MonsterData("Kobold Chief", 30, 30, 1571, 15, 20, 50, 10, "swings its great axe", "casually steps out of range", "You die, human!", 30, kChiefPic);
+        MonsterData newKoboldChief = new MonsterData("Kobold Chief", 30, 30, 1571, 17, 20, 50, 10, "swings its great axe", "casually steps out of range", "You die, human!", 30, kChiefPic);
         monsterList.Add(newKoboldChief);
 
         string MonsterListString = JsonSerializer.Serialize(monsterList);
-        string filePath = "./TempDataStorage/Monsters.json";
+        //string filePath = "./TempDataStorage/Monsters.json";
         File.WriteAllText(filePath,MonsterListString);
     }
 }

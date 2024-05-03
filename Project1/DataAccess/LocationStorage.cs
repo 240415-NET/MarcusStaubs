@@ -5,10 +5,11 @@ namespace Project1.Data;
 
 public static class LocationStorage
 {
+    public static readonly string filePath = "./TempDataStorage/Locations.json";
     public static Dictionary<int, Location> GetLocationsList()
     {
         Dictionary<int,Location> locationReference = new();
-        string filePath = "./TempDataStorage/Locations.json";
+        //string filePath = "./TempDataStorage/Locations.json";
         List<Location> locations = JsonSerializer.Deserialize<List<Location>>(File.ReadAllText(filePath));
         foreach(Location location in locations)
         {
@@ -188,8 +189,7 @@ public static class LocationStorage
         locationList.Add(loc112803); 
 
         List<int> room112804 = new List<int>{1251,1321,1471};
-        ////////////////////Fix it
-        Location loc112804 = new Location(112804,"Underground Tunnel",4,"An underground tunnel. The walls appear to have been carved. Poorly.",40,room112804);
+        Location loc112804 = new Location(112804,"Underground Tunnel",4,"An underground tunnel. There is a mysterious door to the south glowing with power that refuses to open no matter how much you jiggle the handle",40,room112804);
         locationList.Add(loc112804); 
 
         List<int> room112805 = new List<int>{1151};
@@ -209,7 +209,7 @@ public static class LocationStorage
         Location loc113803 = new Location(113803,"Underground Tunnel",13,"An underground tunnel. The walls appear to have been carved. Poorly.",40,room113803);
         locationList.Add(loc113803); 
         
-        string filePath = "./TempDataStorage/Locations.json";
+        //string filePath = "./TempDataStorage/Locations.json";
         string locationListString = JsonSerializer.Serialize(locationList);
         File.WriteAllText(filePath,locationListString);
     }

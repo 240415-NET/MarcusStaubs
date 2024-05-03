@@ -3,28 +3,33 @@ using Project1;
 using Project1.Controllers;
 using Project1.Models;
 using Project1.Initialize;
+using Project1.Data;
 
 namespace Project1.UserInterfaces;
 
 public static class WelcomeToTheGame
 {
+    public static Dictionary<int, MonsterData> monsterReference = new();
+    public static Dictionary<int, Location> locationReference = new();
+    public static Dictionary<int, LevelChange> levelReference = new();
+    public static Player currentPlayer = new Player();
     public static void Start()
     {
         string menuChoice;
         int menuSelection;
         bool validInput = false;
         //Dictionary<int, MonsterData> monsterReference = new Dictionary<int, MonsterData>();
-        Player currentPlayer = new Player();
         //Dictionary<int, Location> locationReference = new Dictionary<int, Location>();
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine(".");
-        Dictionary<int, MonsterData> monsterReference = MonsterController.InitializeMonsterInfo();
+        monsterReference = MonsterController.InitializeMonsterInfo();
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("....");
-        Dictionary<int, Location>locationReference = LocationController.InitializeLocations();
+        locationReference = LocationController.InitializeLocations();
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("...........");
+        levelReference = PlayerController.InitializeLevelInfo();
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("      _,.");
@@ -58,16 +63,21 @@ public static class WelcomeToTheGame
                 switch (menuSelection)
                 {
                     case 1:
-                        Console.WriteLine("Log in with an existing a character!");
+                        LoginMenu();
+                        MainControlMenu();
                         break;
                     case 2:
-                        currentPlayer = CreateNewPlayerMenu();
+                        CreateNewPlayerMenu();
+                        MainControlMenu();
                         break;
                     case 3:
                         return;
-                    case 4:
-                        InitializeData.ShowMeTheMonsters();
-                        break;
+                    // case 4:
+                    //     InitializeData.ShowMeTheMonsters();
+                    //     break;
+                    // case 996:
+                    //     LevelStorage.CreateLevelFile();
+                    //     break;                    
                     // case 997:
                     //     LocationStorage.CreateLocationFile();
                     //     break;                        
@@ -85,14 +95,48 @@ public static class WelcomeToTheGame
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
                 Console.WriteLine("1, 2, or 3. Pick again");
                 validInput = false;
             }
         } while (!validInput);
 
     }
-    public static Player CreateNewPlayerMenu()
+
+    public static void LoginMenu()
+    {
+        bool exitCondition = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("Please enter your character name.");
+            string userInput = (Console.ReadLine() ?? "").Trim();
+            if (String.IsNullOrEmpty(userInput))
+            {
+                Console.WriteLine("I asked for your name. Silence doesn't cut it. Enter your character's name or go away.");
+                Console.WriteLine("Press any key to try again...");
+                Console.ReadKey();
+                exitCondition = false;
+            }
+            else
+            {
+                currentPlayer = PlayerController.LoadExistingCharacter(userInput);
+                if (currentPlayer == null)
+                {
+                    Console.WriteLine("That's not a real name.  Give me your character's real name.");
+                    Console.WriteLine("Press any key to try again...");
+                    Console.ReadKey();
+                    exitCondition = false;
+                }
+                else
+                {
+                    exitCondition = true;
+                }
+            }
+        } while (!exitCondition);
+    }
+    public static void CreateNewPlayerMenu()
     {
         bool validInput = false;
         string newPlayerName;
@@ -102,8 +146,8 @@ public static class WelcomeToTheGame
         Console.WriteLine("What would you like to name your new character?");
         do
         {
-            newPlayerName = Console.ReadLine();
-            if (String.IsNullOrEmpty(newPlayerName.Trim()))
+            newPlayerName = (Console.ReadLine()??"").Trim();
+            if (String.IsNullOrEmpty(newPlayerName))
             {
                 Console.WriteLine("I'm not asking for much but I am asking for something. Try entering a name or something, anything.");
                 validInput = false;
@@ -118,10 +162,221 @@ public static class WelcomeToTheGame
                 validInput = true;
             }
         } while (!validInput);
-        Player currentPlayer = PlayerController.CreateNewPlayer(newPlayerName);
-        Console.WriteLine($"Congratulations! You are now a level 1 Warrior named {newPlayerName}!");
-        Console.WriteLine("I know that was a lot to get through, so let's get to the game already.");
-        return currentPlayer;
 
+        currentPlayer = PlayerController.CreateNewPlayer(newPlayerName);
+        Console.Clear();
+        Console.WriteLine($"Congratulations! You are now a level 1 Warrior named {currentPlayer.Name}!");
+        Console.WriteLine($"Hitpoints (HP): {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[2])}");
+        Console.WriteLine($"Strength: {currentPlayer.Strength}");
+        Console.WriteLine($"Dexterity: {currentPlayer.Dexterity}");
+        Console.WriteLine($"Constitution: {currentPlayer.Constitution}");
+        Console.WriteLine($"No, you don't have Intelligence, Wisdom, or Charisma stats. You won't need them.");
+        Console.WriteLine("I know that was a lot to get through, so let's get to the game already.");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
+        Console.WriteLine("Just kidding!  We should probably go over the basics really quickly.");
+        Console.WriteLine("Once you're in the game, you will have several options available to you in most situations.");
+        Console.WriteLine("If you're in a fight, you can either Attack or Flee, but careful because you won't always manage to run away.");
+        Console.WriteLine("Otherwise, you can move in a given direction, view your character, rest to recover HP, save your game, or exit.");
+        Console.WriteLine("To move in an available direction, you can type just the first letter of the direction you want to go.");
+        Console.WriteLine("If you like typing, you can also type out the entire direction name.");
+        Console.WriteLine("If you like to make things harder for yourself, you can enter M or move and then type out the direction.");
+        Console.WriteLine("For any of the other actions, just type in the first letter in the word (noted with <>) or the entire word and press enter.");
+        Console.WriteLine("Ok, let's get to the game for real this time!");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+
+    }
+
+    public static void MainControlMenu()
+    {
+        bool exitGame = false;
+        int playerAction;
+        do
+        {
+            playerAction = DisplayCurrentLocation(currentPlayer.CurrentLocation);
+            switch (playerAction)
+            {
+                case 1:
+                    PlayerController.LocationUpdate(ref currentPlayer,1);
+                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    {
+                        TimeForAFight();
+                    }
+                    break;
+                case 2:
+                    PlayerController.LocationUpdate(ref currentPlayer,2);
+                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    {
+                        TimeForAFight();
+                    }
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+                    PlayerController.LocationUpdate(ref currentPlayer,4);
+                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    {
+                        TimeForAFight();
+                    }
+                    break;
+                case 5:
+
+                    break;
+                case 6:
+
+                    break;
+                case 7:
+
+                    break;
+                case 8:
+                    PlayerController.LocationUpdate(ref currentPlayer,8);
+                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    {
+                        TimeForAFight();
+                    }
+                    break;
+            }
+        } while (!exitGame);
+
+    }
+    public static int DisplayCurrentLocation(int locationHash)
+    {
+        Location currentLocation = locationReference[locationHash];
+        bool exitCurrentRoom = false;
+        int userChoice;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine($"Current Location: {currentLocation.RoomName}");
+            Console.WriteLine(currentLocation.RoomDescription);
+            Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
+            Console.WriteLine($"\n<M>ove\t\t<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it");
+            string userInput = (Console.ReadLine() ?? "").Trim();
+            userChoice = UserInputHandler(userInput, false, locationHash);
+            if (userChoice != 0)
+            {
+                exitCurrentRoom = true;
+            }
+        } while (!exitCurrentRoom);
+        return userChoice;
+    }
+
+    public static int UserInputHandler(string userInput, bool InCombat, int locationHash)
+    {
+        userInput = userInput.ToLower();
+        if (String.IsNullOrEmpty(userInput))
+        {
+            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return 0;
+        }
+        else if (InCombat)
+        {
+            if (userInput == "a" || userInput == "attack" || userInput.Contains("attack"))
+            {
+                return 9;
+            }
+            if (userInput == "f" || userInput == "flee" || userInput.Contains("flee"))
+            {
+                return 10;
+            }
+            Console.WriteLine("I didn't understand what you wanted. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return 0;
+        }
+        else
+        {
+            if (userInput == "c" || userInput == "character" || userInput.Contains("character"))
+            {
+                return 3;
+            }
+            if (userInput == "r" || userInput == "rest" || userInput.Contains("rest"))
+            {
+                return 5;
+            }
+            if (userInput == "v" || userInput == "save" || userInput.Contains("save"))
+            {
+                return 6;
+            }
+            if (userInput == "x" || userInput == "exit" || userInput.Contains("exit"))
+            {
+                return 7;
+            }
+            if (userInput == "n" || userInput == "north" || userInput.Contains("north"))
+            {
+                if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash]))
+                {
+                    return 1;
+                }
+                else
+                {
+                    Console.WriteLine("You can't go North from here. Try again.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                    return 0;
+                }
+            }
+            if (userInput == "e" || userInput == "east" || userInput.Contains("east"))
+            {
+                if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash]))
+                {
+                    return 2;
+                }
+                else
+                {
+                    Console.WriteLine("You can't go East from here. Try again.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                    return 0;
+                }
+            }
+            if (userInput == "s" || userInput == "south" || userInput.Contains("south"))
+            {
+                if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash]))
+                {
+                    return 4;
+                }
+                else
+                {
+                    Console.WriteLine("You can't go South from here. Try again.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                    return 0;
+                }
+            }
+            if (userInput == "w" || userInput == "west" || userInput.Contains("west"))
+            {
+                if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash]))
+                {
+                    return 8;
+                }
+                else
+                {
+                    Console.WriteLine("You can't go West from here. Try again.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                    return 0;
+                }
+            }
+            Console.WriteLine("I didn't understand what you wanted. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return 0;
+        }
+    }
+    public static void TimeForAFight()
+    {
+        // Monster currentMonster = 
+        bool isSomeoneDead = false;
+        do
+        {
+
+        }while(!isSomeoneDead);
     }
 }

@@ -1,3 +1,5 @@
+using Project1.Controllers;
+
 namespace Project1.Models;
 
 public class Player : LivingThing
@@ -15,7 +17,7 @@ public class Player : LivingThing
     }
     public Player(string Name) : base(Name)
     {
-        PlayerID = new Guid();
+        PlayerID = Guid.NewGuid();
     }
     public Player(Guid PlayerID, string Name, int MaxHitPoints, int CurrentHitPoints,int PlayerLevel, int Strength, int Dexterity, int Constitution, int PlayerXP, int CurrentLocation) : base(Name,MaxHitPoints,CurrentHitPoints)
     {
@@ -27,8 +29,4 @@ public class Player : LivingThing
         this.PlayerXP = PlayerXP;
         this.CurrentLocation = CurrentLocation;
     }
-
-
-    
-
 }

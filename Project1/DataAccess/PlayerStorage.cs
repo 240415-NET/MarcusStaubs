@@ -5,7 +5,7 @@ namespace Project1.Data;
 
 public class PlayerStorage
 {
-    public static readonly string filePath = ".\\TempDataStorage\\PlayerInfo.json";
+    public static readonly string filePath = "./TempDataStorage/PlayerInfo.json";
     public static void SavePlayerData(Player currentPlayer)
     {
         //List<Player> playerList = new();
@@ -15,7 +15,7 @@ public class PlayerStorage
 
         if(File.Exists(filePath))
         {
-            List<Player>? playerList = JsonSerializer.Deserialize<List<Player>>(File.ReadAllText(filePath));
+            List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(File.ReadAllText(filePath));
             foreach(Player player in playerList)
             {
                 if(player.PlayerID == currentPlayer.PlayerID)
@@ -26,12 +26,8 @@ public class PlayerStorage
                     //player.Constitution = currentPlayer.Constitution;
 
                 }
-                // if(!playerExists)
-                // {
-                    playerList.Add(currentPlayer);
-                // }
-
             }
+            playerList.Add(currentPlayer);
             string jsonPlayersString = JsonSerializer.Serialize(playerList);
             File.WriteAllText(filePath,jsonPlayersString);
         }
@@ -56,7 +52,7 @@ public class PlayerStorage
             foundPlayer = playerList.FirstOrDefault(player => player.Name == playerName);
             return foundPlayer;
         }
-        return foundPlayer;
+        return null;
 
     }
 }

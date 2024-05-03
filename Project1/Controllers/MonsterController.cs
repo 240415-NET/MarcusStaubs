@@ -10,4 +10,26 @@ public static class MonsterController
         return MonsterStorage.GetMonsterList();
     }
 
+    public static Monster SpawnMonster(Location location)
+    {
+        Random rand = new Random();
+        int randNum = rand.Next(0,101);
+        switch(location.SpawnOptions.Count())
+        {
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+        }
+
+    }
+
 }

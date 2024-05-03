@@ -13,9 +13,10 @@ using Project1.Models;
 
     public static class Movement
     {
-        public static bool CanIMoveThisWay(MoveDirection thisWay, int moveOptions)
+        public static bool CanIMoveThisWay(MoveDirection thisWay, Location currentLocation)
         {
-            if(((MoveDirection)moveOptions & thisWay) == thisWay)
+            
+            if(((MoveDirection)currentLocation.EnumMovementOptions & thisWay) == thisWay)
             {
                 return true;
             }
@@ -23,5 +24,9 @@ using Project1.Models;
             {
                 return false;
             }
+        }
+        public static bool MovePlayer(int currentRoomHash, int newRoomHash, Location newLocation)
+        {
+            return true;
         }
     }
