@@ -1,4 +1,4 @@
-Instance Dungeon
+Instance Dungeon - Warrior's Quest
 
 Login screen
 	If new: create character
@@ -14,6 +14,7 @@ Level locked area - Static boss monster
 
 Ability to move from room to room
 	Present acceptable directions to user
+	Validate user selection of direction
 
 Gain XP and level up - update user stats
 	Tell user when they have leveled up and stat changes
@@ -22,13 +23,17 @@ View player stats
 	Option to view player stats/level and info on request
 
 Rest to heal
-	Can spawn monster but low chance
+	Can spawn monster based on location chance to spawn
 
 Optional time permitting:
+	Create an inventory
 	Use items from inventory
-	Equip weapons/armor
+	Create a town
+	Buy/Sell equipment and inventory items
+	Pay to rest at inn with no monster spawn chance
+	Equip weapons/armor to improve attack / defense beyond base
 	View equipment/inventory
-	Save/Load game - for save scumming of course
+	Save/Load game during game (not in Combat) and not just on exit - for save scumming of course
 
 
 
