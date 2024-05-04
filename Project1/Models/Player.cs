@@ -29,4 +29,8 @@ public class Player : LivingThing
         this.PlayerXP = PlayerXP;
         this.CurrentLocation = CurrentLocation;
     }
+    public override string ToString()
+    {
+        return $"{this.Name}\nLevel {this.PlayerLevel} Warrior\nHitpoints (HP): {this.CurrentHitPoints}/{this.MaxHitPoints}\nStrength: {this.Strength}\nDexterity: {this.Dexterity}\nConstitution: {this.Constitution}\nAttack: {this.Strength/2}\nDodge: {this.Dexterity/2}%\nDamage mitigation: {this.Constitution/8}";
+    }
 }

@@ -106,7 +106,7 @@ public static class LocationStorage
 
 
         List<int> room105802 = new List<int>{1151};
-        Location loc105802 = new Location(105805,"Mountain Path",10,"A mountain path. You can see a meadow ahead.",30,room105802);
+        Location loc105802 = new Location(105802,"Mountain Path",10,"A mountain path. You can see a meadow ahead.",30,room105802);
         locationList.Add(loc105802);
 
 
@@ -132,7 +132,7 @@ public static class LocationStorage
 
 
         List<int> room107802 = new List<int>{1251};
-        Location loc107802 = new Location(107805,"Cave Entrance",10,"You've entered a cave. It is kinda dark in here...",30,room107802);
+        Location loc107802 = new Location(107802,"Cave Entrance",10,"You've entered a cave. It is kinda dark in here...",30,room107802);
         locationList.Add(loc107802);         
 
 
@@ -193,7 +193,7 @@ public static class LocationStorage
         locationList.Add(loc112804); 
 
         List<int> room112805 = new List<int>{1151};
-        Location loc112805 = new Location(112805,"Boss Lair",1,"You have entered a massive cavern. The ceiling and walls are well beyond the limits of your sight.",0,room112805);
+        Location loc112805 = new Location(112805,"Boss Lair",1,"You have entered a massive cavern. The ceiling and walls are well beyond the limits of your sight.\nThe mysterious door has closed behind you and is glowing again.\nChecking you find it is sealed and unable to be opened.",0,room112805);
         locationList.Add(loc112805);
 
 
@@ -206,7 +206,7 @@ public static class LocationStorage
         locationList.Add(loc113802); 
 
         List<int> room113803 = new List<int>{1251,1321,1471};
-        Location loc113803 = new Location(113803,"Underground Tunnel",13,"An underground tunnel. The walls appear to have been carved. Poorly.",40,room113803);
+        Location loc113803 = new Location(113803,"Underground Tunnel",9,"An underground tunnel. The walls appear to have been carved. Poorly.",40,room113803);
         locationList.Add(loc113803); 
         
         //string filePath = "./TempDataStorage/Locations.json";

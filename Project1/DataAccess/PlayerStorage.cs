@@ -9,25 +9,25 @@ public class PlayerStorage
     public static void SavePlayerData(Player currentPlayer)
     {
         //List<Player> playerList = new();
-        //bool playerExists = false;
+        bool playerExists = false;
         //defaults to the path of the current project's file
         //string filePath = ".\\TempDataStorage\\PlayerInfo.json";
 
         if(File.Exists(filePath))
         {
             List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(File.ReadAllText(filePath));
-            foreach(Player player in playerList)
+            for(int i = 0; i < playerList.Count(); i++)
             {
-                if(player.PlayerID == currentPlayer.PlayerID)
+                if(playerList[i].PlayerID == currentPlayer.PlayerID)
                 {
-                    //playerExists = true;
-                    playerList.Remove(player);
-                    //update player data with currentPlayer data.
-                    //player.Constitution = currentPlayer.Constitution;
-
+                    playerExists = true;
+                    playerList[i] = currentPlayer;
                 }
             }
-            playerList.Add(currentPlayer);
+            if(!playerExists)
+            {
+                playerList.Add(currentPlayer);
+            }
             string jsonPlayersString = JsonSerializer.Serialize(playerList);
             File.WriteAllText(filePath,jsonPlayersString);
         }

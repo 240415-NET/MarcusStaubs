@@ -16,8 +16,13 @@ public class PlayerController
         currentPlayer.Constitution = 3;
         currentPlayer.PlayerLevel = 1;
         currentPlayer.PlayerXP = 0;   
-        PlayerStorage.SavePlayerData(currentPlayer);
+        SavePlayer(currentPlayer);
         return currentPlayer;     
+    }
+
+    public static void SavePlayer(Player currentPlayer)
+    {
+        PlayerStorage.SavePlayerData(currentPlayer);
     }
 
     public static bool DoesPlayerExist(string name)

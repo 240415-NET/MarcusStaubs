@@ -78,9 +78,9 @@ public static class WelcomeToTheGame
                     // case 996:
                     //     LevelStorage.CreateLevelFile();
                     //     break;                    
-                    // case 997:
-                    //     LocationStorage.CreateLocationFile();
-                    //     break;                        
+                    case 997:
+                        LocationStorage.CreateLocationFile();
+                        break;                        
                     // case 998:
                     //     MonsterStorage.ReadAndDisplayMonsters();
                     //     break;
@@ -165,12 +165,13 @@ public static class WelcomeToTheGame
 
         currentPlayer = PlayerController.CreateNewPlayer(newPlayerName);
         Console.Clear();
-        Console.WriteLine($"Congratulations! You are now a level 1 Warrior named {currentPlayer.Name}!");
-        Console.WriteLine($"Hitpoints (HP): {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
-        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[2])}");
-        Console.WriteLine($"Strength: {currentPlayer.Strength}");
-        Console.WriteLine($"Dexterity: {currentPlayer.Dexterity}");
-        Console.WriteLine($"Constitution: {currentPlayer.Constitution}");
+        Console.WriteLine($"Congratulations! You are now: "); // a level 1 Warrior named {currentPlayer.Name}!");
+        // Console.WriteLine($"Hitpoints (HP): {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+        // Console.WriteLine($"Strength: {currentPlayer.Strength}");
+        // Console.WriteLine($"Dexterity: {currentPlayer.Dexterity}");
+        // Console.WriteLine($"Constitution: {currentPlayer.Constitution}");
+        Console.WriteLine(currentPlayer);
+        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[2])}");        
         Console.WriteLine($"No, you don't have Intelligence, Wisdom, or Charisma stats. You won't need them.");
         Console.WriteLine("I know that was a lot to get through, so let's get to the game already.");
         Console.WriteLine("Press any key to continue...");
@@ -218,6 +219,17 @@ public static class WelcomeToTheGame
                     break;
                 case 3:
                     //view character
+                    Console.Clear();
+                    Console.WriteLine(currentPlayer);
+                    if(currentPlayer.PlayerLevel < 20)
+                    {
+                        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel+1])}");                    
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/Max Level Reached!");
+                    }
+                    Console.ReadKey();
                     break;
                 case 4:
                     //move south
@@ -229,9 +241,25 @@ public static class WelcomeToTheGame
                     break;
                 case 5:
                     //rest
+                    monsterSpawn = PlayerController.Rest(ref currentPlayer, locationReference[currentPlayer.CurrentLocation]);
+                    if(monsterSpawn ==0)
+                    {
+                        Console.WriteLine("You settle down to rest and tend to your wounds.  HP restored.");
+                        Console.WriteLine("Press any key to continue your adventure...");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine("You settle down to rest and tend to your wounds. But...");                        
+                        TimeForAFight(monsterSpawn);
+                    }
                     break;
                 case 6:
                     //save
+                    PlayerController.SavePlayer(currentPlayer);
+                    Console.WriteLine("Your character has been saved.");
+                    Console.WriteLine("Press any key to continue your adventure...");
+                    Console.ReadKey();                    
                     break;
                 case 7:
                     //Add in a save feature or ask if want to save.
@@ -258,8 +286,26 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             Console.WriteLine($"Current Location: {currentLocation.RoomName}");
-            Console.WriteLine(currentLocation.RoomDescription);
-            Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
+            if(locationHash != 112804)
+            {
+                Console.WriteLine(currentLocation.RoomDescription);
+                Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
+            }
+            else if(currentPlayer.PlayerLevel >= 10)
+            {
+                Console.WriteLine("The glow has faded from the mysterious door and it appears to be slightly ajar.");
+                Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
+            }
+            else if(locationHash == 112805)
+            {
+                Console.WriteLine(currentLocation.RoomDescription);
+                //Boss fight time
+            }
+            else
+            {
+                Console.WriteLine(currentLocation.RoomDescription);
+                Console.WriteLine($"\n\n\nYou can travel in the following direction(s): North");
+            }
             Console.WriteLine($"\n<M>ove\t\t<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it");
             string userInput = (Console.ReadLine() ?? "").Trim();
             userChoice = UserInputHandler(userInput, false, locationHash);
@@ -273,6 +319,7 @@ public static class WelcomeToTheGame
 
     public static int UserInputHandler(string userInput, bool InCombat, int locationHash)
     {
+        string OriginalUserInput = userInput;
         userInput = userInput.ToLower();
         if (String.IsNullOrEmpty(userInput))
         {
@@ -316,7 +363,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "n" || userInput == "north" || userInput.Contains("north"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash]))
+                if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash],currentPlayer.PlayerLevel))
                 {
                     return 1;
                 }
@@ -330,7 +377,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "e" || userInput == "east" || userInput.Contains("east"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash]))
+                if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash],currentPlayer.PlayerLevel))
                 {
                     return 2;
                 }
@@ -344,7 +391,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "s" || userInput == "south" || userInput.Contains("south"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash]))
+                if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash],currentPlayer.PlayerLevel))
                 {
                     return 4;
                 }
@@ -358,7 +405,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "w" || userInput == "west" || userInput.Contains("west"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash]))
+                if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash],currentPlayer.PlayerLevel))
                 {
                     return 8;
                 }
@@ -369,6 +416,13 @@ public static class WelcomeToTheGame
                     Console.ReadKey();
                     return 0;
                 }
+            }
+            if (OriginalUserInput == "~IWantToBeStronger" && currentPlayer.PlayerLevel < 20)
+            {
+                PlayerController.Ding(ref currentPlayer,levelReference[currentPlayer.PlayerLevel+1]);
+                Console.WriteLine($"Cheater! Player leveled up to {currentPlayer.PlayerLevel}.");
+                Console.ReadKey();
+                return 0;
             }
             Console.WriteLine("I didn't understand what you wanted. Try again.");
             Console.WriteLine("Press any key to continue...");
@@ -395,11 +449,11 @@ public static class WelcomeToTheGame
             {
                 if(i==0)
                 {
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}     {currentMonster.Name}\t\t\t{currentPlayer.Name}");
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  {currentMonster.Name}\t\t\t{currentPlayer.Name}");
                 }
                 else if(i==1)
                 {
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}\t\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
                 }
                 else
                 {
@@ -472,15 +526,19 @@ public static class WelcomeToTheGame
         {
             //Congrats on killing monster (random responses eventually)
             //code to receive rewards from monster
-            Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
             //check if player gained a level and, if so, increase stats
             if(currentPlayer.PlayerLevel < 20)
             {
+                Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
                 if(currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel+1]))
                 {
                     PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel+1]);
                     Console.WriteLine($"Congratulations! You have reached level {currentPlayer.PlayerLevel}!");
                 }
+            }
+            else
+            {
+                Console.WriteLine($"You have gained 0 experience for killing {currentMonster.Name}. You are at max level.");
             }
             Console.ReadKey();    
         }

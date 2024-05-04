@@ -1,29 +1,29 @@
 Instance Dungeon - Warrior's Quest
 
 Login screen
-	If new: create character
-	If current: load character into current room
+	If new: create character - Done
+	If current: load character into current room - Done
 
-Random monster spawns - On room change if monster spawn change input options
-	Fight random monsters
-	Flee from random monsters in random direction
+Random monster spawns - On room change if monster spawn change input options - Done
+	Fight random monsters - Done
+	Flee from random monsters in random direction - Partially done (flee but don't actually move yet)
 
 Level locked area - Static boss monster
-	Can't enter until player is x level
-	Starts a locked encounter. No running away
+	Can't enter until player is x level - Done (lvl 10)
+	Starts a locked encounter. No running away - In Progress
 
 Ability to move from room to room
-	Present acceptable directions to user
-	Validate user selection of direction
+	Present acceptable directions to user - Done
+	Validate user selection of direction - Done
 
 Gain XP and level up - update user stats
-	Tell user when they have leveled up and stat changes
+	Tell user when they have leveled up and stat changes - Done
 
 View player stats
-	Option to view player stats/level and info on request
+	Option to view player stats/level and info on request - Done
 
 Rest to heal
-	Can spawn monster based on location chance to spawn
+	Can spawn monster based on location chance to spawn - Done
 
 Optional time permitting:
 	Create an inventory
@@ -33,7 +33,7 @@ Optional time permitting:
 	Pay to rest at inn with no monster spawn chance
 	Equip weapons/armor to improve attack / defense beyond base
 	View equipment/inventory
-	Save/Load game during game (not in Combat) and not just on exit - for save scumming of course
+	Save during game (not in Combat) and not just on exit - for save scumming of course - Done. 
 
 
 
