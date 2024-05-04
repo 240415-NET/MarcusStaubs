@@ -474,7 +474,7 @@ public static class WelcomeToTheGame
             //code to receive rewards from monster
             Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
             //check if player gained a level and, if so, increase stats
-            if(currentPlayer.PlayerXP < 20)
+            if(currentPlayer.PlayerLevel < 20)
             {
                 if(currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel+1]))
                 {
