@@ -189,7 +189,7 @@ public static class LocationStorage
         locationList.Add(loc112803); 
 
         List<int> room112804 = new List<int>{1251,1321,1471};
-        Location loc112804 = new Location(112804,"Underground Tunnel",4,"An underground tunnel. There is a mysterious door to the south glowing with power that refuses to open no matter how much you jiggle the handle",40,room112804);
+        Location loc112804 = new Location(112804,"Underground Tunnel",5,"An underground tunnel. There is a mysterious door to the south glowing with power that refuses to open no matter how much you jiggle the handle",40,room112804);
         locationList.Add(loc112804); 
 
         List<int> room112805 = new List<int>{1151};

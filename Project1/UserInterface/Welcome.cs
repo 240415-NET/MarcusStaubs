@@ -32,26 +32,29 @@ public static class WelcomeToTheGame
         levelReference = PlayerController.InitializeLevelInfo();
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("      _,.");
-        Console.WriteLine("    ,` -.)");
-        Console.WriteLine("   ( _/-\\\\-._                             Warrior's Quest");
-        Console.WriteLine("  /,|`--._,-^|            ,         The search for a passing grade");
-        Console.WriteLine("  \\_| |`-._/||          ,'|");
-        Console.WriteLine("    |  `-, / |         /  /");
-        Console.WriteLine("    |     || |        /  /                 1: Login");
-        Console.WriteLine("     `r-._||/   __   /  /                  2: Create New Character");
-        Console.WriteLine(" __,-<_     )`-/  `./  /                   3: Exit");
-        Console.WriteLine("'  \\   `---'   \\   /  /");
-        Console.WriteLine("    |           |./  /");
-        Console.WriteLine("    /           //  /");
-        Console.WriteLine("\\_/' \\         |/  /");
-        Console.WriteLine(" |    |   _,^-'/  /");
-        Console.WriteLine(" |    , ``  (\\/  /_");
-        Console.WriteLine("  \\,.->._    \\X-=/^");
-        Console.WriteLine("  (  /   `-._//^`");
-        Console.WriteLine("   `Y-.____(__}");
-        Console.WriteLine("    |     {__)");
-        Console.WriteLine("          ()");
+        Console.WriteLine("                              @@@  @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@   @@@   @@@@@@   @@@@@@@   @@@   @@@@@@");
+        Console.WriteLine("                              @@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@  @@@@@@@@  @@@@@@@@   @@  @@@@@@@ ");
+        Console.WriteLine("                              @@!  @@!  @@!  @@!  @@@  @@!  @@@  @@!  @@@  @@!  @@!  @@@  @@!  @@@  @!   !@@ ");
+        Console.WriteLine("      _,.                     !@!  !@!  !@!  !@!  @!@  !@!  @!@  !@!  @!@  !@!  !@!  @!@  !@!  @!@       !@!    ");
+        Console.WriteLine("    ,` -.)                    @!!  !!@  @!@  @!@!@!@!  @!@!!@!   @!@!!@!   !!@  @!@  !@!  @!@!!@!        !!@@!!");
+        Console.WriteLine("   ( _/-\\\\-._                 !@!  !!!  !@!  !!!@!!!!  !!@!@!    !!@!@!    !!!  !@!  !!!  !!@!@!          !!@!!!");
+        Console.WriteLine("  /,|`--._,-^|            ,   !!:  !!:  !!:  !!:  !!!  !!: :!!   !!: :!!   !!:  !!:  !!!  !!: :!!             !:!");
+        Console.WriteLine("  \\_| |`-._/||          ,'|   :!:  :!:  :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:  :!:  !:!  :!:  !:!           !:!");
+        Console.WriteLine("    |  `-, / |         /  /    :::: :: :::   ::   :::  ::   :::  ::   :::   ::  ::::: ::  ::   :::       :::: :: ");
+        Console.WriteLine("    |     || |        /  /      :: :  : :     :   : :   :   : :   :   : :  :     : :  :    :   : :       :: : :");
+        Console.WriteLine("     `r-._||/   __   /  /         ");
+        Console.WriteLine(" __,-<_     )`-/  `./  /                      @@@@@@    @@@  @@@  @@@@@@@@   @@@@@@   @@@@@@@");
+        Console.WriteLine("'  \\   `---'   \\   /  /                      @@@@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@   @@@@@@@");
+        Console.WriteLine("    |           |./  /                       @@!  @@@   @@!  @@@  @@!       !@@         @@!");
+        Console.WriteLine("    /           //  /                        !@!  @!@   !@!  @!@  !@!       !@!         !@!");
+        Console.WriteLine("\\_/' \\         |/  /                         @!@  !@!   @!@  !@!  @!!!:!    !!@@!!      @!!");
+        Console.WriteLine(" |    |   _,^-'/  /                          !@!  !!!   !@!  !!!  !!!!!:     !!@!!!     !!!");
+        Console.WriteLine(" |    , ``  (\\/  /_                          !!:!!:!:   !!:  !!!  !!:            !:!    !!:");
+        Console.WriteLine("  \\,.->._    \\X-=/^                          :!: :!:    :!:  !:!  :!:           !:!     :!:");
+        Console.WriteLine("  (  /   `-._//^`                            ::::: :!   ::::: ::   :: ::::  :::: ::      ::");
+        Console.WriteLine("   `Y-.____(__}                               : :  :::   : :  :   : :: ::   :: : :       :   ");
+        Console.WriteLine("    |     {__)                          ");
+        Console.WriteLine("          ()                                 1: Login    2: Create New Character    3: Exit");
         Console.ResetColor();
         do
         {
@@ -72,6 +75,9 @@ public static class WelcomeToTheGame
                         break;
                     case 3:
                         return;
+                    case 996:
+                        GameOver();
+                        break;
                     // case 4:
                     //     InitializeData.ShowMeTheMonsters();
                     //     break;
@@ -80,7 +86,7 @@ public static class WelcomeToTheGame
                     //     break;                    
                     case 997:
                         LocationStorage.CreateLocationFile();
-                        break;                        
+                        break;
                     // case 998:
                     //     MonsterStorage.ReadAndDisplayMonsters();
                     //     break;
@@ -146,7 +152,7 @@ public static class WelcomeToTheGame
         Console.WriteLine("What would you like to name your new character?");
         do
         {
-            newPlayerName = (Console.ReadLine()??"").Trim();
+            newPlayerName = (Console.ReadLine() ?? "").Trim();
             if (String.IsNullOrEmpty(newPlayerName))
             {
                 Console.WriteLine("I'm not asking for much but I am asking for something. Try entering a name or something, anything.");
@@ -171,7 +177,7 @@ public static class WelcomeToTheGame
         // Console.WriteLine($"Dexterity: {currentPlayer.Dexterity}");
         // Console.WriteLine($"Constitution: {currentPlayer.Constitution}");
         Console.WriteLine(currentPlayer);
-        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[2])}");        
+        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[2])}");
         Console.WriteLine($"No, you don't have Intelligence, Wisdom, or Charisma stats. You won't need them.");
         Console.WriteLine("I know that was a lot to get through, so let's get to the game already.");
         Console.WriteLine("Press any key to continue...");
@@ -196,6 +202,7 @@ public static class WelcomeToTheGame
         bool exitGame = false;
         int playerAction;
         int monsterSpawn = 0;
+        bool amIDead = false;
         do
         {
             playerAction = DisplayCurrentLocation(currentPlayer.CurrentLocation);
@@ -203,27 +210,27 @@ public static class WelcomeToTheGame
             {
                 case 1:
                     //move north
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,1, locationReference);
-                    if(monsterSpawn!=0)
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 1, locationReference);
+                    if (monsterSpawn != 0)
                     {
-                        TimeForAFight(monsterSpawn);
+                        amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 2:
                     //move east
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,2, locationReference);
-                    if(monsterSpawn!=0)
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 2, locationReference);
+                    if (monsterSpawn != 0)
                     {
-                        TimeForAFight(monsterSpawn);
+                        amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 3:
                     //view character
                     Console.Clear();
                     Console.WriteLine(currentPlayer);
-                    if(currentPlayer.PlayerLevel < 20)
+                    if (currentPlayer.PlayerLevel < 20)
                     {
-                        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel+1])}");                    
+                        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1])}");
                     }
                     else
                     {
@@ -233,16 +240,16 @@ public static class WelcomeToTheGame
                     break;
                 case 4:
                     //move south
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,4, locationReference);
-                    if(monsterSpawn!=0)
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 4, locationReference);
+                    if (monsterSpawn != 0)
                     {
-                        TimeForAFight(monsterSpawn);
+                        amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 5:
                     //rest
                     monsterSpawn = PlayerController.Rest(ref currentPlayer, locationReference[currentPlayer.CurrentLocation]);
-                    if(monsterSpawn ==0)
+                    if (monsterSpawn == 0)
                     {
                         Console.WriteLine("You settle down to rest and tend to your wounds.  HP restored.");
                         Console.WriteLine("Press any key to continue your adventure...");
@@ -250,8 +257,8 @@ public static class WelcomeToTheGame
                     }
                     else
                     {
-                        Console.WriteLine("You settle down to rest and tend to your wounds. But...");                        
-                        TimeForAFight(monsterSpawn);
+                        Console.WriteLine("You settle down to rest and tend to your wounds. But...");
+                        amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 6:
@@ -259,22 +266,26 @@ public static class WelcomeToTheGame
                     PlayerController.SavePlayer(currentPlayer);
                     Console.WriteLine("Your character has been saved.");
                     Console.WriteLine("Press any key to continue your adventure...");
-                    Console.ReadKey();                    
+                    Console.ReadKey();
                     break;
                 case 7:
                     //Add in a save feature or ask if want to save.
                     return;
-                    //break;
+                //break;
                 case 8:
                     //move west
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,8, locationReference);
-                    if(monsterSpawn!=0)
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 8, locationReference);
+                    if (monsterSpawn != 0)
                     {
-                        TimeForAFight(monsterSpawn);
+                        amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
             }
-        } while (!exitGame);
+        } while (!exitGame && !amIDead);
+        if(amIDead)
+        {
+            GameOver();
+        }
 
     }
     public static int DisplayCurrentLocation(int locationHash)
@@ -286,17 +297,17 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             Console.WriteLine($"Current Location: {currentLocation.RoomName}");
-            if(locationHash != 112804)
+            if (locationHash != 112804)
             {
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
             }
-            else if(currentPlayer.PlayerLevel >= 10)
+            else if (currentPlayer.PlayerLevel >= 10)
             {
                 Console.WriteLine("The glow has faded from the mysterious door and it appears to be slightly ajar.");
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
             }
-            else if(locationHash == 112805)
+            else if (locationHash == 112805)
             {
                 Console.WriteLine(currentLocation.RoomDescription);
                 //Boss fight time
@@ -363,7 +374,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "n" || userInput == "north" || userInput.Contains("north"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash],currentPlayer.PlayerLevel))
+                if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
                     return 1;
                 }
@@ -377,7 +388,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "e" || userInput == "east" || userInput.Contains("east"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash],currentPlayer.PlayerLevel))
+                if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
                     return 2;
                 }
@@ -391,7 +402,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "s" || userInput == "south" || userInput.Contains("south"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash],currentPlayer.PlayerLevel))
+                if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
                     return 4;
                 }
@@ -405,7 +416,7 @@ public static class WelcomeToTheGame
             }
             if (userInput == "w" || userInput == "west" || userInput.Contains("west"))
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash],currentPlayer.PlayerLevel))
+                if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
                     return 8;
                 }
@@ -419,7 +430,7 @@ public static class WelcomeToTheGame
             }
             if (OriginalUserInput == "~IWantToBeStronger" && currentPlayer.PlayerLevel < 20)
             {
-                PlayerController.Ding(ref currentPlayer,levelReference[currentPlayer.PlayerLevel+1]);
+                PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
                 Console.WriteLine($"Cheater! Player leveled up to {currentPlayer.PlayerLevel}.");
                 Console.ReadKey();
                 return 0;
@@ -430,7 +441,7 @@ public static class WelcomeToTheGame
             return 0;
         }
     }
-    public static void TimeForAFight(int monsterSpawn)
+    public static bool TimeForAFight(int monsterSpawn)
     {
         Monster currentMonster = new Monster(monsterReference[monsterSpawn]);
         bool isSomeoneDead = false;
@@ -439,19 +450,20 @@ public static class WelcomeToTheGame
         int userChoice;
         int playerAttack;
         int monsterAttack;
+        bool amIDead = false;
         Console.WriteLine($"You have encountered a {currentMonster.Name}!");
         Console.WriteLine("Press any key to start the fight...");
         Console.ReadKey();
         do
         {
             Console.Clear();
-            for(int i = 0; i<currentMonster.MonsterDisplay.Count();i++)
+            for (int i = 0; i < currentMonster.MonsterDisplay.Count(); i++)
             {
-                if(i==0)
+                if (i == 0)
                 {
                     Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  {currentMonster.Name}\t\t\t{currentPlayer.Name}");
                 }
-                else if(i==1)
+                else if (i == 1)
                 {
                     Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}\t\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
                 }
@@ -464,50 +476,27 @@ public static class WelcomeToTheGame
             //isSomeoneDead = true;
             userInput = (Console.ReadLine() ?? "").Trim();
             userChoice = UserInputHandler(userInput, true, currentPlayer.CurrentLocation);
-            if(userChoice==9)
+            if (userChoice == 9)
             {
-                playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer,ref currentMonster);
-                Console.WriteLine(currentMonster.HitText);
-                Console.WriteLine($"You hit {currentMonster.Name} for {playerAttack} damage.");
-                Console.ReadKey();
-                if(currentMonster.CurrentHitPoints>0)
+                playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref currentMonster);
+                if (playerAttack > 0)
                 {
-                    monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer,ref currentMonster);
-                    Console.WriteLine($"{currentMonster.Name} {currentMonster.AttackText} at you");
-                    Console.ReadKey();
-                    if(monsterAttack == -1)
-                    {
-                        Console.WriteLine("But you dodged it!");
-                        Console.ReadKey();
-                    }
-                    else if(monsterAttack == 0)
-                    {
-                        Console.WriteLine($"{currentMonster.Name} does no damage due to your thickened skin.");
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{currentMonster.Name} does {monsterAttack} damage to you.");
-                        Console.ReadKey();
-                    }
-                    if(currentPlayer.CurrentHitPoints <= 0)
-                    {
-                        isSomeoneDead = true;
-                    }
+                    Console.WriteLine(currentMonster.HitText);
+                    Console.WriteLine($"You hit {currentMonster.Name} for {playerAttack} damage.");
                 }
                 else
                 {
-                    Console.WriteLine($"You have slain {currentMonster.Name}!");
-                    Console.ReadKey();
-                    isSomeoneDead = true;
+                    Console.WriteLine($"{currentMonster.Name} {currentMonster.DodgeText}");
+                    Console.WriteLine("You missed!");
                 }
+                Console.ReadKey();
             }
-            else if(userChoice==10)
+            else if (userChoice == 10)
             {
                 Console.WriteLine($"You turn and run for your life!");
-                if(CombatController.DoesPlayerFleeSuccessfully(currentMonster.ChanceToFlee))
+                if (CombatController.DoesPlayerFleeSuccessfully(currentMonster.ChanceToFlee))
                 {
-                   playerRanAway = true; 
+                    playerRanAway = true;
                 }
                 else
                 {
@@ -515,24 +504,55 @@ public static class WelcomeToTheGame
                     Console.ReadKey();
                 }
             }
-        }while(!isSomeoneDead && !playerRanAway);
-        if(currentPlayer.CurrentHitPoints <= 0 && isSomeoneDead)
+            if (currentMonster.CurrentHitPoints > 0 && !playerRanAway)
+            {
+                monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer, ref currentMonster);
+                Console.WriteLine($"{currentMonster.Name} {currentMonster.AttackText} at you");
+                Console.ReadKey();
+                if (monsterAttack == -1)
+                {
+                    Console.WriteLine("But you dodge in time and they miss!");
+                    Console.ReadKey();
+                }
+                else if (monsterAttack == 0)
+                {
+                    Console.WriteLine($"{currentMonster.Name} does no damage due to your thickened skin.");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine($"{currentMonster.Name} does {monsterAttack} damage to you.");
+                    Console.ReadKey();
+                }
+                if (currentPlayer.CurrentHitPoints <= 0)
+                {
+                    isSomeoneDead = true;
+                }
+            }
+            else if (!playerRanAway)
+            {
+                Console.WriteLine($"You have slain {currentMonster.Name}!");
+                Console.ReadKey();
+                isSomeoneDead = true;
+            }
+        } while (!isSomeoneDead && !playerRanAway);
+        if (currentPlayer.CurrentHitPoints <= 0 && isSomeoneDead)
         {
             Console.WriteLine("You have died.  Better luck next time.");
             Console.ReadKey();
-            return;
+            return true;
         }
-        else if(isSomeoneDead)
+        else if (isSomeoneDead)
         {
             //Congrats on killing monster (random responses eventually)
             //code to receive rewards from monster
             //check if player gained a level and, if so, increase stats
-            if(currentPlayer.PlayerLevel < 20)
+            if (currentPlayer.PlayerLevel < 20)
             {
                 Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
-                if(currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel+1]))
+                if (currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]))
                 {
-                    PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel+1]);
+                    PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
                     Console.WriteLine($"Congratulations! You have reached level {currentPlayer.PlayerLevel}!");
                 }
             }
@@ -540,7 +560,7 @@ public static class WelcomeToTheGame
             {
                 Console.WriteLine($"You have gained 0 experience for killing {currentMonster.Name}. You are at max level.");
             }
-            Console.ReadKey();    
+            Console.ReadKey();
         }
         else
         {
@@ -549,5 +569,23 @@ public static class WelcomeToTheGame
             Console.ReadKey();
             //Player ran away - mock them? random based on what they ran from?
         }
+        return amIDead;
+    }
+
+    public static void GameOver()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.WriteLine(" ▄▄ •  ▄▄▄· •   ▌  ▄  ·. ▄▄▄ .         ▌ ▐ ·▄▄▄ .▄▄▄  ");
+        Console.WriteLine("▐█ ▀  ▐█ ▀█ ·██ ▐███  ▀▄.▀·          █·█▌ ▀▄.▀·▀▄ █·");
+        Console.WriteLine("▄█ ▀█▄▄█▀▀█ ▐█ ▌▐▌▐█·▐▀▀ ▄     ▄█▀▄ ▐█▐█• ▐▀▀ ▄ ▐▀▀▄ ");
+        Console.WriteLine("▐█▄ ▐█▐█  ▐▌██ ██▌▐█▌▐█▄▄▌    ▐█▌.▐▌ ███ ▐█▄▄▌ ▐█  █▌");
+        Console.WriteLine("·▀▀▀▀  ▀  ▀ ▀▀  █ ▀▀▀ ▀▀▀      ▀█▄▀ . ▀   ▀▀▀ . ▀  ▀");
+        Console.WriteLine("\nYou're dead and the world is doomed or something.\nI don't know. The story for this game was never really fleshed out.\nJust go with your favorite fantasty game trope again.");
+        Console.ReadKey();
     }
 }
+
+
+
+
