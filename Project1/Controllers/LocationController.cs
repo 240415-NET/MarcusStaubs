@@ -10,18 +10,74 @@ public static class LocationController
         return LocationStorage.GetLocationsList();
     }
 
-    public static bool DoesMonsterSpawn(Location currentLocation)
+    public static int DoesMonsterSpawn(Location currentLocation)
     {
         Random rand = new Random();
         int pickIt = rand.Next(0, 101);
         if (pickIt < currentLocation.MonsterSpawnChance)
         {
-            return true;
+            return PickMonsterSpawn(currentLocation);
         }
         else
         {
-            return false;
+            return 0;
         }
 
     }
+    public static int PickMonsterSpawn(Location location)
+    {
+        Random rand = new Random();
+        int randNum = rand.Next(0,101);
+        switch(location.SpawnOptions.Count())
+        {
+            case 1:
+                return location.SpawnOptions[0];
+                break;
+            case 2:
+                if(randNum <= 50)
+                {
+                    return location.SpawnOptions[0];
+                }
+                else
+                {
+                    return location.SpawnOptions[1];
+                }
+                break;
+            case 3:
+                if(randNum <= 33)
+                {
+                    return location.SpawnOptions[0];
+                }
+                else if(randNum > 33 && randNum <= 66)
+                {
+                    return location.SpawnOptions[1];
+                }
+                else
+                {
+                    return location.SpawnOptions[2];
+                }
+                break;
+            case 4:
+                if(randNum <= 25)
+                {
+                    return location.SpawnOptions[0];
+                }
+                else if(randNum > 25 && randNum <= 50)
+                {
+                    return location.SpawnOptions[1];
+                }
+                else if(randNum > 50 && randNum <= 75)
+                {
+                    return location.SpawnOptions[2];
+                }                
+                else
+                {
+                    return location.SpawnOptions[3];
+                }
+                break;
+            default:
+                return location.SpawnOptions[0];
+        }
+
+    }    
 }

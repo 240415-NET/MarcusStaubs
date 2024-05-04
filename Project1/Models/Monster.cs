@@ -38,28 +38,6 @@ public class Monster : LivingThing
         this.ChanceToFlee = ChanceToFlee;
         this.MonsterDisplay = MonsterDisplay;
     }
-    public bool DodgeAttack(int PlayerDexterity)
-    {
-        double QuarterPlayerDex = (double)PlayerDexterity / 4;
-        int offSet = (int)QuarterPlayerDex;
-        if(MonsterDodge - offSet <= 0)
-        {
-            return false;
-        }
-        else
-        {
-            Random rand = new Random();
-            int rndNum = rand.Next(0,101);
-            if(rndNum <= MonsterDodge - offSet)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
 }
 
 public struct MonsterData

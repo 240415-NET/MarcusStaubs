@@ -10,26 +10,28 @@ public static class MonsterController
         return MonsterStorage.GetMonsterList();
     }
 
-    public static Monster SpawnMonster(Location location)
+    public static bool DodgeAttack(int monsterDodge, int playerDexterity)
     {
-        Random rand = new Random();
-        int randNum = rand.Next(0,101);
-        switch(location.SpawnOptions.Count())
+        double QuarterPlayerDex = (double)playerDexterity / 6;
+        int offSet = (int)QuarterPlayerDex;
+        if(monsterDodge - offSet <= 0)
         {
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
+            return false;
         }
-
+        else
+        {
+            Random rand = new Random();
+            int rndNum = rand.Next(0,101);
+            if(rndNum <= monsterDodge - offSet)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
+
 
 }

@@ -194,49 +194,55 @@ public static class WelcomeToTheGame
     {
         bool exitGame = false;
         int playerAction;
+        int monsterSpawn = 0;
         do
         {
             playerAction = DisplayCurrentLocation(currentPlayer.CurrentLocation);
             switch (playerAction)
             {
                 case 1:
-                    PlayerController.LocationUpdate(ref currentPlayer,1);
-                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    //move north
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,1, locationReference);
+                    if(monsterSpawn!=0)
                     {
-                        TimeForAFight();
+                        TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 2:
-                    PlayerController.LocationUpdate(ref currentPlayer,2);
-                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    //move east
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,2, locationReference);
+                    if(monsterSpawn!=0)
                     {
-                        TimeForAFight();
+                        TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 3:
-
+                    //view character
                     break;
                 case 4:
-                    PlayerController.LocationUpdate(ref currentPlayer,4);
-                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    //move south
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,4, locationReference);
+                    if(monsterSpawn!=0)
                     {
-                        TimeForAFight();
+                        TimeForAFight(monsterSpawn);
                     }
                     break;
                 case 5:
-
+                    //rest
                     break;
                 case 6:
-
+                    //save
                     break;
                 case 7:
-
-                    break;
+                    //Add in a save feature or ask if want to save.
+                    return;
+                    //break;
                 case 8:
-                    PlayerController.LocationUpdate(ref currentPlayer,8);
-                    if(PlayerController.CheckForMonsterSpawn(locationReference[currentPlayer.CurrentLocation]))
+                    //move west
+                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer,8, locationReference);
+                    if(monsterSpawn!=0)
                     {
-                        TimeForAFight();
+                        TimeForAFight(monsterSpawn);
                     }
                     break;
             }
@@ -370,13 +376,120 @@ public static class WelcomeToTheGame
             return 0;
         }
     }
-    public static void TimeForAFight()
+    public static void TimeForAFight(int monsterSpawn)
     {
-        // Monster currentMonster = 
+        Monster currentMonster = new Monster(monsterReference[monsterSpawn]);
         bool isSomeoneDead = false;
+        bool playerRanAway = false;
+        string userInput;
+        int userChoice;
+        int playerAttack;
+        int monsterAttack;
+        Console.WriteLine($"You have encountered a {currentMonster.Name}!");
+        Console.WriteLine("Press any key to start the fight...");
+        Console.ReadKey();
         do
         {
-
-        }while(!isSomeoneDead);
+            Console.Clear();
+            for(int i = 0; i<currentMonster.MonsterDisplay.Count();i++)
+            {
+                if(i==0)
+                {
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}     {currentMonster.Name}\t\t\t{currentPlayer.Name}");
+                }
+                else if(i==1)
+                {
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+                }
+                else
+                {
+                    Console.WriteLine(currentMonster.MonsterDisplay[i]);
+                }
+            }
+            Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee?");
+            //isSomeoneDead = true;
+            userInput = (Console.ReadLine() ?? "").Trim();
+            userChoice = UserInputHandler(userInput, true, currentPlayer.CurrentLocation);
+            if(userChoice==9)
+            {
+                playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer,ref currentMonster);
+                Console.WriteLine(currentMonster.HitText);
+                Console.WriteLine($"You hit {currentMonster.Name} for {playerAttack} damage.");
+                Console.ReadKey();
+                if(currentMonster.CurrentHitPoints>0)
+                {
+                    monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer,ref currentMonster);
+                    Console.WriteLine($"{currentMonster.Name} {currentMonster.AttackText} at you");
+                    Console.ReadKey();
+                    if(monsterAttack == -1)
+                    {
+                        Console.WriteLine("But you dodged it!");
+                        Console.ReadKey();
+                    }
+                    else if(monsterAttack == 0)
+                    {
+                        Console.WriteLine($"{currentMonster.Name} does no damage due to your thickened skin.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{currentMonster.Name} does {monsterAttack} damage to you.");
+                        Console.ReadKey();
+                    }
+                    if(currentPlayer.CurrentHitPoints <= 0)
+                    {
+                        isSomeoneDead = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"You have slain {currentMonster.Name}!");
+                    Console.ReadKey();
+                    isSomeoneDead = true;
+                }
+            }
+            else if(userChoice==10)
+            {
+                Console.WriteLine($"You turn and run for your life!");
+                if(CombatController.DoesPlayerFleeSuccessfully(currentMonster.ChanceToFlee))
+                {
+                   playerRanAway = true; 
+                }
+                else
+                {
+                    Console.WriteLine("But your path is blocked.");
+                    Console.ReadKey();
+                }
+            }
+        }while(!isSomeoneDead && !playerRanAway);
+        if(currentPlayer.CurrentHitPoints <= 0 && isSomeoneDead)
+        {
+            Console.WriteLine("You have died.  Better luck next time.");
+            Console.ReadKey();
+            return;
+        }
+        else if(isSomeoneDead)
+        {
+            //Congrats on killing monster (random responses eventually)
+            //code to receive rewards from monster
+            Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
+            //check if player gained a level and, if so, increase stats
+            if(currentPlayer.PlayerXP < 20)
+            {
+                if(currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel+1]))
+                {
+                    PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel+1]);
+                    Console.WriteLine($"Congratulations! You have reached level {currentPlayer.PlayerLevel}!");
+                }
+            }
+            Console.ReadKey();    
+        }
+        else
+        {
+            //move the player in an available direction based on the room they are in. Can spawn another monster lol.
+            Console.WriteLine("Run away!!"); //indicate the direction they ran.
+            Console.ReadKey();
+            //Player ran away - mock them? random based on what they ran from?
+        }
     }
 }
