@@ -34,6 +34,10 @@ Optional time permitting:
 	Equip weapons/armor to improve attack / defense beyond base
 	View equipment/inventory
 	Save during game (not in Combat) and not just on exit - for save scumming of course - Done. 
+	Make it prettier in all screens displayed to the user. (Location, Combat, Player info, Rest (new screen))
+	Fill out storyline
+	Add different location descriptions for the same kind of location
+	Add mini-map with a little look around 1 spot from current location in moveable directions
 
 
 

@@ -54,7 +54,7 @@ public static class WelcomeToTheGame
         Console.WriteLine("  (  /   `-._//^`                            ::::: :!   ::::: ::   :: ::::  :::: ::      ::");
         Console.WriteLine("   `Y-.____(__}                               : :  :::   : :  :   : :: ::   :: : :       :   ");
         Console.WriteLine("    |     {__)                          ");
-        Console.WriteLine("          ()                                 1: Login    2: Create New Character    3: Exit");
+        Console.WriteLine("          ()                                  1: Login    2: Create New Character    3: Exit");
         Console.ResetColor();
         do
         {
@@ -296,6 +296,33 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            int consoleColor = LocationController.PickALocationColor(currentLocation,currentPlayer.PlayerLevel);
+            switch(consoleColor)
+            {
+                case 1:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case 2:
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    break;
+                case 3:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case 4:
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    break;
+                case 5:
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    break;
+                default:
+
+                    break;        
+            }
+            foreach(string image in currentLocation.LocationDisplay)
+            {
+                Console.WriteLine(image);
+            }
+            Console.ResetColor();
             Console.WriteLine($"Current Location: {currentLocation.RoomName}");
             if (locationHash != 112804)
             {
@@ -504,7 +531,7 @@ public static class WelcomeToTheGame
                     Console.ReadKey();
                 }
             }
-            if (currentMonster.CurrentHitPoints > 0 && !playerRanAway)
+            if (currentMonster.CurrentHitPoints > 0 && !playerRanAway && userChoice != 0)
             {
                 monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer, ref currentMonster);
                 Console.WriteLine($"{currentMonster.Name} {currentMonster.AttackText} at you");
@@ -529,7 +556,7 @@ public static class WelcomeToTheGame
                     isSomeoneDead = true;
                 }
             }
-            else if (!playerRanAway)
+            else if (!playerRanAway && userChoice != 0)
             {
                 Console.WriteLine($"You have slain {currentMonster.Name}!");
                 Console.ReadKey();

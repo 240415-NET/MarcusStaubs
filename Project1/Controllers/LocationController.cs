@@ -80,4 +80,39 @@ public static class LocationController
         }
 
     }    
+    public static int PickALocationColor(Location location, int playerLevel)
+    {
+        switch(location.RoomName)
+        {
+            case "Mountain Path":
+                return 1; //gray
+            case "Forest":         
+                return 2; //dark green
+            case "Meadow":         
+                return 3; //green
+            case "Small Pond":         
+                return 1; 
+            case "Crossroads":         
+                return 1; 
+            case "Well":         
+                return 3; 
+            case "Forest Clearing":         
+                return 2; 
+            case "Cave Entrance":         
+                return 4; //dark gray
+            case "Underground Tunnel":         
+                return 4; 
+            case "Mysterious Door":  
+                if(playerLevel < 10)
+                {       
+                    return 5; //dark cyan                 
+                }
+                else
+                {
+                    return 4;
+                }
+            default:
+                return 1;                                                    
+        }
+    }
 }
