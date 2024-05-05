@@ -2,8 +2,8 @@ using System;
 using Project1;
 using Project1.Controllers;
 using Project1.Models;
-using Project1.Initialize;
 using Project1.Data;
+
 
 namespace Project1.UserInterfaces;
 
@@ -90,9 +90,9 @@ public static class WelcomeToTheGame
                     // case 998:
                     //     MonsterStorage.ReadAndDisplayMonsters();
                     //     break;
-                    // case 999:
-                    //     MonsterStorage.FirstEverMonsterFileCreation();
-                    //     break;
+                    case 999:
+                        MonsterStorage.FirstEverMonsterFileCreation();
+                        break;
                     default:
                         Console.WriteLine("1, 2, or 3. Pick again");
                         validInput = false;
@@ -280,9 +280,12 @@ public static class WelcomeToTheGame
                         amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
+                case 999:
+                    amIDead = true;
+                    break;
             }
         } while (!exitGame && !amIDead);
-        if(amIDead)
+        if (amIDead)
         {
             GameOver();
         }
@@ -296,48 +299,27 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
-            int consoleColor = LocationController.PickALocationColor(currentLocation,currentPlayer.PlayerLevel);
-            switch(consoleColor)
-            {
-                case 1:
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    break;
-                case 2:
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    break;
-                case 3:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case 4:
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    break;
-                case 5:
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    break;
-                default:
-
-                    break;        
-            }
-            foreach(string image in currentLocation.LocationDisplay)
+            LocationController.PickALocationColor(currentLocation, currentPlayer.PlayerLevel);
+            foreach (string image in currentLocation.LocationDisplay)
             {
                 Console.WriteLine(image);
             }
             Console.ResetColor();
-            Console.WriteLine($"Current Location: {currentLocation.RoomName}");
-            if (locationHash != 112804)
+            Console.WriteLine($"\nCurrent Location: {currentLocation.RoomName}");
+            if (locationHash != 112804 && locationHash != 112805)
             {
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
             }
-            else if (currentPlayer.PlayerLevel >= 10)
+            else if (currentPlayer.PlayerLevel >= 10 && locationHash == 112804)
             {
-                Console.WriteLine("The glow has faded from the mysterious door and it appears to be slightly ajar.");
+                Console.WriteLine("There is a mysterious door to the south and it appears to be slightly ajar.");
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
             }
             else if (locationHash == 112805)
             {
                 Console.WriteLine(currentLocation.RoomDescription);
-                //Boss fight time
+                return BossFight();
             }
             else
             {
@@ -598,7 +580,154 @@ public static class WelcomeToTheGame
         }
         return amIDead;
     }
+    public static int BossFight()
+    {
+        int turnCounter = 0;
+        bool isSomeoneDead = false;
+        int playerAttack;
+        int monsterAttack;
+        Monster bossMonster = new Monster(monsterReference[1941]);
+        Location currentLocation = locationReference[112805];
+        Console.WriteLine("You start to see a glow approaching from the far end of the cave.");
+        Console.ReadKey();
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        foreach (string imageLine in currentLocation.LocationDisplay)
+        {
+            Console.WriteLine(imageLine);
+        }
+        Console.ReadKey();
+        Console.ResetColor();
+        Console.Clear();
+        foreach (string imageLine in currentLocation.LocationDisplay)
+        {
+            Console.WriteLine(imageLine);
+        }
+        Console.WriteLine("A massive form slowly appears from the shadows of the far end of the cavern.");
+        Console.ReadKey();
+        //Thread.Sleep(1000);
+        do
+        {
+            Console.ResetColor();
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            for (int i = 0; i < bossMonster.MonsterDisplay.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}  {bossMonster.Name}\t\t\t{currentPlayer.Name}");
+                }
+                else if (i == 1)
+                {
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}  HP: {bossMonster.CurrentHitPoints}/{bossMonster.MaxHitPoints}\t\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+                }
+                else
+                {
+                    Console.WriteLine(bossMonster.MonsterDisplay[i]);
+                }
+            }
+            Console.ResetColor();
+            Console.WriteLine($"There is nowhere to run. Press any key to attack the {bossMonster.Name}.");
+            Console.ReadKey();
+            playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref bossMonster);
+            if (playerAttack > 0)
+            {
+                Console.WriteLine(bossMonster.HitText);
+                Console.WriteLine($"You hit {bossMonster.Name} for {playerAttack} damage.");
+            }
+            else
+            {
+                Console.WriteLine($"{bossMonster.Name} {bossMonster.DodgeText}");
+                Console.WriteLine("You missed!");
+            }
+            Console.ReadKey();
+            if (bossMonster.CurrentHitPoints > 0)
+            {
+                monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer, ref bossMonster);
+                Console.WriteLine($"{bossMonster.Name} {bossMonster.AttackText} at you");
+                Console.ReadKey();
+                if (monsterAttack == -1)
+                {
+                    Console.WriteLine("But you dodge in time and they miss!");
+                    Console.ReadKey();
+                }
+                else if (monsterAttack == 0)
+                {
+                    Console.WriteLine($"{bossMonster.Name} does no damage due to your thickened skin.");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine($"{bossMonster.Name} does {bossMonster.MonsterAttack} damage to you.");
+                    Console.ReadKey();
+                }
+                if (currentPlayer.CurrentHitPoints <= 0)
+                {
+                    Console.WriteLine("Shockingly, while attempting to fight a huge fire-breathing dragon, you have died.");
+                    return 999;
+                }
+            }
+            else
+            {
+                isSomeoneDead = true;
+            }
+            turnCounter++;
+        } while (!isSomeoneDead && turnCounter < 5);
+        if (turnCounter >= 5 && bossMonster.CurrentHitPoints > 0)
+        {
+            Console.WriteLine($"You feel your hair and clothes whipping around you as the {bossMonster.Name} takes in a long deep breath.");
+            Console.WriteLine($"A dull red glow starts to emanate from {bossMonster.Name}'s chest.");
+            Thread.Sleep(5000);
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            for (int i = 0; i < 23; i++)
+            {
+                Console.WriteLine(" ".PadRight(150, ' '));
+            }
+            Thread.Sleep(300);
+            Console.Clear();
+            Console.BackgroundColor = ConsoleColor.Red;
+            for (int i = 0; i < 23; i++)
+            {
+                Console.WriteLine(" ".PadRight(150, ' '));
+            }
+            Thread.Sleep(300);     
+            Console.Clear();              
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            for (int i = 0; i < 23; i++)
+            {
+                Console.WriteLine(" ".PadRight(150, ' '));
+            }
+            Thread.Sleep(300);
+            Console.Clear();            
+            Console.BackgroundColor = ConsoleColor.Red;
+            for (int i = 0; i < 23; i++)
+            {
+                Console.WriteLine(" ".PadRight(150, ' '));
+            }
+            Thread.Sleep(300);    
+            Console.ResetColor();
+            Console.Clear();  
+            Console.WriteLine("The room fills with searing fire and, for the briefest moment that seems more like an eternity, you feel your body start to melt");
+            Console.WriteLine("Your world is nothing but pain and fire.");
+            Console.WriteLine("Then the pain fades away and all goes... black...");
+            Console.ReadKey();
+            return 999;                                                           
 
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine($"You did it! You managed to kill a {bossMonster.Name} with your bare hands.");
+            Console.WriteLine("I don't know if that was clear before but you don't have any weapons.");
+            Console.WriteLine("You've been punching and kicking, or in some cases stomping or biting, things to death.");
+            Console.WriteLine("Good show! Congratulations! I should probably create some kind of cool or cheesy splash screen to celebrate this occasion.");
+            Console.WriteLine("Maybe I'll do that later if I have time but there are other things I want to do here.  Like maybe give you weapons and armor.");
+            Console.ReadKey();
+            return 7;
+        }
+
+    }
     public static void GameOver()
     {
         Console.Clear();

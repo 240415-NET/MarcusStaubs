@@ -171,6 +171,48 @@ public class MonsterStorage
         MonsterData newKoboldChief = new MonsterData("Kobold Chief", 30, 30, 1571, 17, 20, 50, 10, "swings its great axe", "casually steps out of range", "You die, human!", 30, kChiefPic);
         monsterList.Add(newKoboldChief);
 
+        List<string> BossPic = new();
+        BossPic.Add("          /                              )".PadRight(50, ' '));     
+        BossPic.Add("          (                             |\\".PadRight(50, ' '));
+        BossPic.Add("         /|                              \\\\".PadRight(50, ' '));
+        BossPic.Add("        //                                \\\\".PadRight(50, ' '));
+        BossPic.Add("       ///                                 \\|".PadRight(50, ' '));
+        BossPic.Add("      /( \\                                  )\\".PadRight(50, ' '));
+        BossPic.Add("      \\\\  \\_                               //)".PadRight(50, ' '));
+        BossPic.Add("       \\\\  :\\__                           ///".PadRight(50, ' '));
+        BossPic.Add("        \\\\     )                         // \\".PadRight(50, ' '));
+        BossPic.Add("         \\\\:  /                         // |/".PadRight(50, ' '));
+        BossPic.Add("          \\\\ / \\                       //  \\".PadRight(50, ' '));
+        BossPic.Add("           /)   \\   ___..-'           (|  \\_|".PadRight(50, ' '));
+        BossPic.Add("          //     /   _.'              \\ \\  \\".PadRight(50, ' '));
+        BossPic.Add("         /|       \\ \\________          \\ | /".PadRight(50, ' '));
+        BossPic.Add("        (| _ _  __/          '-.       ) /.'".PadRight(50, ' '));
+        BossPic.Add("         \\\\ .  '-.__            \\_    / / \\".PadRight(50, ' '));
+        BossPic.Add("          \\\\_'.     > --._ '.     \\  / / /".PadRight(50, ' '));
+        BossPic.Add("           \\ \\      \\     \\  \\     .' /.'".PadRight(50, ' '));
+        BossPic.Add("            \\ \\  '._ /     \\ )    / .' |".PadRight(50, ' '));
+        BossPic.Add("             \\ \\_     \\_   |    .'_/ __/".PadRight(50, ' '));
+        BossPic.Add("              \\  \\      \\_ |   / /  _/ \\_".PadRight(50, ' '));
+        BossPic.Add("               \\  \\       / _.' /  /     \\".PadRight(50, ' '));
+        BossPic.Add("               \\   |     /.'   / .'       '-,_".PadRight(50, ' '));
+        BossPic.Add("                \\   \\  .'   _.'_/             \\".PadRight(50, ' '));
+        BossPic.Add("   /\\    /\\      ) ___(    /_.'           \\    |".PadRight(50, ' '));
+        BossPic.Add("  | _\\__// \\    (.'      _/               |    |".PadRight(50, ' '));
+        BossPic.Add("  \\/_  __  /--'`    ,                   __/    /".PadRight(50, ' '));
+        BossPic.Add("  (_ ) /b)  \\  '.   :            \\___.-'_/ \\__/".PadRight(50, ' '));
+        BossPic.Add("  /:/:  ,     ) :        (      /_.'__/-'|_ _ /".PadRight(50, ' '));
+        BossPic.Add(" /:/: __/\\ >  __,_.----.__\\    /        (/(/(/".PadRight(50, ' '));
+        BossPic.Add("(_(,_/V .'/--'    _/  __/ |   /".PadRight(50, ' '));
+        BossPic.Add(" VvvV  //`    _.-' _.'     \\   \\".PadRight(50, ' '));
+        BossPic.Add("   n_n//     (((/->/        |   /".PadRight(50, ' '));
+        BossPic.Add("   '--'         ~='          \\  |".PadRight(50, ' '));
+        BossPic.Add("                              | |_,,,".PadRight(50, ' '));
+        BossPic.Add("                              \\  \\  /".PadRight(50, ' '));
+        BossPic.Add("                               '.__)".PadRight(50, ' '));
+
+        MonsterData bossMonster = new MonsterData("Young Red Dragon",100,100,1941,30,35,0,1000,"slashes its claws","ignores your attack","RrRRRooOOaAAR!",0,BossPic);
+        monsterList.Add(bossMonster);
+
         string MonsterListString = JsonSerializer.Serialize(monsterList);
         //string filePath = "./TempDataStorage/Monsters.json";
         File.WriteAllText(filePath,MonsterListString);
