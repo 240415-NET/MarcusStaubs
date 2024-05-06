@@ -679,12 +679,14 @@ public static class WelcomeToTheGame
             Console.WriteLine($"You feel your hair and clothes whipping around you as the {bossMonster.Name} takes in a long deep breath.");
             Console.WriteLine($"A dull red glow starts to emanate from {bossMonster.Name}'s chest.");
             Thread.Sleep(5000);
+            Console.Clear();
             Console.BackgroundColor = ConsoleColor.Yellow;
             for (int i = 0; i < 23; i++)
             {
                 Console.WriteLine(" ".PadRight(150, ' '));
             }
             Thread.Sleep(300);
+            Console.ResetColor();
             Console.Clear();
             Console.BackgroundColor = ConsoleColor.Red;
             for (int i = 0; i < 23; i++)
@@ -692,6 +694,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine(" ".PadRight(150, ' '));
             }
             Thread.Sleep(300);     
+            Console.ResetColor();
             Console.Clear();              
             Console.BackgroundColor = ConsoleColor.DarkRed;
             for (int i = 0; i < 23; i++)
@@ -699,6 +702,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine(" ".PadRight(150, ' '));
             }
             Thread.Sleep(300);
+            Console.ResetColor();
             Console.Clear();            
             Console.BackgroundColor = ConsoleColor.Red;
             for (int i = 0; i < 23; i++)
