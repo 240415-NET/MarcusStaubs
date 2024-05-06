@@ -10,7 +10,7 @@ Random monster spawns - On room change if monster spawn change input options - D
 
 Level locked area - Static boss monster
 	Can't enter until player is x level - Done (lvl 10)
-	Starts a locked encounter. No running away - In Progress
+	Starts a locked encounter. No running away - Functional but could maybe use some tweaking
 
 Ability to move from room to room
 	Present acceptable directions to user - Done
@@ -34,10 +34,12 @@ Optional time permitting:
 	Equip weapons/armor to improve attack / defense beyond base
 	View equipment/inventory
 	Save during game (not in Combat) and not just on exit - for save scumming of course - Done. 
-	Make it prettier in all screens displayed to the user. (Location, Combat, Player info, Rest (new screen))
+	Make it prettier in all screens displayed to the user. (Location - Done, see below though, Combat, Player info, Rest (new screen))
 	Fill out storyline
 	Add different location descriptions for the same kind of location
 	Add mini-map with a little look around 1 spot from current location in moveable directions
+	Slightly different images for each location so better indicate movement
+	Full on map option
 
 
 
