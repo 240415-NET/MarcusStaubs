@@ -295,9 +295,9 @@ public static class LocationStorage
         bossRoom.Add("      .   ;                           \\/                             .   .___   ");
         bossRoom.Add("     .   |                                                           | :  -     ");
         bossRoom.Add("    .   ''                                                            \\  ;      ");
-        bossRoom.Add("	  __ \\                                                             |.__ ");
-        bossRoom.Add("	  .--|                                                             :'-  ");
-        bossRoom.Add("	'                                                                  | .' ");
+        bossRoom.Add("      __ \\                                                             |.__     ");
+        bossRoom.Add("      .--|                                                             :'-      ");
+        bossRoom.Add("    '                                                                  | .'     ");
         bossRoom.Add("     ;  /                                                               #  .    ");
         bossRoom.Add("       |                                                                 ;      ");
         bossRoom.Add(".  --  | '                                                               '   - .");

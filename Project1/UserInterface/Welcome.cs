@@ -88,9 +88,9 @@ public static class WelcomeToTheGame
                         // LevelStorage myLevelStorage = new();
                         // myLevelStorage.CreateLevelFile();
                         // break;                    
-                    case 997:
-                        LocationStorage.CreateLocationFile();
-                        break;
+                    // case 997:
+                    //     LocationStorage.CreateLocationFile();
+                    //     break;
                     // case 998:
                     //     MonsterStorage.ReadAndDisplayMonsters();
                     //     break;
@@ -167,6 +167,11 @@ public static class WelcomeToTheGame
                 Console.WriteLine("I'm not asking for much but I am asking for something. Try entering a name or something, anything.");
                 validInput = false;
             }
+            else if(newPlayerName.Count() > 40)
+            {
+                Console.WriteLine("That's too long and there is no way I am not going to remember all of that. Pick a shorter name.");
+                validInput = false;
+            }
             else if (PlayerController.DoesPlayerExist(newPlayerName))
             {
                 Console.WriteLine($"There is already a player called {newPlayerName}.\nUnfortunately, we can only have one of those and you'll have to choose another name.");
@@ -195,7 +200,6 @@ public static class WelcomeToTheGame
         Console.WriteLine("Otherwise, you can move in a given direction, view your character, rest to recover HP, save your game, or exit.");
         Console.WriteLine("To move in an available direction, you can type just the first letter of the direction you want to go.");
         Console.WriteLine("If you like typing, you can also type out the entire direction name.");
-        Console.WriteLine("If you like to make things harder for yourself, you can enter M or move and then type out the direction.");
         Console.WriteLine("For any of the other actions, just type in the first letter in the word (noted with <>) or the entire word and press enter.");
         Console.WriteLine("Ok, let's get to the game for real this time!");
         Console.WriteLine("Press any key to continue...");
@@ -308,7 +312,7 @@ public static class WelcomeToTheGame
             // LocationController.PickALocationColor(currentLocation, currentPlayer.PlayerLevel);
             for(int i = 0; i<17; i++)
             {
-                Console.WriteLine(currentLocation.LocationDisplay[i] + displayMap[i]);
+                Console.WriteLine(currentLocation.LocationDisplay[i] + "  " + displayMap[i]);
             }
             // foreach (string image in currentLocation.LocationDisplay)
             // {
@@ -336,7 +340,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): North");
             }
-            Console.WriteLine($"\n<M>ove\t\t<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it");
+            Console.WriteLine($"\n<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it");
             string userInput = (Console.ReadLine() ?? "").Trim();
             userChoice = UserInputHandler(userInput, false, locationHash);
             if (userChoice != 0)
@@ -479,11 +483,13 @@ public static class WelcomeToTheGame
             {
                 if (i == 0)
                 {
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  {currentMonster.Name}\t\t\t{currentPlayer.Name}");
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}",currentMonster.Name,currentPlayer.Name));
                 }
                 else if (i == 1)
                 {
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}  HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}\t\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+                    string monsterHP = $"HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}";
+                    string playerHP = $"HP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}";
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}"  + String.Format("{0,20}{1,40}",monsterHP,playerHP));
                 }
                 else
                 {
@@ -625,11 +631,13 @@ public static class WelcomeToTheGame
             {
                 if (i == 0)
                 {
-                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}  {bossMonster.Name}\t\t\t{currentPlayer.Name}");
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}",bossMonster.Name,currentPlayer.Name));
                 }
                 else if (i == 1)
                 {
-                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}  HP: {bossMonster.CurrentHitPoints}/{bossMonster.MaxHitPoints}\t\t\tHP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}");
+                    string monsterHP = $"HP: {bossMonster.CurrentHitPoints}/{bossMonster.MaxHitPoints}";
+                    string playerHP = $"HP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}";
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}"  + String.Format("{0,20}{1,40}",monsterHP,playerHP));
                 }
                 else
                 {
@@ -668,7 +676,7 @@ public static class WelcomeToTheGame
                 }
                 else
                 {
-                    Console.WriteLine($"{bossMonster.Name} does {bossMonster.MonsterAttack} damage to you.");
+                    Console.WriteLine($"{bossMonster.Name} does {monsterAttack} damage to you.");
                     Console.ReadKey();
                 }
                 if (currentPlayer.CurrentHitPoints <= 0)

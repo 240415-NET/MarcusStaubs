@@ -50,6 +50,7 @@ public static class CombatController
         else
         {
             //If not dodged, player mitigates Constitution/8 damage from monster attack
+            int mitigated = PlayerController.DamageMitigation(currentPlayer.Constitution);
             monsterAttack -= PlayerController.DamageMitigation(currentPlayer.Constitution);
             if(monsterAttack < 0)
             {
