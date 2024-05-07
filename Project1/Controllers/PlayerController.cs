@@ -5,6 +5,7 @@ namespace Project1.Controllers;
 
 public class PlayerController
 {
+    private static IPlayerStorage playerStorage = new PlayerStorage();
     private static ILevelStorage levelStorage = new LevelStorage();
     public static Player CreateNewPlayer(string name)
     {
@@ -15,12 +16,12 @@ public class PlayerController
 
     public static void SavePlayer(Player currentPlayer)
     {
-        PlayerStorage.SavePlayerData(currentPlayer);
+        playerStorage.SavePlayerData(currentPlayer);
     }
 
     public static bool DoesPlayerExist(string name)
     {
-        Player currentPlayer = PlayerStorage.GetPlayerInfo(name);
+        Player currentPlayer = playerStorage.GetPlayerInfo(name);
         if (currentPlayer == null)
         {
             return false;
@@ -33,7 +34,7 @@ public class PlayerController
 
     public static Player LoadExistingCharacter(string name)
     {
-        Player currentPlayer = PlayerStorage.GetPlayerInfo(name);
+        Player currentPlayer = playerStorage.GetPlayerInfo(name);
         return currentPlayer;
     }
 

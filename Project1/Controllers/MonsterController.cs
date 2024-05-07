@@ -5,9 +5,10 @@ namespace Project1.Controllers;
 
 public static class MonsterController
 {
+    private static IMonsterStorage monsterStorage = new MonsterStorage();
     public static Dictionary<int,MonsterData> InitializeMonsterInfo()
     {
-        return MonsterStorage.GetMonsterList();
+        return monsterStorage.GetMonsterList();
     }
 
     public static bool DodgeAttack(int monsterDodge, int playerDexterity)
@@ -33,5 +34,8 @@ public static class MonsterController
         }
     }
 
-
+    public static void ReloadMonsterList()
+    {
+        monsterStorage.FirstEverMonsterFileCreation();
+    }
 }

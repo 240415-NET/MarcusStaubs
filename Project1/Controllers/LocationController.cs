@@ -5,9 +5,10 @@ namespace Project1.Controllers;
 
 public static class LocationController
 {
+    private static ILocationStorage locationStorage = new LocationStorage();
     public static Dictionary<int, Location> InitializeLocations()
     {
-        return LocationStorage.GetLocationsList();
+        return locationStorage.GetLocationsList();
     }
     public static int DoesMonsterSpawn(Location currentLocation)
     {
@@ -119,5 +120,9 @@ public static class LocationController
                 Console.ForegroundColor = ConsoleColor.Gray;
                 break;                                                  
         }
+    }
+    public static void RecreateLocationFile()
+    {
+        locationStorage.CreateLocationFile();
     }
 }

@@ -3,10 +3,10 @@ using System.Text.Json;
 
 namespace Project1.Data;
 
-public class PlayerStorage
+public class PlayerStorage : IPlayerStorage
 {
     public static readonly string filePath = "./TempDataStorage/PlayerInfo.json";
-    public static void SavePlayerData(Player currentPlayer)
+    public void SavePlayerData(Player currentPlayer)
     {
         //List<Player> playerList = new();
         bool playerExists = false;
@@ -42,7 +42,7 @@ public class PlayerStorage
 
         }
     }
-    public static Player GetPlayerInfo(string playerName)
+    public Player GetPlayerInfo(string playerName)
     {
         Player foundPlayer = new();
         

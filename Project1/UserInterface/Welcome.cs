@@ -88,18 +88,15 @@ public static class WelcomeToTheGame
                         // LevelStorage myLevelStorage = new();
                         // myLevelStorage.CreateLevelFile();
                         // break;                    
-                    // case 997:
-                    //     LocationStorage.CreateLocationFile();
-                    //     break;
-                    // case 998:
-                    //     MonsterStorage.ReadAndDisplayMonsters();
-                    //     break;
-                    // case 999:
-                    //     MonsterStorage.FirstEverMonsterFileCreation();
-                    //     break;
-                    // case 994:
-                    //     MapStorage.InitializeGameMap();
-                    //     break;
+                    case 997:
+                        LocationController.RecreateLocationFile();
+                        break;
+                    case 999:
+                        MonsterController.ReloadMonsterList();
+                        break;
+                    case 994:
+                        MapController.ReloadMapFile();
+                        break;
                     default:
                         Console.WriteLine("1, 2, or 3. Pick again");
                         validInput = false;

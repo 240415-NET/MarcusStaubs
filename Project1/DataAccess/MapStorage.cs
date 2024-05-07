@@ -3,17 +3,17 @@ using System.Text.Json;
 
 namespace Project1.Data;
 
-public class MapStorage
+public class MapStorage : IMapStorage
 {
     public static readonly string filePath = "./TempDataStorage/MapInfo.json";
 
-    public static List<string> GetGameMap()
+    public List<string> GetGameMap()
     {
         List<string> gameMap = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(filePath));
         return gameMap;
     }
 
-    public static void InitializeGameMap()
+    public void InitializeGameMap()
     {
         List<string> gameMap = new();
         gameMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");

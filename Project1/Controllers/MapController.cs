@@ -7,9 +7,10 @@ namespace Project1.Controllers;
 
 public static class MapController
 {
+    private static IMapStorage mapStorage = new MapStorage();
     public static List<string> LoadFullMap()
     {
-        List<string> gameMap = MapStorage.GetGameMap();
+        List<string> gameMap = mapStorage.GetGameMap();
         return gameMap;
     }
     public static void UpdateMap(ref Player currentPlayer, List<string> gameMap, ref List<string> displayMap)
@@ -103,5 +104,8 @@ public static class MapController
         }
         return forDisplay;
     }
-
+    public static void ReloadMapFile()
+    {
+        mapStorage.InitializeGameMap();
+    }
 }

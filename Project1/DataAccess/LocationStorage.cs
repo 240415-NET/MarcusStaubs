@@ -3,10 +3,10 @@ using Project1.Models;
 
 namespace Project1.Data;
 
-public static class LocationStorage
+public class LocationStorage : ILocationStorage
 {
     public static readonly string filePath = "./TempDataStorage/Locations.json";
-    public static Dictionary<int, Location> GetLocationsList()
+    public Dictionary<int, Location> GetLocationsList()
     {
         Dictionary<int, Location> locationReference = new();
         //string filePath = "./TempDataStorage/Locations.json";
@@ -17,7 +17,7 @@ public static class LocationStorage
         }
         return locationReference;
     }
-    public static void CreateLocationFile()
+    public void CreateLocationFile()
     {
         List<Location> locationList = new List<Location>();
         List<string> mtnPath = new();

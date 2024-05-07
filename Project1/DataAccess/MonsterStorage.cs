@@ -3,10 +3,10 @@ using System.Text.Json;
 
 namespace Project1.Data;
 
-public class MonsterStorage
+public class MonsterStorage : IMonsterStorage
 {
     public static readonly string filePath = "./TempDataStorage/Monsters.json";
-    public static Dictionary<int, MonsterData> GetMonsterList()
+    public Dictionary<int, MonsterData> GetMonsterList()
     {
         Dictionary<int, MonsterData> monsterCatalog = new Dictionary<int, MonsterData>();
         //string filePath = "./TempDataStorage/Monsters.json";
@@ -32,7 +32,7 @@ public class MonsterStorage
             }
         }
     }
-    public static void FirstEverMonsterFileCreation()
+    public void FirstEverMonsterFileCreation()
     {
         List<MonsterData> monsterList = new();
 
