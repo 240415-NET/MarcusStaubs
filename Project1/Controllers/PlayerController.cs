@@ -5,19 +5,12 @@ namespace Project1.Controllers;
 
 public class PlayerController
 {
+    private static ILevelStorage levelStorage = new LevelStorage();
     public static Player CreateNewPlayer(string name)
     {
-        Player currentPlayer  = new Player(name);
-        currentPlayer.MaxHitPoints = 10;
-        currentPlayer.CurrentHitPoints = 10;
-        currentPlayer.CurrentLocation = 106805;
-        currentPlayer.Strength = 3;
-        currentPlayer.Dexterity = 2;
-        currentPlayer.Constitution = 3;
-        currentPlayer.PlayerLevel = 1;
-        currentPlayer.PlayerXP = 0;   
+        Player currentPlayer = new Player(name);
         SavePlayer(currentPlayer);
-        return currentPlayer;     
+        return currentPlayer;
     }
 
     public static void SavePlayer(Player currentPlayer)
@@ -28,7 +21,7 @@ public class PlayerController
     public static bool DoesPlayerExist(string name)
     {
         Player currentPlayer = PlayerStorage.GetPlayerInfo(name);
-        if(currentPlayer == null)
+        if (currentPlayer == null)
         {
             return false;
         }
@@ -44,10 +37,10 @@ public class PlayerController
         return currentPlayer;
     }
 
-    public static int Rest(ref Player player, Location currentLocation) 
+    public static int Rest(ref Player player, Location currentLocation)
     {
         int didMonsterSpawn = LocationController.DoesMonsterSpawn(currentLocation);
-        if(didMonsterSpawn == 0)
+        if (didMonsterSpawn == 0)
         {
             player.CurrentHitPoints = player.MaxHitPoints;
             return 0;
@@ -58,9 +51,9 @@ public class PlayerController
         }
     }
 
-    public static Dictionary<int,LevelChange> InitializeLevelInfo()
+    public static Dictionary<int, LevelChange> InitializeLevelInfo()
     {
-        Dictionary<int,LevelChange> levelRef = LevelStorage.GetLevelList();
+        Dictionary<int, LevelChange> levelRef = levelStorage.GetLevelList();
         return levelRef;
     }
 
@@ -68,33 +61,31 @@ public class PlayerController
     {
         return levelReference.XPRequiredForLevel;
     }
-
-    public static int LocationUpdate(ref Player currentPlayer,int direction, Dictionary<int,Location> locations)
+    public static int LocationUpdate(ref Player currentPlayer, int direction, Dictionary<int, Location> locations)
     {
-        switch(direction)
+        switch (direction)
         {
             case 1:
                 currentPlayer.CurrentLocation -= 1;
                 break;
             case 2:
-                currentPlayer.CurrentLocation +=1000;
+                currentPlayer.CurrentLocation += 1000;
                 break;
             case 4:
-                currentPlayer.CurrentLocation +=1;
+                currentPlayer.CurrentLocation += 1;
                 break;
             case 8:
-                currentPlayer.CurrentLocation -=1000;
-                break;            
+                currentPlayer.CurrentLocation -= 1000;
+                break;
         }
         return LocationController.DoesMonsterSpawn(locations[currentPlayer.CurrentLocation]);
     }
-    
     public static bool DoesPlayerDodge(int playerDexterity)
     {
         Random rand = new Random();
-        int diddeDodge = rand.Next(0,101);
-        int dodgeChance = playerDexterity/2;
-        if(diddeDodge > dodgeChance)
+        int diddeDodge = rand.Next(0, 101);
+        int dodgeChance = playerDexterity / 2;
+        if (diddeDodge > dodgeChance)
         {
             return false;
         }
@@ -103,13 +94,11 @@ public class PlayerController
             return true;
         }
     }
-
     public static int DamageMitigation(int playerConstitution)
     {
-        int damageMitigated = playerConstitution/8;
+        int damageMitigated = playerConstitution / 8;
         return damageMitigated;
     }
-
     public static void Ding(ref Player currentPlayer, LevelChange newLevel)
     {
         currentPlayer.PlayerLevel = newLevel.LevelNum;

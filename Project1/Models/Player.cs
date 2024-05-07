@@ -11,6 +11,8 @@ public class Player : LivingThing
     public int Constitution {get; set;}
     public int PlayerXP {get;set;}
     public int CurrentLocation {get; set;}
+    public List<string> PlayerMap {get; set;}
+    public List<int> ExploredLocations {get;set;}
     public Player(): base()
     {
 
@@ -18,8 +20,38 @@ public class Player : LivingThing
     public Player(string Name) : base(Name)
     {
         PlayerID = Guid.NewGuid();
+        this.MaxHitPoints = 10;
+        this.CurrentHitPoints = 10;
+        this.CurrentLocation = 106805;
+        this.Strength = 3;
+        this.Dexterity = 2;
+        this.Constitution = 3;
+        this.PlayerLevel = 1;
+        this.PlayerXP = 0;
+        List<string> playerMap = new();
+        playerMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                                                                 ^");
+        playerMap.Add("^                         ^   ^                                   ^");
+        playerMap.Add("^                         ^   ^                                   ^");
+        playerMap.Add("^                         ^^^^^                                   ^");
+        playerMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        this.PlayerMap = playerMap;
+        List<int> exploredLoc = new();
+        exploredLoc.Add(106805);
+        this.ExploredLocations = exploredLoc;        
     }
-    public Player(Guid PlayerID, string Name, int MaxHitPoints, int CurrentHitPoints,int PlayerLevel, int Strength, int Dexterity, int Constitution, int PlayerXP, int CurrentLocation) : base(Name,MaxHitPoints,CurrentHitPoints)
+    public Player(Guid PlayerID, string Name, int MaxHitPoints, int CurrentHitPoints,int PlayerLevel, int Strength, int Dexterity, int Constitution, int PlayerXP, int CurrentLocation, List<string> PlayerMap) : base(Name,MaxHitPoints,CurrentHitPoints)
     {
         this.PlayerID = PlayerID;
         this.PlayerLevel = PlayerLevel;
@@ -28,6 +60,7 @@ public class Player : LivingThing
         this.Constitution = Constitution;
         this.PlayerXP = PlayerXP;
         this.CurrentLocation = CurrentLocation;
+        this.PlayerMap = PlayerMap;
     }
     public override string ToString()
     {

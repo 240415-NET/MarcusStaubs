@@ -3,11 +3,11 @@ using Project1.Models;
 
 namespace Project1.Data;
 
-public static class LevelStorage
+public class LevelStorage : ILevelStorage
 {
-    public static readonly string filePath = ".\\TempDataStorage\\LevelInfo.json";
+    public readonly string filePath = ".\\TempDataStorage\\LevelInfo.json";
 
-    public static Dictionary<int,LevelChange> GetLevelList()
+    public Dictionary<int,LevelChange> GetLevelList()
     {
         Dictionary<int,LevelChange> levelReference = new();
         List<LevelChange> levels = JsonSerializer.Deserialize<List<LevelChange>>(File.ReadAllText(filePath));
@@ -18,7 +18,7 @@ public static class LevelStorage
         return levelReference;        
     }
 
-    public static void CreateLevelFile()
+    public void CreateLevelFile()
     {
         List<LevelChange> levelChangesList = new();
         

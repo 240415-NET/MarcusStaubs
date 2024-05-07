@@ -9,7 +9,6 @@ public static class LocationController
     {
         return LocationStorage.GetLocationsList();
     }
-
     public static int DoesMonsterSpawn(Location currentLocation)
     {
         Random rand = new Random();
