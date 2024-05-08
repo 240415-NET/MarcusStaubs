@@ -65,5 +65,10 @@ public class Player : LivingThing
     public override string ToString()
     {
         return $"{this.Name}\nLevel {this.PlayerLevel} Warrior\nHitpoints (HP): {this.CurrentHitPoints}/{this.MaxHitPoints}\nStrength: {this.Strength}\nDexterity: {this.Dexterity}\nConstitution: {this.Constitution}\nAttack: {this.Strength/2}\nDodge: {this.Dexterity/2}%\nDamage mitigation: {this.Constitution/8}";
+
+    }
+    public string ToString(string XPForNextLevel)
+    {
+        return $"     .--..--..--..--..--..--..--..--..--..--..--..--..--..--.     \n    / .. \\.. \\..  .. \\.. \\.. \\..  .. \\.. \\.. \\..  .. \\.. \\.. \\    \n    \\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/ /    \n     \\ \\/\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /     \n      \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /      \n  /\\   \\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\/ /\n /  \\   \\ `'\\ `'  `'\\ `'\\ `'\\ `'  `'\\ `'\\ `'\\ `'  `'\\ `' /   \n/ /\\ \\   `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'   \n\\ \\/ /                                                      \n \\ \\/         \n /\\ \\         {this.Name}\n \\ \\/         Level {this.PlayerLevel} Warrior\n /\\ \\         \n \\ \\/         Hitpoints (HP): {this.CurrentHitPoints}/{this.MaxHitPoints}\n /\\ \\         \n/ /\\ \\        Strength: {this.Strength}\n\\ \\ \\/        Dexterity: {this.Dexterity}\n/\\ \\ \\        Constitution: {this.Constitution}\n\\ \\/ /        \n \\ \\/         Attack: {this.Strength/2}\n /\\ \\         Dodge: {this.Dexterity/2}\n \\ \\/         Damage mitigation: {this.Constitution/8}\n /\\ \\         \n \\ \\/         Experience (XP): {this.PlayerXP}/{XPForNextLevel}\n /\\ \\         \n/ /\\ \\        \n\\ \\/ /        \n \\  /         \n  \\/          ";
     }
 }

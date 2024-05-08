@@ -20,47 +20,24 @@ public static class WelcomeToTheGame
         string menuChoice;
         int menuSelection;
         bool validInput = false;
-        //Dictionary<int, MonsterData> monsterReference = new Dictionary<int, MonsterData>();
-        //Dictionary<int, Location> locationReference = new Dictionary<int, Location>();
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine(".");
+        //Load monster reference data from data source
         monsterReference = MonsterController.InitializeMonsterInfo();
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("....");
+        //Load location data from data source
         locationReference = LocationController.InitializeLocations();
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("...........");
+        //Load level up information from data source
         levelReference = PlayerController.InitializeLevelInfo();
+        //Load full map data from data source
         gameMap = MapController.LoadFullMap();
         do
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                              @@@  @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@   @@@   @@@@@@   @@@@@@@   @@@   @@@@@@");
-            Console.WriteLine("                              @@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@  @@@@@@@@  @@@@@@@@   @@  @@@@@@@ ");
-            Console.WriteLine("                              @@!  @@!  @@!  @@!  @@@  @@!  @@@  @@!  @@@  @@!  @@!  @@@  @@!  @@@  @!   !@@ ");
-            Console.WriteLine("      _,.                     !@!  !@!  !@!  !@!  @!@  !@!  @!@  !@!  @!@  !@!  !@!  @!@  !@!  @!@       !@!    ");
-            Console.WriteLine("    ,` -.)                    @!!  !!@  @!@  @!@!@!@!  @!@!!@!   @!@!!@!   !!@  @!@  !@!  @!@!!@!        !!@@!!");
-            Console.WriteLine("   ( _/-\\\\-._                 !@!  !!!  !@!  !!!@!!!!  !!@!@!    !!@!@!    !!!  !@!  !!!  !!@!@!          !!@!!!");
-            Console.WriteLine("  /,|`--._,-^|            ,   !!:  !!:  !!:  !!:  !!!  !!: :!!   !!: :!!   !!:  !!:  !!!  !!: :!!             !:!");
-            Console.WriteLine("  \\_| |`-._/||          ,'|   :!:  :!:  :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:  :!:  !:!  :!:  !:!           !:!");
-            Console.WriteLine("    |  `-, / |         /  /    :::: :: :::   ::   :::  ::   :::  ::   :::   ::  ::::: ::  ::   :::       :::: :: ");
-            Console.WriteLine("    |     || |        /  /      :: :  : :     :   : :   :   : :   :   : :  :     : :  :    :   : :       :: : :");
-            Console.WriteLine("     `r-._||/   __   /  /         ");
-            Console.WriteLine(" __,-<_     )`-/  `./  /                      @@@@@@    @@@  @@@  @@@@@@@@   @@@@@@   @@@@@@@");
-            Console.WriteLine("'  \\   `---'   \\   /  /                      @@@@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@   @@@@@@@");
-            Console.WriteLine("    |           |./  /                       @@!  @@@   @@!  @@@  @@!       !@@         @@!");
-            Console.WriteLine("    /           //  /                        !@!  @!@   !@!  @!@  !@!       !@!         !@!");
-            Console.WriteLine("\\_/' \\         |/  /                         @!@  !@!   @!@  !@!  @!!!:!    !!@@!!      @!!");
-            Console.WriteLine(" |    |   _,^-'/  /                          !@!  !!!   !@!  !!!  !!!!!:     !!@!!!     !!!");
-            Console.WriteLine(" |    , ``  (\\/  /_                          !!:!!:!:   !!:  !!!  !!:            !:!    !!:");
-            Console.WriteLine("  \\,.->._    \\X-=/^                          :!: :!:    :!:  !:!  :!:           !:!     :!:");
-            Console.WriteLine("  (  /   `-._//^`                            ::::: :!   ::::: ::   :: ::::  :::: ::      ::");
-            Console.WriteLine("   `Y-.____(__}                               : :  :::   : :  :   : :: ::   :: : :       :   ");
-            Console.WriteLine("    |     {__)                          ");
-            Console.WriteLine("          ()                                  1: Login    2: Create New Character    3: Exit");
-            Console.ResetColor();
+            MainMenuDisplay();
             menuChoice = Console.ReadLine();
             try
             {
@@ -69,8 +46,15 @@ public static class WelcomeToTheGame
                 switch (menuSelection)
                 {
                     case 1:
-                        LoginMenu();
-                        MainControlMenu();
+                        bool successfulLogin = LoginMenu();
+                        if (successfulLogin)
+                        {
+                            MainControlMenu();
+                        }
+                        else
+                        {
+                            validInput = false;
+                        }
                         break;
                     case 2:
                         CreateNewPlayerMenu();
@@ -78,23 +62,13 @@ public static class WelcomeToTheGame
                         break;
                     case 3:
                         return;
-                    // case 996:
-                    //     GameOver();
-                    //     break;
-                    // case 4:
-                    //     InitializeData.ShowMeTheMonsters();
-                    //     break;
-                    // case 995:
-                        // LevelStorage myLevelStorage = new();
-                        // myLevelStorage.CreateLevelFile();
-                        // break;                    
                     case 997:
                         LocationController.RecreateLocationFile();
                         break;
-                    case 999:
+                    case 998:
                         MonsterController.ReloadMonsterList();
                         break;
-                    case 994:
+                    case 999:
                         MapController.ReloadMapFile();
                         break;
                     default:
@@ -105,9 +79,9 @@ public static class WelcomeToTheGame
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                //Console.WriteLine("1, 2, or 3. Pick again");
+                //Console.WriteLine(e.Message);
+                //Console.WriteLine(e.StackTrace);
+                Console.WriteLine("1, 2, or 3. Pick again");
                 Console.ReadKey();
                 validInput = false;
             }
@@ -115,13 +89,14 @@ public static class WelcomeToTheGame
 
     }
 
-    public static void LoginMenu()
+    public static bool LoginMenu()
     {
         bool exitCondition = false;
         do
         {
-            Console.Clear();
-            Console.WriteLine("Please enter your character name.");
+            //Console.Clear();
+            //Console.WriteLine("Please enter your character nameor enter Oops to return to the main menu");
+            LoginDisplay();
             string userInput = (Console.ReadLine() ?? "").Trim();
             if (String.IsNullOrEmpty(userInput))
             {
@@ -130,12 +105,16 @@ public static class WelcomeToTheGame
                 Console.ReadKey();
                 exitCondition = false;
             }
+            else if (userInput.ToLower() == "oops")
+            {
+                exitCondition = true;
+            }
             else
             {
                 currentPlayer = PlayerController.LoadExistingCharacter(userInput);
                 if (currentPlayer == null)
                 {
-                    Console.WriteLine("That's not a real name.  Give me your character's real name.");
+                    Console.WriteLine("Yeah... I don't know you or you spelled your own name wrong.\nI really hope it's the first one.");
                     Console.WriteLine("Press any key to try again...");
                     Console.ReadKey();
                     exitCondition = false;
@@ -143,19 +122,18 @@ public static class WelcomeToTheGame
                 else
                 {
                     displayMap = MapController.MatchDisplayMapToPlayerMap(ref currentPlayer);
-                    exitCondition = true;
+                    DisplayCharacter();
+                    return true;
                 }
             }
         } while (!exitCondition);
+        return false;
     }
     public static void CreateNewPlayerMenu()
     {
         bool validInput = false;
         string newPlayerName;
-        Console.Clear();
-        Console.WriteLine("Welcome to new character creation!");
-        Console.WriteLine("I know that this can sometimes seem like an intimidating process with the wealth of choices\navailable and the depth of customization options, but let's just get into it.");
-        Console.WriteLine("What would you like to name your new character?");
+        NewPlayerDisplay();
         do
         {
             newPlayerName = (Console.ReadLine() ?? "").Trim();
@@ -164,7 +142,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine("I'm not asking for much but I am asking for something. Try entering a name or something, anything.");
                 validInput = false;
             }
-            else if(newPlayerName.Count() > 40)
+            else if (newPlayerName.Count() > 40)
             {
                 Console.WriteLine("That's too long and there is no way I am not going to remember all of that. Pick a shorter name.");
                 validInput = false;
@@ -183,24 +161,16 @@ public static class WelcomeToTheGame
         currentPlayer = PlayerController.CreateNewPlayer(newPlayerName);
         displayMap = MapController.MatchDisplayMapToPlayerMap(ref currentPlayer);
         Console.Clear();
-        Console.WriteLine($"Congratulations! You are now: "); 
-        Console.WriteLine(currentPlayer);
-        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[2])}");
+        Console.WriteLine(currentPlayer.ToString(PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]).ToString()));
         Console.WriteLine($"No, you don't have Intelligence, Wisdom, or Charisma stats. You won't need them.");
         Console.WriteLine("I know that was a lot to get through, so let's get to the game already.");
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
         Console.Clear();
-        Console.WriteLine("Just kidding!  We should probably go over the basics really quickly.");
-        Console.WriteLine("Once you're in the game, you will have several options available to you in most situations.");
-        Console.WriteLine("If you're in a fight, you can either Attack or Flee, but careful because you won't always manage to run away.");
-        Console.WriteLine("Otherwise, you can move in a given direction, view your character, rest to recover HP, save your game, or exit.");
-        Console.WriteLine("To move in an available direction, you can type just the first letter of the direction you want to go.");
-        Console.WriteLine("If you like typing, you can also type out the entire direction name.");
-        Console.WriteLine("For any of the other actions, just type in the first letter in the word (noted with <>) or the entire word and press enter.");
-        Console.WriteLine("Ok, let's get to the game for real this time!");
-        Console.WriteLine("Press any key to continue...");
+        Console.WriteLine("Just kidding!  We should probably quickly go over the basics.");
+        Console.WriteLine("Press any key to view the Help documentation...");
         Console.ReadKey();
+        HelpMenu();
 
     }
     public static void MainControlMenu()
@@ -232,17 +202,7 @@ public static class WelcomeToTheGame
                     break;
                 case 3:
                     //view character
-                    Console.Clear();
-                    Console.WriteLine(currentPlayer);
-                    if (currentPlayer.PlayerLevel < 20)
-                    {
-                        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/{PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1])}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Experience (XP): {currentPlayer.PlayerXP}/Max Level Reached!");
-                    }
-                    Console.ReadKey();
+                    DisplayCharacter();
                     break;
                 case 4:
                     //move south
@@ -257,9 +217,7 @@ public static class WelcomeToTheGame
                     monsterSpawn = PlayerController.Rest(ref currentPlayer, locationReference[currentPlayer.CurrentLocation]);
                     if (monsterSpawn == 0)
                     {
-                        Console.WriteLine("You settle down to rest and tend to your wounds.  HP restored.");
-                        Console.WriteLine("Press any key to continue your adventure...");
-                        Console.ReadKey();
+                        RestMenu();
                     }
                     else
                     {
@@ -286,6 +244,9 @@ public static class WelcomeToTheGame
                         amIDead = TimeForAFight(monsterSpawn);
                     }
                     break;
+                case 11:
+                    HelpMenu();
+                    break;
                 case 999:
                     amIDead = true;
                     break;
@@ -295,19 +256,19 @@ public static class WelcomeToTheGame
         {
             GameOver();
         }
-
     }
     public static int DisplayCurrentLocation(int locationHash)
     {
         Location currentLocation = locationReference[locationHash];
         bool exitCurrentRoom = false;
         int userChoice;
+        ConsoleKeyInfo keyPress;
         do
         {
             Console.Clear();
             MapController.UpdateMap(ref currentPlayer, gameMap, ref displayMap);
             // LocationController.PickALocationColor(currentLocation, currentPlayer.PlayerLevel);
-            for(int i = 0; i<17; i++)
+            for (int i = 0; i < 17; i++)
             {
                 Console.WriteLine(currentLocation.LocationDisplay[i] + "  " + displayMap[i]);
             }
@@ -337,8 +298,10 @@ public static class WelcomeToTheGame
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): North");
             }
-            Console.WriteLine($"\n<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it");
-            string userInput = (Console.ReadLine() ?? "").Trim();
+            Console.WriteLine($"\n<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+            keyPress = Console.ReadKey(true);
+            string userInput = keyPress.Key.ToString();
+            //string userInput = (Console.ReadLine() ?? "").Trim();
             userChoice = UserInputHandler(userInput, false, locationHash);
             if (userChoice != 0)
             {
@@ -360,13 +323,17 @@ public static class WelcomeToTheGame
         }
         else if (InCombat)
         {
-            if (userInput == "a" || userInput == "attack" || userInput.Contains("attack"))
+            if (userInput == "a")
             {
                 return 9;
             }
-            if (userInput == "f" || userInput == "flee" || userInput.Contains("flee"))
+            if (userInput == "f")
             {
                 return 10;
+            }
+            if (userInput == "h")
+            {
+                return 11;
             }
             Console.WriteLine("I didn't understand what you wanted. Try again.");
             Console.WriteLine("Press any key to continue...");
@@ -375,23 +342,23 @@ public static class WelcomeToTheGame
         }
         else
         {
-            if (userInput == "c" || userInput == "character" || userInput.Contains("character"))
+            if (userInput == "c")
             {
                 return 3;
             }
-            if (userInput == "r" || userInput == "rest" || userInput.Contains("rest"))
+            if (userInput == "r")
             {
                 return 5;
             }
-            if (userInput == "v" || userInput == "save" || userInput.Contains("save"))
+            if (userInput == "v")
             {
                 return 6;
             }
-            if (userInput == "x" || userInput == "exit" || userInput.Contains("exit"))
+            if (userInput == "x")
             {
                 return 7;
             }
-            if (userInput == "n" || userInput == "north" || userInput.Contains("north"))
+            if (userInput == "n" || userInput == "uparrow")
             {
                 if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
@@ -405,7 +372,7 @@ public static class WelcomeToTheGame
                     return 0;
                 }
             }
-            if (userInput == "e" || userInput == "east" || userInput.Contains("east"))
+            if (userInput == "e" || userInput == "rightarrow")
             {
                 if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
@@ -419,7 +386,7 @@ public static class WelcomeToTheGame
                     return 0;
                 }
             }
-            if (userInput == "s" || userInput == "south" || userInput.Contains("south"))
+            if (userInput == "s" || userInput == "downarrow")
             {
                 if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
@@ -433,7 +400,7 @@ public static class WelcomeToTheGame
                     return 0;
                 }
             }
-            if (userInput == "w" || userInput == "west" || userInput.Contains("west"))
+            if (userInput == "w" || userInput == "leftarrow")
             {
                 if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash], currentPlayer.PlayerLevel))
                 {
@@ -447,12 +414,16 @@ public static class WelcomeToTheGame
                     return 0;
                 }
             }
-            if (OriginalUserInput == "~IWantToBeStronger" && currentPlayer.PlayerLevel < 20)
+            if (OriginalUserInput == "~" && currentPlayer.PlayerLevel < 20)
             {
                 PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
                 Console.WriteLine($"Cheater! Player leveled up to {currentPlayer.PlayerLevel}.");
                 Console.ReadKey();
                 return 0;
+            }
+            if (userInput == "h")
+            {
+                return 11;
             }
             Console.WriteLine("I didn't understand what you wanted. Try again.");
             Console.WriteLine("Press any key to continue...");
@@ -470,32 +441,36 @@ public static class WelcomeToTheGame
         int playerAttack;
         int monsterAttack;
         bool amIDead = false;
+        ConsoleKeyInfo keyPress;
         Console.WriteLine($"You have encountered a {currentMonster.Name}!");
         Console.WriteLine("Press any key to start the fight...");
         Console.ReadKey();
         do
         {
             Console.Clear();
+            //maybe refactor this to work with an overload of the ToString method on the monster object passing in player info
             for (int i = 0; i < currentMonster.MonsterDisplay.Count(); i++)
             {
                 if (i == 0)
                 {
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}",currentMonster.Name,currentPlayer.Name));
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", currentMonster.Name, currentPlayer.Name));
                 }
                 else if (i == 1)
                 {
                     string monsterHP = $"HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}";
                     string playerHP = $"HP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}";
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}"  + String.Format("{0,20}{1,40}",monsterHP,playerHP));
+                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", monsterHP, playerHP));
                 }
                 else
                 {
                     Console.WriteLine(currentMonster.MonsterDisplay[i]);
                 }
             }
-            Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee?");
+            Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee?\t\t<H>elp");
             //isSomeoneDead = true;
-            userInput = (Console.ReadLine() ?? "").Trim();
+            keyPress = Console.ReadKey(true);
+            userInput = keyPress.Key.ToString();
+            //userInput = (Console.ReadLine() ?? "").Trim();
             userChoice = UserInputHandler(userInput, true, currentPlayer.CurrentLocation);
             if (userChoice == 9)
             {
@@ -525,7 +500,11 @@ public static class WelcomeToTheGame
                     Console.ReadKey();
                 }
             }
-            if (currentMonster.CurrentHitPoints > 0 && !playerRanAway && userChoice != 0)
+            else if (userChoice == 11)
+            {
+                HelpMenu();
+            }
+            if (currentMonster.CurrentHitPoints > 0 && !playerRanAway && userChoice != 0 && userChoice != 11)
             {
                 monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer, ref currentMonster);
                 Console.WriteLine($"{currentMonster.Name} {currentMonster.AttackText} at you");
@@ -550,7 +529,7 @@ public static class WelcomeToTheGame
                     isSomeoneDead = true;
                 }
             }
-            else if (!playerRanAway && userChoice != 0)
+            else if (!playerRanAway && userChoice != 0 && userChoice != 11)
             {
                 Console.WriteLine($"You have slain {currentMonster.Name}!");
                 Console.ReadKey();
@@ -566,11 +545,12 @@ public static class WelcomeToTheGame
         else if (isSomeoneDead)
         {
             //Congrats on killing monster (random responses eventually)
-            //code to receive rewards from monster
-            //check if player gained a level and, if so, increase stats
+            //if you're max level (20) you get no xp
             if (currentPlayer.PlayerLevel < 20)
             {
+                //code to notify user of rewards from monster
                 Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
+                //check if player gained a level and, if so, increase stats
                 if (currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]))
                 {
                     PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
@@ -586,7 +566,7 @@ public static class WelcomeToTheGame
         else
         {
             //move the player in an available direction based on the room they are in. Can spawn another monster lol.
-            Console.WriteLine("Run away!!"); //indicate the direction they ran.
+            Console.WriteLine("Cheese it!!"); //indicate the direction they ran.
             Console.ReadKey();
             //Player ran away - mock them? random based on what they ran from?
         }
@@ -628,13 +608,13 @@ public static class WelcomeToTheGame
             {
                 if (i == 0)
                 {
-                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}",bossMonster.Name,currentPlayer.Name));
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", bossMonster.Name, currentPlayer.Name));
                 }
                 else if (i == 1)
                 {
                     string monsterHP = $"HP: {bossMonster.CurrentHitPoints}/{bossMonster.MaxHitPoints}";
                     string playerHP = $"HP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}";
-                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}"  + String.Format("{0,20}{1,40}",monsterHP,playerHP));
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", monsterHP, playerHP));
                 }
                 else
                 {
@@ -736,6 +716,29 @@ public static class WelcomeToTheGame
         else
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("VVVVVVVV           VVVVVVVV iiii                               tttt                                                                      !!! ");
+            Console.WriteLine("V::::::V           V::::::Vi::::i                           ttt:::t                                                                     !!:!!");
+            Console.WriteLine("V::::::V           V::::::V iiii                            t:::::t                                                                     !:::!");
+            Console.WriteLine("V::::::V           V::::::V                                 t:::::t                                                                     !:::!");
+            Console.WriteLine(" V:::::V           V:::::Viiiiiii     ccccccccccccccccttttttt:::::ttttttt       ooooooooooo   rrrrr   rrrrrrrrryyyyyyy           yyyyyyy!:::!");
+            Console.WriteLine("  V:::::V         V:::::V i:::::i   cc:::::::::::::::ct:::::::::::::::::t     oo:::::::::::oo r::::rrr:::::::::ry:::::y         y:::::y !:::!");
+            Console.WriteLine("   V:::::V       V:::::V   i::::i  c:::::::::::::::::ct:::::::::::::::::t    o:::::::::::::::or:::::::::::::::::ry:::::y       y:::::y  !:::!");
+            Console.WriteLine("    V:::::V     V:::::V    i::::i c:::::::cccccc:::::ctttttt:::::::tttttt    o:::::ooooo:::::orr::::::rrrrr::::::ry:::::y     y:::::y   !:::!");
+            Console.WriteLine("     V:::::V   V:::::V     i::::i c::::::c     ccccccc      t:::::t          o::::o     o::::o r:::::r     r:::::r y:::::y   y:::::y    !:::!");
+            Console.WriteLine("      V:::::V V:::::V      i::::i c:::::c                   t:::::t          o::::o     o::::o r:::::r     rrrrrrr  y:::::y y:::::y     !:::!");
+            Console.WriteLine("       V:::::V:::::V       i::::i c:::::c                   t:::::t          o::::o     o::::o r:::::r               y:::::y:::::y      !!:!!");
+            Console.WriteLine("        V:::::::::V        i::::i c::::::c     ccccccc      t:::::t    tttttto::::o     o::::o r:::::r                y:::::::::y        !!! ");
+            Console.WriteLine("         V:::::::V        i::::::ic:::::::cccccc:::::c      t::::::tttt:::::to:::::ooooo:::::o r:::::r                 y:::::::y             ");
+            Console.WriteLine("          V:::::V         i::::::i c:::::::::::::::::c      tt::::::::::::::to:::::::::::::::o r:::::r                  y:::::y          !!! ");
+            Console.WriteLine("           V:::V          i::::::i  cc:::::::::::::::c        tt:::::::::::tt oo:::::::::::oo  r:::::r                 y:::::y          !!:!!");
+            Console.WriteLine("            VVV           iiiiiiii    cccccccccccccccc          ttttttttttt     ooooooooooo    rrrrrrr                y:::::y            !!! ");
+            Console.WriteLine("                                                                                                                     y:::::y                 ");
+            Console.WriteLine("                                                                                                                    y:::::y                  ");
+            Console.WriteLine("                                                                                                                   y:::::y                   ");
+            Console.WriteLine("                                                                                                                  y:::::y                    ");
+            Console.WriteLine("                                                                                                                 yyyyyyy                     ");
+            Console.ResetColor();
             Console.WriteLine($"You did it! You managed to kill a {bossMonster.Name} with your bare hands.");
             Console.WriteLine("I don't know if that was clear before but you don't have any weapons.");
             Console.WriteLine("You've been punching and kicking, or in some cases stomping or biting, things to death.");
@@ -756,6 +759,152 @@ public static class WelcomeToTheGame
         Console.WriteLine("▐█▄ ▐█▐█  ▐▌██ ██▌▐█▌▐█▄▄▌    ▐█▌.▐▌ ███ ▐█▄▄▌ ▐█  █▌");
         Console.WriteLine("·▀▀▀▀  ▀  ▀ ▀▀  █ ▀▀▀ ▀▀▀      ▀█▄▀ . ▀   ▀▀▀ . ▀  ▀");
         Console.WriteLine("\nYou're dead and the world is doomed or something.\nI don't know. The story for this game was never really fleshed out.\nJust go with your favorite fantasty game trope again.");
+        Console.ReadKey();
+    }
+    public static void HelpMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("           _____________________________________________________       ");
+        Console.WriteLine("         / \\                                                    \\    ");
+        Console.WriteLine("        |   |                                                    |    ");
+        Console.WriteLine("         \\_ |                                                    |    ");
+        Console.WriteLine("            |    Don't Panic!                                    |    ");
+        Console.WriteLine("            |                                                    |    ");
+        Console.WriteLine("            |     When in combat, you can <A>ttack or <Flee>     |    ");
+        Console.WriteLine("            |     Outside of combat, you can:                    |    ");
+        Console.WriteLine("            |        View your <C>haracter                       |    ");
+        Console.WriteLine("            |        <R>est to restore HP                        |    ");
+        Console.WriteLine("            |        Sa<v>e your game                            |    ");
+        Console.WriteLine("            |        E<x>it the game                             |    ");
+        Console.WriteLine("            |        Or move in an available direction           |    ");
+        Console.WriteLine("            |                                                    |    ");
+        Console.WriteLine("            |     Use the letter inside <> to take the           |    ");
+        Console.WriteLine("            |     desired action.                                |    ");
+        Console.WriteLine("            |                                                    |    ");
+        Console.WriteLine("            |     To move, use the first letter of the           |    ");
+        Console.WriteLine("            |     desired directions N,S,E,W or the arrow        |    ");
+        Console.WriteLine("            |     key for that direction.                        |    ");
+        Console.WriteLine("            |                                                    |    ");
+        Console.WriteLine("            |     You can return to this screen by pressing <H>  |	 ");
+        Console.WriteLine("            |   _________________________________________________|___ ");
+        Console.WriteLine("            |  /                                                    / ");
+        Console.WriteLine("            \\_/____________________________________________________/ ");
+        Console.ReadKey();
+    }
+    public static void RestMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("                 (                 ,&&&.          ");
+        Console.WriteLine("                  )                .,.&&          ");
+        Console.WriteLine("                 (  (              \\=__/         ");
+        Console.WriteLine("                     )             ,'-'.          ");
+        Console.WriteLine("               (    (  ,,      _.__|/ /|          ");
+        Console.WriteLine("                ) /\\ -((------((_|___/ |         ");
+        Console.WriteLine("              (  // | (`'      ((  `'--|          ");
+        Console.WriteLine("            _ -.;_/ \\\\--._      \\\\ \\-._/.    ");
+        Console.WriteLine("           (_;-// | \\ \\-'.\\    <_,\\_\\`--'|   ");
+        Console.WriteLine("           ( `.__ _  ___,')      <_,-'__,'        ");
+        Console.WriteLine("            `'(_ )_)(_)_)'                        ");
+        Console.WriteLine("\nYou settle down to rest and tend to your wounds.  HP restored.");
+        Console.WriteLine("Press any key to continue your adventure...");
+        Console.ReadKey();
+    }
+    public static void NewPlayerDisplay()
+    {
+        Console.Clear();
+        Console.WriteLine("           ______________________________________________     ");
+        Console.WriteLine("         / \\                                             \\  ");
+        Console.WriteLine("        |   |                                            |    ");
+        Console.WriteLine("         \\_ |                                            |   ");
+        Console.WriteLine("            |    Welcome to new character creation!      |    ");
+        Console.WriteLine("            |                                            |    ");
+        Console.WriteLine("            |     I know that this can sometimes seem    |    ");
+        Console.WriteLine("            |     like and intmidating process.          |    ");
+        Console.WriteLine("            |     So many choices to make and the depth  |    ");
+        Console.WriteLine("            |     of your customization options.         |    ");
+        Console.WriteLine("            |                                            |    ");
+        Console.WriteLine("            |     We're going to try to keep it simple.  |    ");
+        Console.WriteLine("            |     When you're ready to start, please     |    ");
+        Console.WriteLine("            |     enter your character's name            |    ");
+        Console.WriteLine("            |                                            |    ");
+        Console.WriteLine("            |   _________________________________________|___ ");
+        Console.WriteLine("            |  /                                            / ");
+        Console.WriteLine("            \\_/____________________________________________/ ");
+    }
+    public static void MainMenuDisplay()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("                              @@@  @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@   @@@   @@@@@@   @@@@@@@   @@@   @@@@@@");
+        Console.WriteLine("                              @@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@  @@@@@@@@  @@@@@@@@   @@  @@@@@@@ ");
+        Console.WriteLine("                              @@!  @@!  @@!  @@!  @@@  @@!  @@@  @@!  @@@  @@!  @@!  @@@  @@!  @@@  @!   !@@ ");
+        Console.WriteLine("      _,.                     !@!  !@!  !@!  !@!  @!@  !@!  @!@  !@!  @!@  !@!  !@!  @!@  !@!  @!@       !@!    ");
+        Console.WriteLine("    ,` -.)                    @!!  !!@  @!@  @!@!@!@!  @!@!!@!   @!@!!@!   !!@  @!@  !@!  @!@!!@!        !!@@!!");
+        Console.WriteLine("   ( _/-\\\\-._                 !@!  !!!  !@!  !!!@!!!!  !!@!@!    !!@!@!    !!!  !@!  !!!  !!@!@!          !!@!!!");
+        Console.WriteLine("  /,|`--._,-^|            ,   !!:  !!:  !!:  !!:  !!!  !!: :!!   !!: :!!   !!:  !!:  !!!  !!: :!!             !:!");
+        Console.WriteLine("  \\_| |`-._/||          ,'|   :!:  :!:  :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:  :!:  !:!  :!:  !:!           !:!");
+        Console.WriteLine("    |  `-, / |         /  /    :::: :: :::   ::   :::  ::   :::  ::   :::   ::  ::::: ::  ::   :::       :::: :: ");
+        Console.WriteLine("    |     || |        /  /      :: :  : :     :   : :   :   : :   :   : :  :     : :  :    :   : :       :: : :");
+        Console.WriteLine("     `r-._||/   __   /  /         ");
+        Console.WriteLine(" __,-<_     )`-/  `./  /                      @@@@@@    @@@  @@@  @@@@@@@@   @@@@@@   @@@@@@@");
+        Console.WriteLine("'  \\   `---'   \\   /  /                      @@@@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@   @@@@@@@");
+        Console.WriteLine("    |           |./  /                       @@!  @@@   @@!  @@@  @@!       !@@         @@!");
+        Console.WriteLine("    /           //  /                        !@!  @!@   !@!  @!@  !@!       !@!         !@!");
+        Console.WriteLine("\\_/' \\         |/  /                         @!@  !@!   @!@  !@!  @!!!:!    !!@@!!      @!!");
+        Console.WriteLine(" |    |   _,^-'/  /                          !@!  !!!   !@!  !!!  !!!!!:     !!@!!!     !!!");
+        Console.WriteLine(" |    , ``  (\\/  /_                          !!:!!:!:   !!:  !!!  !!:            !:!    !!:");
+        Console.WriteLine("  \\,.->._    \\X-=/^                          :!: :!:    :!:  !:!  :!:           !:!     :!:");
+        Console.WriteLine("  (  /   `-._//^`                            ::::: :!   ::::: ::   :: ::::  :::: ::      ::");
+        Console.WriteLine("   `Y-.____(__}                               : :  :::   : :  :   : :: ::   :: : :       :   ");
+        Console.WriteLine("    |     {__)                          ");
+        Console.WriteLine("          ()                           1: Continue Your Quest    2: Create New Character    3: Exit");
+        Console.ResetColor();
+    }
+    public static void LoginDisplay()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("   /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\    ");
+        Console.WriteLine("  /  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\");
+        Console.WriteLine(" / /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\ \\ ");
+        Console.WriteLine("/ / / /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\ \\ \\");
+        Console.WriteLine("\\ \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ / / /");
+        Console.WriteLine(" \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /");
+        Console.WriteLine("  \\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  / ");
+        Console.WriteLine("   \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/");
+        Console.WriteLine("      _,.                     ");
+        Console.WriteLine("    ,` -.)                   @@@        @@@@@@    @@@@@@@@  @@@  @@@  @@@ ");
+        Console.WriteLine("   ( _/-\\-._                 @@@       @@@@@@@@  @@@@@@@@@  @@@  @@@@ @@@");
+        Console.WriteLine("  /,|`--._,-^|            ,  @@!       @@!  @@@  !@@        @@!  @@!@!@@@  ");
+        Console.WriteLine("  \\_| |`-._/||          ,'|  !@!       !@!  @!@  !@!        !@!  !@!!@!@! ");
+        Console.WriteLine("    |  `-, / |         /  /  @!!       @!@  !@!  !@! @!@!@  !!@  @!@ !!@!   ");
+        Console.WriteLine("    |     || |        /  /   !!!       !@!  !!!  !!! !!@!!  !!!  !@!  !!!");
+        Console.WriteLine("     `r-._||/   __   /  /    !!:       !!:  !!!  :!!   !!:  !!:  !!:  !!!");
+        Console.WriteLine(" __,-<_     )`-/  `./  /      :!:      :!:  !:!  :!:   !::  :!:  :!:  !:! ");
+        Console.WriteLine("'  \\   `---'   \\   /  /       :: ::::  ::::: ::   ::: ::::   ::   ::   ::");
+        Console.WriteLine("    |           |./  /       : :: : :   : :  :    :: :: :   :    ::    : ");
+        Console.WriteLine("    /           //  /        ");
+        Console.WriteLine("\\_/' \\         |/  /       Welcome back... Hero, yeah, we're going ");
+        Console.WriteLine(" |    |   _,^-'/  /        to pretend you're a hero.    ");
+        Console.WriteLine(" |    , ``  (\\/  /_         ");
+        Console.WriteLine("  \\,.->._    \\X-=/^        I don't actually remember who you are or");
+        Console.WriteLine("  (  /   `-._//^`          what this whole thing is about.  ");
+        Console.WriteLine("   `Y-.____(__}              ");
+        Console.WriteLine("    |     {__)             Maybe you throw me a bone and remind me");
+        Console.WriteLine("          ()               what your name is?        ");
+        Console.ResetColor();
+    }
+    public static void DisplayCharacter()
+    {
+        Console.Clear();
+        if (currentPlayer.PlayerLevel < 20)
+        {
+            Console.WriteLine(currentPlayer.ToString(PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]).ToString()));
+        }
+        else
+        {
+            Console.WriteLine(currentPlayer.ToString("Max Level Reached!"));
+        }
         Console.ReadKey();
     }
 }
