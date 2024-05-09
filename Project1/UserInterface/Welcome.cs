@@ -2,8 +2,6 @@ using System;
 using Project1;
 using Project1.Controllers;
 using Project1.Models;
-using Project1.Data;
-
 
 namespace Project1.UserInterfaces;
 
@@ -88,7 +86,6 @@ public static class WelcomeToTheGame
         } while (!validInput);
 
     }
-
     public static bool LoginMenu()
     {
         bool exitCondition = false;
@@ -136,6 +133,7 @@ public static class WelcomeToTheGame
         NewPlayerDisplay();
         do
         {
+            Console.Write("Name: ");
             newPlayerName = (Console.ReadLine() ?? "").Trim();
             if (String.IsNullOrEmpty(newPlayerName))
             {
@@ -184,20 +182,41 @@ public static class WelcomeToTheGame
             playerAction = DisplayCurrentLocation(currentPlayer.CurrentLocation);
             switch (playerAction)
             {
+                case 0:
+                    Console.ReadKey();
+                    break;
                 case 1:
                     //move north
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 1, locationReference);
-                    if (monsterSpawn != 0)
+                    if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
                     {
-                        amIDead = TimeForAFight(monsterSpawn);
+                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 1, locationReference);
+                        if (monsterSpawn != 0)
+                        {
+                            amIDead = TimeForAFight(monsterSpawn);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't go North from here. Try again.");
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
                     }
                     break;
                 case 2:
                     //move east
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 2, locationReference);
-                    if (monsterSpawn != 0)
+                    if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
                     {
-                        amIDead = TimeForAFight(monsterSpawn);
+                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 2, locationReference);
+                        if (monsterSpawn != 0)
+                        {
+                            amIDead = TimeForAFight(monsterSpawn);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't go East from here. Try again.");
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
                     }
                     break;
                 case 3:
@@ -206,10 +225,19 @@ public static class WelcomeToTheGame
                     break;
                 case 4:
                     //move south
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 4, locationReference);
-                    if (monsterSpawn != 0)
+                    if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
                     {
-                        amIDead = TimeForAFight(monsterSpawn);
+                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 4, locationReference);
+                        if (monsterSpawn != 0)
+                        {
+                            amIDead = TimeForAFight(monsterSpawn);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't go South from here. Try again.");
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
                     }
                     break;
                 case 5:
@@ -238,10 +266,19 @@ public static class WelcomeToTheGame
                 //break;
                 case 8:
                     //move west
-                    monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 8, locationReference);
-                    if (monsterSpawn != 0)
+                    if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
                     {
-                        amIDead = TimeForAFight(monsterSpawn);
+                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 8, locationReference);
+                        if (monsterSpawn != 0)
+                        {
+                            amIDead = TimeForAFight(monsterSpawn);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't go West from here. Try again.");
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
                     }
                     break;
                 case 11:
@@ -267,16 +304,10 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             MapController.UpdateMap(ref currentPlayer, gameMap, ref displayMap);
-            // LocationController.PickALocationColor(currentLocation, currentPlayer.PlayerLevel);
             for (int i = 0; i < 17; i++)
             {
                 Console.WriteLine(currentLocation.LocationDisplay[i] + "  " + displayMap[i]);
             }
-            // foreach (string image in currentLocation.LocationDisplay)
-            // {
-            //     Console.WriteLine(image);
-            // }
-            // Console.ResetColor();
             Console.WriteLine($"\nCurrent Location: {currentLocation.RoomName}");
             if (locationHash != 112804 && locationHash != 112805)
             {
@@ -301,16 +332,19 @@ public static class WelcomeToTheGame
             Console.WriteLine($"\n<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
             keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
-            //string userInput = (Console.ReadLine() ?? "").Trim();
-            userChoice = UserInputHandler(userInput, false, locationHash);
+            userChoice = UserInputHandler(userInput, false);
             if (userChoice != 0)
             {
                 exitCurrentRoom = true;
             }
+            else
+            {
+                Console.ReadKey();
+            }
         } while (!exitCurrentRoom);
         return userChoice;
     }
-    public static int UserInputHandler(string userInput, bool InCombat, int locationHash)
+    public static int UserInputHandler(string userInput, bool InCombat)
     {
         string OriginalUserInput = userInput;
         userInput = userInput.ToLower();
@@ -318,7 +352,6 @@ public static class WelcomeToTheGame
         {
             Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
             Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
             return 0;
         }
         else if (InCombat)
@@ -337,7 +370,6 @@ public static class WelcomeToTheGame
             }
             Console.WriteLine("I didn't understand what you wanted. Try again.");
             Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
             return 0;
         }
         else
@@ -360,65 +392,24 @@ public static class WelcomeToTheGame
             }
             if (userInput == "n" || userInput == "uparrow")
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[locationHash], currentPlayer.PlayerLevel))
-                {
-                    return 1;
-                }
-                else
-                {
-                    Console.WriteLine("You can't go North from here. Try again.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
-                    return 0;
-                }
+                return 1;
             }
             if (userInput == "e" || userInput == "rightarrow")
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[locationHash], currentPlayer.PlayerLevel))
-                {
-                    return 2;
-                }
-                else
-                {
-                    Console.WriteLine("You can't go East from here. Try again.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
-                    return 0;
-                }
+                return 2;
             }
             if (userInput == "s" || userInput == "downarrow")
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[locationHash], currentPlayer.PlayerLevel))
-                {
-                    return 4;
-                }
-                else
-                {
-                    Console.WriteLine("You can't go South from here. Try again.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
-                    return 0;
-                }
+                return 4;
             }
             if (userInput == "w" || userInput == "leftarrow")
             {
-                if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[locationHash], currentPlayer.PlayerLevel))
-                {
-                    return 8;
-                }
-                else
-                {
-                    Console.WriteLine("You can't go West from here. Try again.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
-                    return 0;
-                }
+                return 8;
             }
             if (OriginalUserInput == "~" && currentPlayer.PlayerLevel < 20)
             {
                 PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
                 Console.WriteLine($"Cheater! Player leveled up to {currentPlayer.PlayerLevel}.");
-                Console.ReadKey();
                 return 0;
             }
             if (userInput == "h")
@@ -427,7 +418,6 @@ public static class WelcomeToTheGame
             }
             Console.WriteLine("I didn't understand what you wanted. Try again.");
             Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
             return 0;
         }
     }
@@ -448,30 +438,11 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
-            //maybe refactor this to work with an overload of the ToString method on the monster object passing in player info
-            for (int i = 0; i < currentMonster.MonsterDisplay.Count(); i++)
-            {
-                if (i == 0)
-                {
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", currentMonster.Name, currentPlayer.Name));
-                }
-                else if (i == 1)
-                {
-                    string monsterHP = $"HP: {currentMonster.CurrentHitPoints}/{currentMonster.MaxHitPoints}";
-                    string playerHP = $"HP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}";
-                    Console.WriteLine($"{currentMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", monsterHP, playerHP));
-                }
-                else
-                {
-                    Console.WriteLine(currentMonster.MonsterDisplay[i]);
-                }
-            }
+            currentMonster.DisplayMonster(currentPlayer.Name, currentPlayer.CurrentHitPoints, currentPlayer.MaxHitPoints);
             Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee?\t\t<H>elp");
-            //isSomeoneDead = true;
             keyPress = Console.ReadKey(true);
             userInput = keyPress.Key.ToString();
-            //userInput = (Console.ReadLine() ?? "").Trim();
-            userChoice = UserInputHandler(userInput, true, currentPlayer.CurrentLocation);
+            userChoice = UserInputHandler(userInput, true);
             if (userChoice == 9)
             {
                 playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref currentMonster);
@@ -503,6 +474,10 @@ public static class WelcomeToTheGame
             else if (userChoice == 11)
             {
                 HelpMenu();
+            }
+            else if (userChoice == 0)
+            {
+                Console.ReadKey();
             }
             if (currentMonster.CurrentHitPoints > 0 && !playerRanAway && userChoice != 0 && userChoice != 11)
             {
@@ -565,8 +540,7 @@ public static class WelcomeToTheGame
         }
         else
         {
-            //move the player in an available direction based on the room they are in. Can spawn another monster lol.
-            Console.WriteLine("Cheese it!!"); //indicate the direction they ran.
+            Console.WriteLine("Cheese it!!");
             Console.ReadKey();
             //Player ran away - mock them? random based on what they ran from?
         }
@@ -758,7 +732,7 @@ public static class WelcomeToTheGame
         Console.WriteLine("▄█ ▀█▄▄█▀▀█ ▐█ ▌▐▌▐█·▐▀▀ ▄     ▄█▀▄ ▐█▐█• ▐▀▀ ▄ ▐▀▀▄ ");
         Console.WriteLine("▐█▄ ▐█▐█  ▐▌██ ██▌▐█▌▐█▄▄▌    ▐█▌.▐▌ ███ ▐█▄▄▌ ▐█  █▌");
         Console.WriteLine("·▀▀▀▀  ▀  ▀ ▀▀  █ ▀▀▀ ▀▀▀      ▀█▄▀ . ▀   ▀▀▀ . ▀  ▀");
-        Console.WriteLine("\nYou're dead and the world is doomed or something.\nI don't know. The story for this game was never really fleshed out.\nJust go with your favorite fantasty game trope again.");
+        Console.WriteLine("\nYou're dead and the world is doomed or something.\nI don't know. The story for this game was never really fleshed out.\nJust go with your favorite fantasty game trope.");
         Console.ReadKey();
     }
     public static void HelpMenu()

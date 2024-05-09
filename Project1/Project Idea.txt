@@ -6,7 +6,7 @@ Login screen
 
 Random monster spawns - On room change if monster spawn change input options - Done
 	Fight random monsters - Done
-	Flee from random monsters in random direction - Partially done (flee but don't actually move yet)
+	Flee from random monsters in random direction - Done (after much thought, I prefer staying in the same spot)
 
 Level locked area - Static boss monster
 	Can't enter until player is x level - Done (lvl 10)
