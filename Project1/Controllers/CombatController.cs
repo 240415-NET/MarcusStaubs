@@ -44,15 +44,15 @@ public static class CombatController
         //Monster attack is static from property in object
         int monsterAttack = currentMonster.MonsterAttack;        
         //Player dodge chance is Dexterity/2 to the lowest whole number
-        if(PlayerController.DoesPlayerDodge(currentPlayer.Dexterity))
+        if(currentPlayer.DodgeAttack())
         {
             monsterAttack = -1;
         }
         else
         {
             //If not dodged, player mitigates Constitution/8 + armor damage from monster attack
-            int mitigated = PlayerController.DamageMitigation(currentPlayer.Constitution) + currentPlayer.EquippedArmor.MitigationIncrease;
-            monsterAttack -= PlayerController.DamageMitigation(currentPlayer.Constitution);
+            int mitigated = currentPlayer.MyDamageMitigation() + currentPlayer.EquippedArmor.MitigationIncrease;
+            monsterAttack -= currentPlayer.MyDamageMitigation();
             if(monsterAttack < 0)
             {
                 monsterAttack = 0;

@@ -29,9 +29,9 @@ public class MapStorage : IMapStorage
         gameMap.Add("^TTTTTTT TTTTTTTTTTT^^^^^^^   ^^^^^^*   *******   *******   ******^");
         gameMap.Add("^TTTTTT   TTTTTTTTTT^^^^^^^   ^^^^^^*   *******   *******   ******^");
         gameMap.Add("^TTTTTTT TTTTTTTTTTT^^^^^^^   ^^^^^^***********   *******   ******^");
-        gameMap.Add("^TTTTTTTTTTTTTTTTTTT^^^^^^^   ^^^^^^^^^^^^^^^^*   *******   ******^");
-        gameMap.Add("^TTTTTTTTTTTTTTTTTTT^^^^^^^   ^^^^^^^^^^^^^^^^*   *******   ******^");
-        gameMap.Add("^TTTTTTTTTTTTTTTTTTT^^^^^^^^^^^^^^^^^^^^^^^^^^********************^");
+        gameMap.Add("^ n n TTTTTTTTTTTTTT^^^^^^^   ^^^^^^^^^^^^^^^^*   *******   ******^");
+        gameMap.Add("^n  n TTTTTTTTTTTTTT^^^^^^^   ^^^^^^^^^^^^^^^^*   *******   ******^");
+        gameMap.Add("^  n  TTTTTTTTTTTTTT^^^^^^^^^^^^^^^^^^^^^^^^^^********************^");
         gameMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         string gameMapString = JsonSerializer.Serialize(gameMap);
         File.WriteAllText(filePath, gameMapString);
@@ -41,7 +41,7 @@ public class MapStorage : IMapStorage
     //^TTTTTTT TT
     //^  _  TTTTT
     //^ /_\ TTTTT
-    //^ |_| TTTTT
+    //^ ||  TTTTT
     //^^^^^^^^^^^
     }
 }

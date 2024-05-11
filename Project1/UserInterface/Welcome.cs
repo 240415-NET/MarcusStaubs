@@ -220,7 +220,7 @@ public static class WelcomeToTheGame
                     break;
                 case 5:
                     //rest
-                    monsterSpawn = PlayerController.Rest(ref currentPlayer, locationReference[currentPlayer.CurrentLocation]);
+                    monsterSpawn = currentPlayer.Rest(locationReference[currentPlayer.CurrentLocation]);
                     if (monsterSpawn == 0)
                     {
                         RestMenu();
@@ -267,6 +267,10 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             MapController.UpdateMap(ref currentPlayer, gameMap, ref displayMap);
+            if (currentPlayer.CurrentLocation == 101805)
+            {
+                TownMenu();
+            }
             for (int i = 0; i < 17; i++)
             {
                 Console.WriteLine(currentLocation.LocationDisplay[i] + "     " + displayMap[i]);
@@ -295,7 +299,7 @@ public static class WelcomeToTheGame
             Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
             keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
-            userChoice = UserInputHandler(userInput, false);
+            userChoice = InputController.OutOfCombatInput(userInput);
             if (userChoice != 0)
             {
                 exitCurrentRoom = true;
@@ -306,126 +310,6 @@ public static class WelcomeToTheGame
             }
         } while (!exitCurrentRoom);
         return userChoice;
-    }
-    public static int UserInputHandler(string userInput, bool InCombat, bool InInventory = false)
-    {
-        string OriginalUserInput = userInput;
-        userInput = userInput.ToLower();
-        if (String.IsNullOrEmpty(userInput))
-        {
-            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
-            Console.WriteLine("Press any key to continue...");
-            return 0;
-        }
-        else if (InCombat)
-        {
-            if (userInput == "a")
-            {
-                return 9;
-            }
-            if (userInput == "f")
-            {
-                return 10;
-            }
-            if (userInput == "h")
-            {
-                return 11;
-            }
-            if (userInput == "d")
-            {
-                return 14;
-            }
-            Console.WriteLine("I didn't understand what you wanted. Try again.");
-            Console.WriteLine("Press any key to continue...");
-            return 0;
-        }
-        else if (!InInventory)
-        {
-            if (userInput == "c")
-            {
-                return 3;
-            }
-            if (userInput == "r")
-            {
-                return 5;
-            }
-            if (userInput == "v")
-            {
-                return 6;
-            }
-            if (userInput == "x")
-            {
-                return 7;
-            }
-            if (userInput == "n" || userInput == "uparrow")
-            {
-                return 1;
-            }
-            if (userInput == "e" || userInput == "rightarrow")
-            {
-                return 2;
-            }
-            if (userInput == "s" || userInput == "downarrow")
-            {
-                return 4;
-            }
-            if (userInput == "w" || userInput == "leftarrow")
-            {
-                return 8;
-            }
-            if (userInput == "i")
-            {
-                return 15;
-            }
-            if (OriginalUserInput == "~" && currentPlayer.PlayerLevel < 20)
-            {
-                PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
-                Console.WriteLine($"Cheater! Player leveled up to {currentPlayer.PlayerLevel}.");
-                return 0;
-            }
-            if (userInput == "h")
-            {
-                return 11;
-            }
-        }
-        else
-        {
-            if (userInput == "b")
-            {
-                return 12;
-            }
-            if (userInput == "q")
-            {
-                return 13;
-            }
-            if (userInput == "e")
-            {
-                return 16;
-            }
-            if (userInput == "i")
-            {
-                return 17;
-            }
-            if (userInput == "w")
-            {
-                return 18;
-            }
-            if (userInput == "a")
-            {
-                return 19;
-            }
-            if (userInput == "p")
-            {
-                return 20;
-            }
-            if (userInput == "d")
-            {
-                return 21;
-            }
-        }
-        Console.WriteLine("I didn't understand what you wanted. Try again.");
-        Console.WriteLine("Press any key to continue...");
-        return 0;
     }
     public static bool TimeForAFight(int monsterSpawn)
     {
@@ -448,7 +332,7 @@ public static class WelcomeToTheGame
             Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee?\t\t<H>elp");
             keyPress = Console.ReadKey(true);
             userInput = keyPress.Key.ToString();
-            userChoice = UserInputHandler(userInput, true);
+            userChoice = InputController.InCombatInput(userInput);
             if (userChoice == 9)
             {
                 playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref currentMonster);
@@ -534,7 +418,7 @@ public static class WelcomeToTheGame
                 //check if player gained a level and, if so, increase stats
                 if (currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]))
                 {
-                    PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
+                    currentPlayer.Ding(levelReference[currentPlayer.PlayerLevel + 1]);
                     Console.WriteLine($"Congratulations! You have reached level {currentPlayer.PlayerLevel}!");
                 }
             }
@@ -552,7 +436,7 @@ public static class WelcomeToTheGame
             {
                 Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
                 Console.WriteLine($"You also find 1 {itemsReference[monsterLoot].ItemName}.");
-                currentPlayer.GetThatLoot(itemsReference[monsterLoot]);                
+                currentPlayer.GetThatLoot(itemsReference[monsterLoot]);
             }
             else if (currentMonster.RewardGold > 0)
             {
@@ -905,11 +789,21 @@ public static class WelcomeToTheGame
     }
     public static void TownMenu()
     {
+        Location currentLocation = locationReference[currentPlayer.CurrentLocation];
+        bool exitTown = false;
+        int userChoice;
+        ConsoleKeyInfo keyPress;
+        do
+        {
+            for (int i = 0; i < 17; i++)
+            {
+                Console.WriteLine(currentLocation.LocationDisplay[i] + "     " + displayMap[i]);
+            }
+            Console.WriteLine($"\nCurrent Location: {currentLocation.RoomName}");
+            Console.WriteLine(currentLocation.RoomDescription);
+            Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+        } while (!exitTown);
         /*
-        Display location image (separate method used by CurrentLocation and Town Menu?)
-        Options to Move (North and East from location info)
-        Update location image and description in file
-        Monster spawn chance to 0
         Inn Menu
             Rest at Inn (different picture) - costs gold 
             Have a drink - Costs 1 gold. Does nothing.  Maybe part of below rumors
@@ -949,7 +843,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine("Would you like to <B>rowse your inventory or E<q>uip an item? <D> when done.");
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string userInput = keyPress.Key.ToString();
-                int userChoice = UserInputHandler(userInput, false, true);
+                int userChoice = InputController.InventoryInput(userInput);
                 if (userChoice == 12)
                 {
                     ViewInventoryMenu();
@@ -963,7 +857,7 @@ public static class WelcomeToTheGame
                     }
                     else
                     {
-                        EquipItemMenu();
+                        EquipMenu();
                     }
                 }
                 else if (userChoice == 21)
@@ -993,7 +887,7 @@ public static class WelcomeToTheGame
             Console.WriteLine(currentPlayer.KindsOfStuffIHave());
             ConsoleKeyInfo keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
-            int userChoice = UserInputHandler(userInput, false, true);
+            int userChoice = InputController.InventoryInput(userInput);
             if (userChoice == 16)
             {
                 foreach (Item item in currentPlayer.InventoryItems)
@@ -1056,39 +950,124 @@ public static class WelcomeToTheGame
             }
         } while (!exitViewInventory);
     }
-    public static void EquipItemMenu()
+    public static void EquipMenu()
     {
-        if(currentPlayer.DoIHaveArmors() && currentPlayer.DoIHaveWeapons())
+        if (currentPlayer.DoIHaveArmors() && currentPlayer.DoIHaveWeapons())
         {
-
-        }
-        else if(currentPlayer.DoIHaveArmors())
-        {
-            bool newArmorEquipped = false;
+            bool pickedWhatToEquip = false;
             do
             {
-            Console.Clear();
-            Console.WriteLine($"You are currently wearing {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");
-            for(int i = 0; i < currentPlayer.InventoryArmors.Count(); i++)
-            {
-                Console.WriteLine($"{i}: {currentPlayer.InventoryArmors[i].EquipOption()}");
-            }
-            Console.WriteLine("Which armor would you like to equip?");
-            try
-            {
+                Console.Clear();
+                Console.WriteLine("Would you like to equip a new <W>eapon or <A>rmor? <D>one to exit menu.");
+                ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                string userInput = keyPress.Key.ToString();
+                int userChoice = InputController.EquipInput(userInput);
+                if (userChoice == 1)
+                {
+                    EquipArmorMenu();
+                    pickedWhatToEquip = false;
+                }
+                else if (userChoice == 2)
+                {
+                    EquipWeaponMenu();
+                    pickedWhatToEquip = false;
+                }
+                else if (userChoice == 3)
+                {
+                    pickedWhatToEquip = true;
+                }
+                else
+                {
+                    pickedWhatToEquip = false;
+                }
 
-            }
-            catch (Exception e)
-            {
-
-            }
-            }while(!newArmorEquipped);
-
+            } while (!pickedWhatToEquip);
+        }
+        else if (currentPlayer.DoIHaveArmors())
+        {
+            EquipArmorMenu();
         }
         else
         {
-
+            EquipWeaponMenu();
         }
+    }
+    public static void EquipArmorMenu()
+    {
+        bool newArmorEquipped = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine($"You are currently wearing {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");
+            for (int i = 0; i < currentPlayer.InventoryArmors.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1}: {currentPlayer.InventoryArmors[i].EquipOption()}");
+            }
+            Console.WriteLine($"{currentPlayer.InventoryArmors.Count() + 1}: Don't change equipped armor");
+            Console.WriteLine("Which armor would you like to equip?");
+            try
+            {
+                ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                string keyPressString = keyPress.Key.ToString();
+                int armorChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
+                if (armorChoice > currentPlayer.InventoryArmors.Count())
+                {
+                    newArmorEquipped = true;
+                }
+                else
+                {
+                    currentPlayer.EquipArmor(currentPlayer.InventoryArmors[armorChoice - 1]);
+                    newArmorEquipped = true;
+                    Console.Clear();
+                    Console.WriteLine($"{currentPlayer.EquippedArmor.ItemName} equipped!");
+                    Console.ReadKey();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
+                Console.ReadKey();
+                newArmorEquipped = false;
+            }
+        } while (!newArmorEquipped);
+    }
+    public static void EquipWeaponMenu()
+    {
+        bool newWeaponEquipped = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine($"You are currently wielding {currentPlayer.EquippedWeapon.ItemName} which does {currentPlayer.EquippedWeapon.AttackIncrease} extra damage.");
+            for (int i = 0; i < currentPlayer.InventoryWeapons.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1}: {currentPlayer.InventoryWeapons[i].EquipOption()}");
+            }
+            Console.WriteLine($"{currentPlayer.InventoryWeapons.Count() + 1}: Don't change equipped weapon");
+            Console.WriteLine("Which weapon would you like to equip?");
+            try
+            {
+                ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                string keyPressString = keyPress.Key.ToString();
+                int weaponChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
+                if (weaponChoice > currentPlayer.InventoryWeapons.Count())
+                {
+                    newWeaponEquipped = true;
+                }
+                else
+                {
+                    currentPlayer.EquipWeapon(currentPlayer.InventoryWeapons[weaponChoice - 1]);
+                    newWeaponEquipped = true;
+                    Console.WriteLine($"{currentPlayer.EquippedWeapon.ItemName} equipped!");
+                    Console.ReadKey();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
+                Console.ReadKey();
+                newWeaponEquipped = false;
+            }
+        } while (!newWeaponEquipped);
     }
 }
 

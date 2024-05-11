@@ -305,6 +305,25 @@ public class LocationStorage : ILocationStorage
         bossRoom.Add(".  - /           |^\\        /^ \\    |. \\                                  |  .. ");
         bossRoom.Add("     \\__________/^ .|__..--/ . ^\\__/'  ^\\_____|_|. |'_;----.___|_|________/   -_");
 
+        List<string> town = new();
+        town.Add("                   _                      _             /  \\       _____________  ");
+        town.Add("    ____________ .' '.    _____/----/-\\ .' './=======  / ^^ \\     /=============");
+        town.Add("   //// ////// /V_.-._\\  |.-.-.|===| _ |-----| u    u /  []  \\   /==============");
+        town.Add("  // /// // ///==\\ u |.  || | ||===||||| |T| |   ||  /________\\ /===============");
+        town.Add(" ///////-\\////====\\==|:::::::::::::::::::::::::::::::|        |/================");
+        town.Add(" |----/\\u |--|++++|..|'''''''''''::::::::::::::''''''| ^^  ^^ |-----------------");
+        town.Add(" |u u|u | |u ||||||..|              '::::::::'       | []  [] |           _____ ");
+        town.Add(" |===|  |u|==|++++|==|              .::::::::.       |        |          /_____\\");
+        town.Add(" |u u|u | |u ||HH||         \\|/    .::::::::::.      | ^^  ^^ |  ^^  ^^  |  |  |");
+        town.Add(" |===|_.|u|_.|+HH+|               .::::::::::::.     | []  [] |  []  []  |  |  |");
+        town.Add("                ________         .::::::::::::::.    |    ________       |  |  |");
+        town.Add("---------------/       /|       .:::::;;;:::;;:::.   |   |\\       \\-------------");
+        town.Add("______________/_______/ |      .::::::;;:::::;;:::.  |___| \\_______\\___________ ");
+        town.Add("|       |     [===  =] /|     .:::::;;;::::::;;;:::.     |\\ [==  = ]   |       |");
+        town.Add("|_______|_____[ = == ]/ |    .:::::;;;:::::::;;;::::.    | \\[ ===  ]___|_____ _|");
+        town.Add("     |       |[  === ] /|   .:::::;;;::::::::;;;:::::.   |\\ [=  ===] |       |  ");
+        town.Add("_____|_______|[== = =]/ |  .:::::;;;::::::::::;;;:::::.  | \\[ ==  =]_|_______|__");
+
 
         List<int> room101801 = new List<int> { 1341, 1272, 1271 };
         Location loc101801 = new Location(101801, "Well", 6, "This is a forest. But there is a well here.\nA very ugly well that looks like it was drawn by a third grader.\nPretty cool but there isn't anything special about it.", 50, room101801, well);
@@ -322,8 +341,8 @@ public class LocationStorage : ILocationStorage
         Location loc101804 = new Location(101804, "Forest", 7, "This is a forest. With trees and stuff.\nYou see more forest to the south and a clearing to the east of you.", 50, room101804, forest1);
         locationList.Add(loc101804);
 
-        List<int> room101805 = new List<int> { 1271, 1272 };
-        Location loc101805 = new Location(101805, "Forest", 3, "This is a forest. With trees and stuff.\nThe mountains to the west and south are impassible.\nThe forest continues east.", 50, room101805, forest3);
+        List<int> room101805 = new List<int> { 1151 };
+        Location loc101805 = new Location(101805, "Small Village", 3, "A small village. There is an Inn, an Arms merchant, and a potion vender here.\nIt looks like a good place to recover from your journey so far.", 0, room101805, town);
         locationList.Add(loc101805);
 
 

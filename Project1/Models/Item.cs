@@ -19,11 +19,11 @@ public class Item
     {
         if(QuantityOfItem > 1)
         {
-            return $"{this.QuantityOfItem} {this.ItemName}s: Base value {ItemBaseValue}.";
+            return $"{this.QuantityOfItem} {this.ItemName}s";
         }
         else
         {
-            return $"{this.QuantityOfItem} {this.ItemName}: Base value {ItemBaseValue}.";
+            return $"{this.QuantityOfItem} {this.ItemName}";
         }
     }
 }
