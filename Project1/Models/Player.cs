@@ -174,4 +174,62 @@ public class Player : LivingThing
             return false;
         }
     }
+    public void GetThatLoot(Item loot)
+    {
+        bool newLoot = true;
+        if(loot.GetType() == typeof(Weapon))
+        {
+            for(int i = 0; i < InventoryWeapons.Count(); i++)
+            {
+                if(InventoryWeapons[i].ItemID == loot.ItemID)
+                {
+                    InventoryWeapons[i].QuantityOfItem++;
+                    newLoot = false;
+                }
+            }
+            if(newLoot){InventoryWeapons.Add((Weapon)loot);}
+        }
+        else
+        {
+            for(int i = 0; i < InventoryItems.Count(); i++)
+            {
+                if(InventoryItems[i].ItemID == loot.ItemID)
+                {
+                    InventoryItems[i].QuantityOfItem++;
+                    newLoot = false;
+                }
+            }
+            if(newLoot){InventoryItems.Add(loot);}
+        }
+
+
+    }
+    public void EquipWeapon(Weapon newWeapon)
+    {
+        bool dupWeapon = false;
+        for(int i = 0; i < InventoryWeapons.Count(); i++)
+        {
+            if(InventoryWeapons[i].ItemID == EquippedWeapon.ItemID)
+            {
+                InventoryWeapons[i].QuantityOfItem++;
+                dupWeapon = true;
+            }
+        }
+        if(!dupWeapon){InventoryWeapons.Add(EquippedWeapon);}
+        EquippedWeapon = newWeapon;
+    }
+    public void EquipArmor(Armor newArmor)
+    {
+        bool dupArmor = false;
+        for(int i = 0; i < InventoryArmors.Count(); i++)
+        {
+            if(InventoryArmors[i].ItemID == EquippedArmor.ItemID)
+            {
+                InventoryArmors[i].QuantityOfItem++;
+                dupArmor = true;
+            }
+        }
+        if(!dupArmor){InventoryArmors.Add(EquippedArmor);}
+        EquippedArmor = newArmor;
+    }
 }

@@ -11,7 +11,7 @@ public class Monster : LivingThing
     public string HitText { get; set; }
     public int ChanceToFlee { get; set; }
     public List<string> MonsterDisplay { get; set; }
-    //public List<string> LootTable {get; set;}
+    public List<string> LootTable {get; set;}
     public Monster(MonsterData baseMonster) : base(baseMonster.Name, baseMonster.MaxHitPoints, baseMonster.CurrentHitPoints)
     {
         MonsterID = baseMonster.MonsterID;
@@ -24,7 +24,7 @@ public class Monster : LivingThing
         HitText = baseMonster.HitText;
         ChanceToFlee = baseMonster.ChanceToFlee;
         MonsterDisplay = baseMonster.MonsterDisplay;
-        //LootTable = baseMonster.LootTable;
+        LootTable = baseMonster.LootTable;
     }
     public Monster(string Name, int MaxHitPoints, int CurrentHitPoints, int MonsterID, int MonsterAttack, int MonsterDodge, int RewardXP, int RewardGold, string AttackText, string DodgeText, string HitText, int ChanceToFlee, List<string> MonsterDisplay) : base(Name, MaxHitPoints, CurrentHitPoints)
     {
@@ -59,6 +59,19 @@ public class Monster : LivingThing
             }
         }
     }
+    public string LootDrop()
+    {
+        Random rand = new Random();
+        int result = rand.Next(0,101);
+        for(int i=1; i <= LootTable.Count(); i++)
+        {
+            if(result < 80/LootTable.Count() * i)
+            {
+                return LootTable[i-1];
+            }
+        }
+        return "No loot";
+    }
 }
 
 public struct MonsterData
@@ -76,9 +89,9 @@ public struct MonsterData
     public string HitText { get; set; }
     public int ChanceToFlee { get; set; }
     public List<string> MonsterDisplay { get; set; }
-    //public List<string> LootTable {get; set;}
+    public List<string> LootTable {get; set;}
 
-    public MonsterData(string Name, int MaxHitPoints, int CurrentHitPoints, int MonsterID, int MonsterAttack, int MonsterDodge, int RewardXP, int RewardGold, string AttackText, string DodgeText, string HitText, int ChanceToFlee, List<string> MonsterDisplay)
+    public MonsterData(string Name, int MaxHitPoints, int CurrentHitPoints, int MonsterID, int MonsterAttack, int MonsterDodge, int RewardXP, int RewardGold, string AttackText, string DodgeText, string HitText, int ChanceToFlee, List<string> MonsterDisplay, List<string> LootTable)
     {
         this.Name = Name;
         this.MaxHitPoints = MaxHitPoints;
@@ -93,7 +106,7 @@ public struct MonsterData
         this.HitText = HitText;
         this.ChanceToFlee = ChanceToFlee;
         this.MonsterDisplay = MonsterDisplay;
-        //this.LootTable = LootTable;
+        this.LootTable = LootTable;
     }
 }
 

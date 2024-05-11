@@ -21,6 +21,10 @@
             "   (/\\):(/\\                                       ",
             "    \\_   _/                                       ",
             "    \u0060\u0022\u0022^\u0022\u0022\u0060                                       "
+        ],
+        "LootTable": [
+            "tail",
+            "fur"
         ]
     },
     {
@@ -48,6 +52,11 @@
             "                 \\\u0060-/.\u0027        \u0060\u0022\u0060                ",
             "                  \u0060\u0022\\\u0060-.                          ",
             "                     \u0060\u0022\u0060                          "
+        ],
+        "LootTable": [
+            "fur",
+            "rfang",
+            "weapon2"
         ]
     },
     {
@@ -80,6 +89,12 @@
             "      |   |         |   |                         ",
             "     /    (         )    \\                        ",
             "    (v(v(v)\u0060=.....=\u0060(v)v)v)                       "
+        ],
+        "LootTable": [
+            "fur",
+            "rfang",
+            "paw",
+            "weapon4"
         ]
     },
     {
@@ -100,6 +115,9 @@
             "\\_\\(_)/_/                                         ",
             " _//\u0022\\\\_                                          ",
             "  /   \\                                           "
+        ],
+        "LootTable": [
+            "silk"
         ]
     },
     {
@@ -134,17 +152,22 @@
             "                                   ||             ",
             "                                   \\\\             ",
             "                                    \u0027             "
+        ],
+        "LootTable": [
+            "silk",
+            "fang",
+            "weapon4"
         ]
     },
     {
         "Name": "Kobold Worker",
-        "MaxHitPoints": 4,
-        "CurrentHitPoints": 4,
+        "MaxHitPoints": 15,
+        "CurrentHitPoints": 15,
         "MonsterID": 1251,
-        "MonsterAttack": 2,
+        "MonsterAttack": 9,
         "MonsterDodge": 1,
-        "RewardXP": 4,
-        "RewardGold": 0,
+        "RewardXP": 10,
+        "RewardGold": 3,
         "AttackText": "swings its satchel",
         "DodgeText": "stumbles out of the way",
         "HitText": "hiss!",
@@ -160,17 +183,22 @@
             "        | Y | (_____)                             ",
             "       /  |  \\                                    ",
             "       \u0022\u0022\u0022 \u0022\u0022\u0022                                    "
+        ],
+        "LootTable": [
+            "scraps",
+            "purse",
+            "weapon4"
         ]
     },
     {
         "Name": "Kobold Scout",
-        "MaxHitPoints": 10,
-        "CurrentHitPoints": 10,
+        "MaxHitPoints": 20,
+        "CurrentHitPoints": 20,
         "MonsterID": 1321,
-        "MonsterAttack": 8,
+        "MonsterAttack": 12,
         "MonsterDodge": 10,
         "RewardXP": 15,
-        "RewardGold": 3,
+        "RewardGold": 5,
         "AttackText": "fires its bow",
         "DodgeText": "ducks",
         "HitText": "grrk!",
@@ -186,18 +214,24 @@
             "        | Y |   | /                               ",
             "       /  |  \\  |/                                ",
             "       \u0022\u0022\u0022 \u0022\u0022\u0022                                    "
+        ],
+        "LootTable": [
+            "scraps",
+            "bow",
+            "arrows",
+            "weapon5"
         ]
     },
     {
         "Name": "Kobold Warrior",
-        "MaxHitPoints": 15,
-        "CurrentHitPoints": 15,
+        "MaxHitPoints": 25,
+        "CurrentHitPoints": 25,
         "MonsterID": 1471,
-        "MonsterAttack": 12,
+        "MonsterAttack": 17,
         "MonsterDodge": 25,
         "RewardXP": 25,
-        "RewardGold": 5,
-        "AttackText": "swings its sword",
+        "RewardGold": 10,
+        "AttackText": "thrusts its spear",
         "DodgeText": "swats the attack away",
         "HitText": "...",
         "ChanceToFlee": 50,
@@ -212,17 +246,23 @@
             "   \\___/| Y |   ||                                ",
             "       /  |  \\  ||                                ",
             "       \u0022\u0022\u0022 \u0022\u0022\u0022                                    "
+        ],
+        "LootTable": [
+            "scraps",
+            "shield",
+            "spearhead",
+            "weapon7"
         ]
     },
     {
         "Name": "Kobold Chief",
-        "MaxHitPoints": 30,
-        "CurrentHitPoints": 30,
+        "MaxHitPoints": 50,
+        "CurrentHitPoints": 50,
         "MonsterID": 1571,
-        "MonsterAttack": 17,
+        "MonsterAttack": 25,
         "MonsterDodge": 20,
         "RewardXP": 50,
-        "RewardGold": 10,
+        "RewardGold": 30,
         "AttackText": "swings its great axe",
         "DodgeText": "casually steps out of range",
         "HitText": "You die, human!",
@@ -240,14 +280,20 @@
             "    \\ _\\| //                                      ",
             "     | |_\\/_                                      ",
             "     \\_,_\u003E-\u0027                                      "
+        ],
+        "LootTable": [
+            "gem",
+            "herbs",
+            "necklace",
+            "weapon13"
         ]
     },
     {
         "Name": "Young Red Dragon",
-        "MaxHitPoints": 100,
-        "CurrentHitPoints": 100,
+        "MaxHitPoints": 120,
+        "CurrentHitPoints": 120,
         "MonsterID": 1941,
-        "MonsterAttack": 30,
+        "MonsterAttack": 40,
         "MonsterDodge": 35,
         "RewardXP": 0,
         "RewardGold": 1000,
@@ -293,6 +339,7 @@
             "                              | |_,,,             ",
             "                              \\  \\  /             ",
             "                               \u0027.__)              "
-        ]
+        ],
+        "LootTable": []
     }
 ]

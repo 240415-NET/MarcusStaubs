@@ -1,9 +1,93 @@
 {
     "Items": [
         {
-            "ItemID": "silk1",
+            "ItemID": "silk",
             "ItemName": "Spider Silk",
             "ItemBaseValue": 4,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "tail",
+            "ItemName": "Rat Tail",
+            "ItemBaseValue": 3,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "fur",
+            "ItemName": "Rat Fur",
+            "ItemBaseValue": 4,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "paw",
+            "ItemName": "Rat Paw",
+            "ItemBaseValue": 6,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "rfang",
+            "ItemName": "Rat Fang",
+            "ItemBaseValue": 6,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "fang",
+            "ItemName": "Spider Fang",
+            "ItemBaseValue": 6,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "scraps",
+            "ItemName": "Leather Scraps",
+            "ItemBaseValue": 9,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "purse",
+            "ItemName": "Crude Purse",
+            "ItemBaseValue": 12,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "bow",
+            "ItemName": "Broken Bow",
+            "ItemBaseValue": 15,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "arrows",
+            "ItemName": "Warped Arrows",
+            "ItemBaseValue": 9,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "shield",
+            "ItemName": "Broken Shield",
+            "ItemBaseValue": 15,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "spearhead",
+            "ItemName": "Spearhead",
+            "ItemBaseValue": 21,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "gem",
+            "ItemName": "Rough Gemstone",
+            "ItemBaseValue": 30,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "herbs",
+            "ItemName": "Bundle of Herbs",
+            "ItemBaseValue": 27,
+            "QuantityOfItem": 1
+        },
+        {
+            "ItemID": "necklace",
+            "ItemName": "Copper Necklace",
+            "ItemBaseValue": 30,
             "QuantityOfItem": 1
         }
     ],
@@ -58,30 +142,9 @@
             "QuantityOfItem": 1
         },
         {
-            "AttackIncrease": 4,
-            "ItemID": "weapon8",
-            "ItemName": "Short Spear",
-            "ItemBaseValue": 20,
-            "QuantityOfItem": 1
-        },
-        {
-            "AttackIncrease": 5,
-            "ItemID": "weapon9",
-            "ItemName": "Rusty Longsword",
-            "ItemBaseValue": 40,
-            "QuantityOfItem": 1
-        },
-        {
             "AttackIncrease": 5,
             "ItemID": "weapon10",
             "ItemName": "Shortsword",
-            "ItemBaseValue": 40,
-            "QuantityOfItem": 1
-        },
-        {
-            "AttackIncrease": 5,
-            "ItemID": "weapon11",
-            "ItemName": "Spiked Club",
             "ItemBaseValue": 40,
             "QuantityOfItem": 1
         },

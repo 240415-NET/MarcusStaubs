@@ -45,7 +45,8 @@ public class MonsterStorage : IMonsterStorage
         ratPic.Add("   (/\\):(/\\".PadRight(50, ' '));
         ratPic.Add("    \\_   _/ ".PadRight(50, ' '));
         ratPic.Add("    `\"\"^\"\"` ".PadRight(50, ' '));
-        MonsterData newRat = new MonsterData("Rat", 1, 1, 1151, 1, 0, 2, 0, "nips", "impossible!", "squeak!", 95, ratPic);
+        List<string> ratLoot = new List<string>{"tail","fur"};
+        MonsterData newRat = new MonsterData("Rat", 1, 1, 1151, 1, 0, 2, 0, "nips", "impossible!", "squeak!", 95, ratPic, ratLoot);
         monsterList.Add(newRat);
 
         List<string> largeRatPic = new List<string>();
@@ -60,7 +61,8 @@ public class MonsterStorage : IMonsterStorage
         largeRatPic.Add("                 \\`-/.'        `\"`".PadRight(50, ' '));
         largeRatPic.Add("                  `\"\\`-.".PadRight(50, ' '));
         largeRatPic.Add("                     `\"`".PadRight(50, ' '));
-        MonsterData newLargeRat = new MonsterData("Large Rat", 5, 5, 1271, 3, 2, 5, 1, "bites", "hops out of the way", "Squeak!", 90, largeRatPic);
+        List<string> lRatLoot = new List<string>{"fur","rfang","weapon2"};
+        MonsterData newLargeRat = new MonsterData("Large Rat", 5, 5, 1271, 3, 2, 5, 1, "bites", "hops out of the way", "Squeak!", 90, largeRatPic, lRatLoot);
         monsterList.Add(newLargeRat);
 
         List<string> giantRatPic = new List<string>();
@@ -80,7 +82,8 @@ public class MonsterStorage : IMonsterStorage
         giantRatPic.Add("      |   |         |   |".PadRight(50, ' '));
         giantRatPic.Add("     /    (         )    \\".PadRight(50, ' '));
         giantRatPic.Add("    (v(v(v)`=.....=`(v)v)v)".PadRight(50, ' '));
-        MonsterData newGiantRat = new MonsterData("Giant Rat", 10, 10, 1341, 8, 5, 15, 3, "chomps", "lumbers aside", "SQUEAK!", 75, giantRatPic);
+        List<string> gRatLoot = new List<string>{"fur","rfang","paw","weapon4"};
+        MonsterData newGiantRat = new MonsterData("Giant Rat", 10, 10, 1341, 8, 5, 15, 3, "chomps", "lumbers aside", "SQUEAK!", 75, giantRatPic,gRatLoot);
         monsterList.Add(newGiantRat);
 
         List<string> spiderPic = new List<string>();
@@ -88,7 +91,8 @@ public class MonsterStorage : IMonsterStorage
         spiderPic.Add("\\_\\(_)/_/".PadRight(50, ' '));
         spiderPic.Add(" _//\"\\\\_ ".PadRight(50, ' '));
         spiderPic.Add("  /   \\".PadRight(50, ' '));
-        MonsterData newSpider = new MonsterData("Spider", 1, 1, 1152, 1, 50, 5, 0, "bites", "nimbly hops away", "splat", 95, spiderPic);
+        List<string> spiderLoot = new List<string>{"silk"};
+        MonsterData newSpider = new MonsterData("Spider", 1, 1, 1152, 1, 50, 5, 0, "bites", "nimbly hops away", "splat", 95, spiderPic,spiderLoot);
         monsterList.Add(newSpider);
 
         List<string> giantSpiderPic = new List<string>();
@@ -110,7 +114,8 @@ public class MonsterStorage : IMonsterStorage
         giantSpiderPic.Add("                                   ||".PadRight(50, ' '));
         giantSpiderPic.Add("                                   \\\\".PadRight(50, ' '));
         giantSpiderPic.Add("                                    '".PadRight(50, ' '));
-        MonsterData newGiantSpider = new MonsterData("Giant Spider", 10, 10, 1272, 8, 15, 15, 3, "bites", "sways to the side", "Skreee!", 75, giantSpiderPic);
+        List<string> gspiderLoot = new List<string>{"silk","fang","weapon4"};
+        MonsterData newGiantSpider = new MonsterData("Giant Spider", 10, 10, 1272, 8, 15, 15, 3, "bites", "sways to the side", "Skreee!", 75, giantSpiderPic,gspiderLoot);
         monsterList.Add(newGiantSpider);
 
         List<string> kWorkerPic = new List<string>();
@@ -124,7 +129,8 @@ public class MonsterStorage : IMonsterStorage
         kWorkerPic.Add("        | Y | (_____)".PadRight(50, ' '));
         kWorkerPic.Add("       /  |  \\".PadRight(50, ' '));
         kWorkerPic.Add("       \"\"\" \"\"\"".PadRight(50, ' '));
-        MonsterData newKoboldWorker = new MonsterData("Kobold Worker", 4, 4, 1251, 2, 1, 4, 0, "swings its satchel", "stumbles out of the way", "hiss!", 80, kWorkerPic);
+        List<string> woKobold = new List<string>{"scraps","purse","weapon4"};
+        MonsterData newKoboldWorker = new MonsterData("Kobold Worker", 15, 15, 1251, 9, 1, 10, 3, "swings its satchel", "stumbles out of the way", "hiss!", 80, kWorkerPic,woKobold);
         monsterList.Add(newKoboldWorker);
 
         List<string> kScoutPic = new List<string>();
@@ -138,7 +144,8 @@ public class MonsterStorage : IMonsterStorage
         kScoutPic.Add("        | Y |   | /".PadRight(50, ' '));
         kScoutPic.Add("       /  |  \\  |/".PadRight(50, ' '));
         kScoutPic.Add("       \"\"\" \"\"\"".PadRight(50, ' '));
-        MonsterData newKoboldScout = new MonsterData("Kobold Scout", 10, 10, 1321, 8, 10, 15, 3, "fires its bow", "ducks", "grrk!", 75, kScoutPic);
+        List<string> scKobold = new List<string>{"scraps","bow","arrows","weapon5"};
+        MonsterData newKoboldScout = new MonsterData("Kobold Scout", 20, 20, 1321, 12, 10, 15, 5, "fires its bow", "ducks", "grrk!", 75, kScoutPic,scKobold);
         monsterList.Add(newKoboldScout);
 
         List<string> kWarriorPic = new List<string>();
@@ -152,7 +159,8 @@ public class MonsterStorage : IMonsterStorage
         kWarriorPic.Add("   \\___/| Y |   || ".PadRight(50, ' '));
         kWarriorPic.Add("       /  |  \\  ||".PadRight(50, ' '));
         kWarriorPic.Add("       \"\"\" \"\"\"".PadRight(50, ' '));
-        MonsterData newKoboldWarrior = new MonsterData("Kobold Warrior", 15, 15, 1471, 12, 25, 25, 5, "swings its sword", "swats the attack away", "...", 50, kWarriorPic);
+        List<string> waKobold = new List<string>{"scraps","shield","spearhead","weapon7"};
+        MonsterData newKoboldWarrior = new MonsterData("Kobold Warrior", 25, 25, 1471, 17, 25, 25, 10, "thrusts its spear", "swats the attack away", "...", 50, kWarriorPic,waKobold);
         monsterList.Add(newKoboldWarrior);
 
         List<string> kChiefPic = new List<string>();
@@ -168,7 +176,8 @@ public class MonsterStorage : IMonsterStorage
         kChiefPic.Add("    \\ _\\| //".PadRight(50, ' '));
         kChiefPic.Add("     | |_\\/_".PadRight(50, ' '));
         kChiefPic.Add("     \\_,_>-'".PadRight(50, ' '));
-        MonsterData newKoboldChief = new MonsterData("Kobold Chief", 30, 30, 1571, 17, 20, 50, 10, "swings its great axe", "casually steps out of range", "You die, human!", 30, kChiefPic);
+        List<string> chKobold = new List<string>{"gem","herbs","necklace","weapon13"};
+        MonsterData newKoboldChief = new MonsterData("Kobold Chief", 50, 50, 1571, 25, 20, 50, 30, "swings its great axe", "casually steps out of range", "You die, human!", 30, kChiefPic,chKobold);
         monsterList.Add(newKoboldChief);
 
         List<string> BossPic = new();
@@ -210,7 +219,8 @@ public class MonsterStorage : IMonsterStorage
         BossPic.Add("                              \\  \\  /".PadRight(50, ' '));
         BossPic.Add("                               '.__)".PadRight(50, ' '));
 
-        MonsterData bossMonster = new MonsterData("Young Red Dragon",100,100,1941,30,35,0,1000,"slashes its claws","ignores your attack","RrRRRooOOaAAR!",0,BossPic);
+        List<string> bossLoot = new List<string>();
+        MonsterData bossMonster = new MonsterData("Young Red Dragon",120,120,1941,40,35,0,1000,"slashes its claws","ignores your attack","RrRRRooOOaAAR!",0,BossPic,bossLoot);
         monsterList.Add(bossMonster);
 
         string MonsterListString = JsonSerializer.Serialize(monsterList);

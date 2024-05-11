@@ -1,4 +1,5 @@
 using System;
+using System.Formats.Asn1;
 using Project1;
 using Project1.Controllers;
 using Project1.Models;
@@ -63,28 +64,6 @@ public static class WelcomeToTheGame
                         break;
                     case 3:
                         return;
-                    case 995:
-                        foreach (KeyValuePair<string, Item> pair in itemsReference)
-                        {
-                            Console.Write(pair.Value);
-                            if (pair.Value.GetType() == typeof(Weapon))
-                            {
-                                Console.Write(" - You can attack stuff with this\n");
-                            }
-                            else if (pair.Value.GetType() == typeof(Armor))
-                            {
-                                Console.Write(" - You protect your body with this\n");
-                            }
-                            else if (pair.Value.GetType() == typeof(Potion))
-                            {
-                                Console.Write(" - You can drink it\n");
-                            }
-                            else
-                            {
-                                Console.Write(" - random junk\n");
-                            }
-                        }
-                        break;
                     case 996:
                         MapController.LoadItemFile();
                         break;
@@ -220,7 +199,7 @@ public static class WelcomeToTheGame
                     //Movement  
                     if (Movement.CanIMoveThisWay(playerAction, locationReference[currentPlayer.CurrentLocation].EnumMovementOptions, locationReference[currentPlayer.CurrentLocation].RoomHash, currentPlayer.PlayerLevel))
                     {
-                        
+
                         currentPlayer.TimeToMove(playerAction);
                         monsterSpawn = LocationController.DoesMonsterSpawn(locationReference[currentPlayer.CurrentLocation]);
                         if (monsterSpawn != 0)
@@ -552,10 +531,6 @@ public static class WelcomeToTheGame
             {
                 //code to notify user of rewards from monster
                 Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
-                if (currentMonster.RewardGold > 0)
-                {
-                    Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
-                }
                 //check if player gained a level and, if so, increase stats
                 if (currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]))
                 {
@@ -566,6 +541,22 @@ public static class WelcomeToTheGame
             else
             {
                 Console.WriteLine($"You have gained 0 experience for killing {currentMonster.Name}. You are at max level.");
+            }
+            string monsterLoot = currentMonster.LootDrop();
+            if (monsterLoot != "No loot" && currentMonster.RewardGold == 0)
+            {
+                Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find 1 {itemsReference[monsterLoot].ItemName}.");
+                currentPlayer.GetThatLoot(itemsReference[monsterLoot]);
+            }
+            else if (monsterLoot != "No loot")
+            {
+                Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
+                Console.WriteLine($"You also find 1 {itemsReference[monsterLoot].ItemName}.");
+                currentPlayer.GetThatLoot(itemsReference[monsterLoot]);                
+            }
+            else if (currentMonster.RewardGold > 0)
+            {
+                Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
             }
             Console.ReadKey();
         }
@@ -965,7 +956,7 @@ public static class WelcomeToTheGame
                 }
                 else if (userChoice == 13)
                 {
-                    if(!currentPlayer.DoIHaveArmors() && !currentPlayer.DoIHaveWeapons())
+                    if (!currentPlayer.DoIHaveArmors() && !currentPlayer.DoIHaveWeapons())
                     {
                         Console.WriteLine("Nothing to equip. Go find some.");
                         Console.ReadKey();
@@ -1029,7 +1020,7 @@ public static class WelcomeToTheGame
                 {
                     Console.WriteLine(item);
                 }
-                Console.ReadKey();                
+                Console.ReadKey();
             }
             else if (userChoice == 18)
             {
@@ -1037,7 +1028,7 @@ public static class WelcomeToTheGame
                 {
                     Console.WriteLine(weapon);
                 }
-                Console.ReadKey();                
+                Console.ReadKey();
             }
             else if (userChoice == 19)
             {
@@ -1067,7 +1058,37 @@ public static class WelcomeToTheGame
     }
     public static void EquipItemMenu()
     {
+        if(currentPlayer.DoIHaveArmors() && currentPlayer.DoIHaveWeapons())
+        {
 
+        }
+        else if(currentPlayer.DoIHaveArmors())
+        {
+            bool newArmorEquipped = false;
+            do
+            {
+            Console.Clear();
+            Console.WriteLine($"You are currently wearing {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");
+            for(int i = 0; i < currentPlayer.InventoryArmors.Count(); i++)
+            {
+                Console.WriteLine($"{i}: {currentPlayer.InventoryArmors[i].EquipOption()}");
+            }
+            Console.WriteLine("Which armor would you like to equip?");
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+
+            }
+            }while(!newArmorEquipped);
+
+        }
+        else
+        {
+
+        }
     }
 }
 
