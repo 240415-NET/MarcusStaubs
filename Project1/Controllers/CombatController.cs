@@ -6,9 +6,9 @@ public static class CombatController
 {
     public static int PlayerAttacksMonster(ref Player currentPlayer, ref Monster currentMonster)
     {
-        //Player attack = 1/2 strength to the lowest whole number
+        //Player attack = weapon attack + 1/2 strength to the lowest whole number
         //Player reduces enemy dodge chance by Dexterity/6 to the lowest whole number
-        int playerAttack = currentPlayer.Strength / 2;
+        int playerAttack = currentPlayer.EquippedWeapon.AttackIncrease +  currentPlayer.Strength / 2;
         if (currentMonster.MonsterDodge > 0)
         {
             if (MonsterController.DodgeAttack(currentMonster.MonsterDodge, currentPlayer.Dexterity))
@@ -21,6 +21,7 @@ public static class CombatController
         {
             currentMonster.CurrentHitPoints = 0;
             currentPlayer.PlayerXP += currentMonster.RewardXP;
+            currentPlayer.PlayerGold += currentMonster.RewardGold;
         }
         return playerAttack;
     }
@@ -49,8 +50,8 @@ public static class CombatController
         }
         else
         {
-            //If not dodged, player mitigates Constitution/8 damage from monster attack
-            int mitigated = PlayerController.DamageMitigation(currentPlayer.Constitution);
+            //If not dodged, player mitigates Constitution/8 + armor damage from monster attack
+            int mitigated = PlayerController.DamageMitigation(currentPlayer.Constitution) + currentPlayer.EquippedArmor.MitigationIncrease;
             monsterAttack -= PlayerController.DamageMitigation(currentPlayer.Constitution);
             if(monsterAttack < 0)
             {

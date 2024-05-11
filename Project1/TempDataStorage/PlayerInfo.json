@@ -1,1 +1,128 @@
-[{"PlayerID":"50431406-ab8a-43f3-9393-80cb5da0fddd","PlayerLevel":1,"Strength":3,"Dexterity":2,"Constitution":3,"PlayerXP":0,"CurrentLocation":106805,"PlayerMap":["^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                         ^   ^                                   ^","^                         ^   ^                                   ^","^                         ^^^^^                                   ^","^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"],"ExploredLocations":[106805],"Name":"Bob","MaxHitPoints":10,"CurrentHitPoints":10},{"PlayerID":"7bf2ae9a-14c5-4e3a-933f-13e7a200a5b8","PlayerLevel":1,"Strength":3,"Dexterity":2,"Constitution":3,"PlayerXP":0,"CurrentLocation":106805,"PlayerMap":["^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                         ^   ^                                   ^","^                         ^   ^                                   ^","^                         ^^^^^                                   ^","^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"],"ExploredLocations":[106805],"Name":"Eddie","MaxHitPoints":10,"CurrentHitPoints":10}]
+[
+    {
+        "PlayerID": "214ff9e3-cf1d-4dd4-83ae-3b6b32bc875a",
+        "PlayerLevel": 2,
+        "Strength": 5,
+        "Dexterity": 4,
+        "Constitution": 5,
+        "EquippedWeapon": {
+            "AttackIncrease": 1,
+            "ItemID": "weapon1",
+            "ItemName": "Crooked Stick",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        "EquippedArmor": {
+            "MitigationIncrease": 0,
+            "ItemID": "armor1",
+            "ItemName": "Dirty Rags",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        "PlayerXP": 10,
+        "CurrentLocation": 106803,
+        "PlayerMap": [
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+            "^                         ^^H^^                                   ^",
+            "^                         ^^o^^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                                                                 ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^^^^^                                   ^",
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+        ],
+        "ExploredLocations": [
+            106805,
+            106804,
+            106803,
+            106802,
+            106801
+        ],
+        "PlayerGold": 0,
+        "InventoryItems": [],
+        "InventoryWeapons": [],
+        "InventoryArmors": [],
+        "InventoryPotions": [
+            {
+                "HPRestoration": 5,
+                "ItemID": "potion1",
+                "ItemName": "Minor Healing Potion",
+                "ItemBaseValue": 2,
+                "QuantityOfItem": 1
+            }
+        ],
+        "Name": "Bob",
+        "MaxHitPoints": 15,
+        "CurrentHitPoints": 15
+    },
+    {
+        "PlayerID": "f28db7b1-5fce-47b6-a1d4-02d131d1a871",
+        "PlayerLevel": 1,
+        "Strength": 3,
+        "Dexterity": 2,
+        "Constitution": 3,
+        "EquippedWeapon": {
+            "AttackIncrease": 1,
+            "ItemID": "weapon1",
+            "ItemName": "Crooked Stick",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        "EquippedArmor": {
+            "MitigationIncrease": 0,
+            "ItemID": "armor1",
+            "ItemName": "Dirty Rags",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        "PlayerXP": 0,
+        "CurrentLocation": 106805,
+        "PlayerMap": [
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^^^^^                                   ^",
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+        ],
+        "ExploredLocations": [
+            106805
+        ],
+        "PlayerGold": 0,
+        "InventoryItems": [],
+        "InventoryWeapons": [],
+        "InventoryArmors": [],
+        "InventoryPotions": [
+            {
+                "HPRestoration": 5,
+                "ItemID": "potion1",
+                "ItemName": "Minor Healing Potion",
+                "ItemBaseValue": 2,
+                "QuantityOfItem": 1
+            }
+        ],
+        "Name": "Jennifer",
+        "MaxHitPoints": 10,
+        "CurrentHitPoints": 10
+    }
+]

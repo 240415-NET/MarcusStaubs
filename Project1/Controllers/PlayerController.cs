@@ -13,12 +13,10 @@ public class PlayerController
         SavePlayer(currentPlayer);
         return currentPlayer;
     }
-
     public static void SavePlayer(Player currentPlayer)
     {
         playerStorage.SavePlayerData(currentPlayer);
     }
-
     public static bool DoesPlayerExist(string name)
     {
         Player currentPlayer = playerStorage.GetPlayerInfo(name);
@@ -31,13 +29,11 @@ public class PlayerController
             return true;
         }
     }
-
     public static Player LoadExistingCharacter(string name)
     {
         Player currentPlayer = playerStorage.GetPlayerInfo(name);
         return currentPlayer;
     }
-
     public static int Rest(ref Player player, Location currentLocation)
     {
         int didMonsterSpawn = LocationController.DoesMonsterSpawn(currentLocation);
@@ -51,35 +47,14 @@ public class PlayerController
             return didMonsterSpawn;
         }
     }
-
     public static Dictionary<int, LevelChange> InitializeLevelInfo()
     {
         Dictionary<int, LevelChange> levelRef = levelStorage.GetLevelList();
         return levelRef;
     }
-
     public static int GetXPRequirementFromDictionary(LevelChange levelReference)
     {
         return levelReference.XPRequiredForLevel;
-    }
-    public static int LocationUpdate(ref Player currentPlayer, int direction, Dictionary<int, Location> locations)
-    {
-        switch (direction)
-        {
-            case 1:
-                currentPlayer.CurrentLocation -= 1;
-                break;
-            case 2:
-                currentPlayer.CurrentLocation += 1000;
-                break;
-            case 4:
-                currentPlayer.CurrentLocation += 1;
-                break;
-            case 8:
-                currentPlayer.CurrentLocation -= 1000;
-                break;
-        }
-        return LocationController.DoesMonsterSpawn(locations[currentPlayer.CurrentLocation]);
     }
     public static bool DoesPlayerDodge(int playerDexterity)
     {

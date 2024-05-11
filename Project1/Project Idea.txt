@@ -33,8 +33,8 @@ Optional time permitting:
 	Pay to rest at inn with no monster spawn chance
 	Equip weapons/armor to improve attack / defense beyond base
 	View equipment/inventory
-	Fill out storyline
-	Add different location descriptions for the same kind of location
+	Fill out storyline - Ick... last on my list
+	Add different location descriptions for the same kind of location - Done
 	Save during game (not in Combat) and not on exit - for save scumming of course - Done. 
 	Make it prettier in all screens displayed to the user. (Location - Done, Combat - Good enough, Player info - Done, Rest - Done)
 	Slightly different images for each location so better indicate movement - Done for forests and meadows

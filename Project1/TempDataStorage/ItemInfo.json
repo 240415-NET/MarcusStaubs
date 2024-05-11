@@ -1,0 +1,177 @@
+{
+    "Items": [
+        {
+            "ItemID": "silk1",
+            "ItemName": "Spider Silk",
+            "ItemBaseValue": 4,
+            "QuantityOfItem": 1
+        }
+    ],
+    "Weapons": [
+        {
+            "AttackIncrease": 1,
+            "ItemID": "weapon1",
+            "ItemName": "Crooked Stick",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 2,
+            "ItemID": "weapon2",
+            "ItemName": "Tree Branch",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 3,
+            "ItemID": "weapon3",
+            "ItemName": "Club",
+            "ItemBaseValue": 10,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 3,
+            "ItemID": "weapon4",
+            "ItemName": "Rusty Dagger",
+            "ItemBaseValue": 10,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 3,
+            "ItemID": "weapon5",
+            "ItemName": "Bent Spear",
+            "ItemBaseValue": 10,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 4,
+            "ItemID": "weapon6",
+            "ItemName": "Dull Shortsword",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 4,
+            "ItemID": "weapon7",
+            "ItemName": "Studded Club",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 4,
+            "ItemID": "weapon8",
+            "ItemName": "Short Spear",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 5,
+            "ItemID": "weapon9",
+            "ItemName": "Rusty Longsword",
+            "ItemBaseValue": 40,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 5,
+            "ItemID": "weapon10",
+            "ItemName": "Shortsword",
+            "ItemBaseValue": 40,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 5,
+            "ItemID": "weapon11",
+            "ItemName": "Spiked Club",
+            "ItemBaseValue": 40,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 6,
+            "ItemID": "weapon12",
+            "ItemName": "Longsword",
+            "ItemBaseValue": 60,
+            "QuantityOfItem": 1
+        },
+        {
+            "AttackIncrease": 6,
+            "ItemID": "weapon13",
+            "ItemName": "Battleaxe",
+            "ItemBaseValue": 60,
+            "QuantityOfItem": 1
+        }
+    ],
+    "Armors": [
+        {
+            "MitigationIncrease": 0,
+            "ItemID": "armor1",
+            "ItemName": "Dirty Rags",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1
+        },
+        {
+            "MitigationIncrease": 1,
+            "ItemID": "armor2",
+            "ItemName": "Overalls",
+            "ItemBaseValue": 5,
+            "QuantityOfItem": 1
+        },
+        {
+            "MitigationIncrease": 2,
+            "ItemID": "armor3",
+            "ItemName": "Tattered Leathers",
+            "ItemBaseValue": 10,
+            "QuantityOfItem": 1
+        },
+        {
+            "MitigationIncrease": 3,
+            "ItemID": "armor4",
+            "ItemName": "Leather Armor",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1
+        },
+        {
+            "MitigationIncrease": 4,
+            "ItemID": "armor5",
+            "ItemName": "Studded Leather",
+            "ItemBaseValue": 40,
+            "QuantityOfItem": 1
+        },
+        {
+            "MitigationIncrease": 5,
+            "ItemID": "armor6",
+            "ItemName": "Breastplate",
+            "ItemBaseValue": 60,
+            "QuantityOfItem": 1
+        }
+    ],
+    "Potions": [
+        {
+            "HPRestoration": 5,
+            "ItemID": "potion1",
+            "ItemName": "Minor Healing Potion",
+            "ItemBaseValue": 2,
+            "QuantityOfItem": 1
+        },
+        {
+            "HPRestoration": 10,
+            "ItemID": "potion2",
+            "ItemName": "Lesser Healing Potion",
+            "ItemBaseValue": 5,
+            "QuantityOfItem": 1
+        },
+        {
+            "HPRestoration": 20,
+            "ItemID": "potion3",
+            "ItemName": "Healing Potion",
+            "ItemBaseValue": 10,
+            "QuantityOfItem": 1
+        },
+        {
+            "HPRestoration": 50,
+            "ItemID": "potion4",
+            "ItemName": "Major Healing Potion",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1
+        }
+    ]
+}

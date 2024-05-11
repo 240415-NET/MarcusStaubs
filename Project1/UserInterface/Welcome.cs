@@ -10,6 +10,7 @@ public static class WelcomeToTheGame
     public static Dictionary<int, MonsterData> monsterReference = new();
     public static Dictionary<int, Location> locationReference = new();
     public static Dictionary<int, LevelChange> levelReference = new();
+    public static Dictionary<string, Item> itemsReference = new();
     public static Player currentPlayer = new Player();
     public static List<string> gameMap = new();
     public static List<string> displayMap = new();
@@ -33,6 +34,8 @@ public static class WelcomeToTheGame
         levelReference = PlayerController.InitializeLevelInfo();
         //Load full map data from data source
         gameMap = MapController.LoadFullMap();
+        //Load all items from data source
+        itemsReference = MapController.GetAllGameItems();
         do
         {
             MainMenuDisplay();
@@ -60,6 +63,31 @@ public static class WelcomeToTheGame
                         break;
                     case 3:
                         return;
+                    case 995:
+                        foreach (KeyValuePair<string, Item> pair in itemsReference)
+                        {
+                            Console.Write(pair.Value);
+                            if (pair.Value.GetType() == typeof(Weapon))
+                            {
+                                Console.Write(" - You can attack stuff with this\n");
+                            }
+                            else if (pair.Value.GetType() == typeof(Armor))
+                            {
+                                Console.Write(" - You protect your body with this\n");
+                            }
+                            else if (pair.Value.GetType() == typeof(Potion))
+                            {
+                                Console.Write(" - You can drink it\n");
+                            }
+                            else
+                            {
+                                Console.Write(" - random junk\n");
+                            }
+                        }
+                        break;
+                    case 996:
+                        MapController.LoadItemFile();
+                        break;
                     case 997:
                         LocationController.RecreateLocationFile();
                         break;
@@ -77,8 +105,8 @@ public static class WelcomeToTheGame
             }
             catch (Exception e)
             {
-                //Console.WriteLine(e.Message);
-                //Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
                 Console.WriteLine("1, 2, or 3. Pick again");
                 Console.ReadKey();
                 validInput = false;
@@ -99,12 +127,11 @@ public static class WelcomeToTheGame
             {
                 Console.WriteLine("I asked for your name. Silence doesn't cut it. Enter your character's name or go away.");
                 Console.WriteLine("Press any key to try again...");
-                Console.ReadKey();
                 exitCondition = false;
             }
             else if (userInput.ToLower() == "oops")
             {
-                exitCondition = true;
+                return false;
             }
             else
             {
@@ -112,8 +139,8 @@ public static class WelcomeToTheGame
                 if (currentPlayer == null)
                 {
                     Console.WriteLine("Yeah... I don't know you or you spelled your own name wrong.\nI really hope it's the first one.");
+                    Console.WriteLine("If you made a mistake and meant to create a new character,\nenter oops to return to the main menu.");
                     Console.WriteLine("Press any key to try again...");
-                    Console.ReadKey();
                     exitCondition = false;
                 }
                 else
@@ -122,6 +149,7 @@ public static class WelcomeToTheGame
                     DisplayCharacter();
                     return true;
                 }
+                Console.ReadKey();
             }
         } while (!exitCondition);
         return false;
@@ -186,27 +214,15 @@ public static class WelcomeToTheGame
                     Console.ReadKey();
                     break;
                 case 1:
-                    //move north
-                    if (Movement.CanIMoveThisWay(MoveDirection.North, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
-                    {
-                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 1, locationReference);
-                        if (monsterSpawn != 0)
-                        {
-                            amIDead = TimeForAFight(monsterSpawn);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go North from here. Try again.");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
-                    }
-                    break;
                 case 2:
-                    //move east
-                    if (Movement.CanIMoveThisWay(MoveDirection.East, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
+                case 4:
+                case 8:
+                    //Movement  
+                    if (Movement.CanIMoveThisWay(playerAction, locationReference[currentPlayer.CurrentLocation].EnumMovementOptions, locationReference[currentPlayer.CurrentLocation].RoomHash, currentPlayer.PlayerLevel))
                     {
-                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 2, locationReference);
+                        
+                        currentPlayer.TimeToMove(playerAction);
+                        monsterSpawn = LocationController.DoesMonsterSpawn(locationReference[currentPlayer.CurrentLocation]);
                         if (monsterSpawn != 0)
                         {
                             amIDead = TimeForAFight(monsterSpawn);
@@ -214,7 +230,7 @@ public static class WelcomeToTheGame
                     }
                     else
                     {
-                        Console.WriteLine("You can't go East from here. Try again.");
+                        Console.WriteLine($"You can't go {(MoveDirection)playerAction} from here. Try again.");
                         Console.WriteLine("Press any key to continue...");
                         Console.ReadKey();
                     }
@@ -222,23 +238,6 @@ public static class WelcomeToTheGame
                 case 3:
                     //view character
                     DisplayCharacter();
-                    break;
-                case 4:
-                    //move south
-                    if (Movement.CanIMoveThisWay(MoveDirection.South, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
-                    {
-                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 4, locationReference);
-                        if (monsterSpawn != 0)
-                        {
-                            amIDead = TimeForAFight(monsterSpawn);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go South from here. Try again.");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
-                    }
                     break;
                 case 5:
                     //rest
@@ -263,26 +262,11 @@ public static class WelcomeToTheGame
                 case 7:
                     //Add in a save feature or ask if want to save.
                     return;
-                //break;
-                case 8:
-                    //move west
-                    if (Movement.CanIMoveThisWay(MoveDirection.West, locationReference[currentPlayer.CurrentLocation], currentPlayer.PlayerLevel))
-                    {
-                        monsterSpawn = PlayerController.LocationUpdate(ref currentPlayer, 8, locationReference);
-                        if (monsterSpawn != 0)
-                        {
-                            amIDead = TimeForAFight(monsterSpawn);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go West from here. Try again.");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
-                    }
-                    break;
                 case 11:
                     HelpMenu();
+                    break;
+                case 15:
+                    InventoryMenu();
                     break;
                 case 999:
                     amIDead = true;
@@ -306,7 +290,7 @@ public static class WelcomeToTheGame
             MapController.UpdateMap(ref currentPlayer, gameMap, ref displayMap);
             for (int i = 0; i < 17; i++)
             {
-                Console.WriteLine(currentLocation.LocationDisplay[i] + "  " + displayMap[i]);
+                Console.WriteLine(currentLocation.LocationDisplay[i] + "     " + displayMap[i]);
             }
             Console.WriteLine($"\nCurrent Location: {currentLocation.RoomName}");
             if (locationHash != 112804 && locationHash != 112805)
@@ -329,7 +313,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): North");
             }
-            Console.WriteLine($"\n<C>haracter\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+            Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
             keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
             userChoice = UserInputHandler(userInput, false);
@@ -344,7 +328,7 @@ public static class WelcomeToTheGame
         } while (!exitCurrentRoom);
         return userChoice;
     }
-    public static int UserInputHandler(string userInput, bool InCombat)
+    public static int UserInputHandler(string userInput, bool InCombat, bool InInventory = false)
     {
         string OriginalUserInput = userInput;
         userInput = userInput.ToLower();
@@ -368,11 +352,15 @@ public static class WelcomeToTheGame
             {
                 return 11;
             }
+            if (userInput == "d")
+            {
+                return 14;
+            }
             Console.WriteLine("I didn't understand what you wanted. Try again.");
             Console.WriteLine("Press any key to continue...");
             return 0;
         }
-        else
+        else if (!InInventory)
         {
             if (userInput == "c")
             {
@@ -406,6 +394,10 @@ public static class WelcomeToTheGame
             {
                 return 8;
             }
+            if (userInput == "i")
+            {
+                return 15;
+            }
             if (OriginalUserInput == "~" && currentPlayer.PlayerLevel < 20)
             {
                 PlayerController.Ding(ref currentPlayer, levelReference[currentPlayer.PlayerLevel + 1]);
@@ -416,10 +408,45 @@ public static class WelcomeToTheGame
             {
                 return 11;
             }
-            Console.WriteLine("I didn't understand what you wanted. Try again.");
-            Console.WriteLine("Press any key to continue...");
-            return 0;
         }
+        else
+        {
+            if (userInput == "b")
+            {
+                return 12;
+            }
+            if (userInput == "q")
+            {
+                return 13;
+            }
+            if (userInput == "e")
+            {
+                return 16;
+            }
+            if (userInput == "i")
+            {
+                return 17;
+            }
+            if (userInput == "w")
+            {
+                return 18;
+            }
+            if (userInput == "a")
+            {
+                return 19;
+            }
+            if (userInput == "p")
+            {
+                return 20;
+            }
+            if (userInput == "d")
+            {
+                return 21;
+            }
+        }
+        Console.WriteLine("I didn't understand what you wanted. Try again.");
+        Console.WriteLine("Press any key to continue...");
+        return 0;
     }
     public static bool TimeForAFight(int monsterSpawn)
     {
@@ -525,6 +552,10 @@ public static class WelcomeToTheGame
             {
                 //code to notify user of rewards from monster
                 Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
+                if (currentMonster.RewardGold > 0)
+                {
+                    Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
+                }
                 //check if player gained a level and, if so, increase stats
                 if (currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]))
                 {
@@ -880,6 +911,163 @@ public static class WelcomeToTheGame
             Console.WriteLine(currentPlayer.ToString("Max Level Reached!"));
         }
         Console.ReadKey();
+    }
+    public static void TownMenu()
+    {
+        /*
+        Display location image (separate method used by CurrentLocation and Town Menu?)
+        Options to Move (North and East from location info)
+        Update location image and description in file
+        Monster spawn chance to 0
+        Inn Menu
+            Rest at Inn (different picture) - costs gold 
+            Have a drink - Costs 1 gold. Does nothing.  Maybe part of below rumors
+            Listen to rumors - Random list of stuff that could be said
+        Vendor - Buys junk items / Sells potions
+            Sell menu - List all items in player inventory or say nothing to sell
+                Option to sell x quantity or All
+            Buy menu - Potions available depends on level of player
+                Buy more than one at once?    
+        Arms Merchant - Buys and Sells Weapons and Armor (Sell offers are level limited)
+            Sell menu - List all weapons and armor in player inventory
+                Option to sell x quantity or All
+            Buy menu - Weapons and armor separate menus - offers limited by player level    
+                Ask to equip after purchase?
+        */
+    }
+    public static void InnMenu()
+    {
+
+    }
+    public static void VendorMenu()
+    {
+
+    }
+    public static void ArmsMerchantMenu()
+    {
+
+    }
+    public static void InventoryMenu()
+    {
+        bool iMDone = false;
+        if (currentPlayer.DoIHaveStuff())
+        {
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Would you like to <B>rowse your inventory or E<q>uip an item? <D> when done.");
+                ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                string userInput = keyPress.Key.ToString();
+                int userChoice = UserInputHandler(userInput, false, true);
+                if (userChoice == 12)
+                {
+                    ViewInventoryMenu();
+                }
+                else if (userChoice == 13)
+                {
+                    if(!currentPlayer.DoIHaveArmors() && !currentPlayer.DoIHaveWeapons())
+                    {
+                        Console.WriteLine("Nothing to equip. Go find some.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        EquipItemMenu();
+                    }
+                }
+                else if (userChoice == 21)
+                {
+                    iMDone = true;
+                }
+                else
+                {
+                    Console.ReadKey();
+                }
+            } while (!iMDone);
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("Nothing to see here. Move along.");
+            Console.ReadKey();
+        }
+    }
+    public static void ViewInventoryMenu()
+    {
+        bool exitViewInventory = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("What kind of items would you like to look at? <D> when done.");
+            Console.WriteLine(currentPlayer.KindsOfStuffIHave());
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            string userInput = keyPress.Key.ToString();
+            int userChoice = UserInputHandler(userInput, false, true);
+            if (userChoice == 16)
+            {
+                foreach (Item item in currentPlayer.InventoryItems)
+                {
+                    Console.WriteLine(item);
+                }
+                foreach (Weapon weapon in currentPlayer.InventoryWeapons)
+                {
+                    Console.WriteLine(weapon);
+                }
+                foreach (Armor armor in currentPlayer.InventoryArmors)
+                {
+                    Console.WriteLine(armor);
+                }
+                foreach (Potion potion in currentPlayer.InventoryPotions)
+                {
+                    Console.WriteLine(potion);
+                }
+                Console.ReadKey();
+            }
+            else if (userChoice == 17)
+            {
+                foreach (Item item in currentPlayer.InventoryItems)
+                {
+                    Console.WriteLine(item);
+                }
+                Console.ReadKey();                
+            }
+            else if (userChoice == 18)
+            {
+                foreach (Weapon weapon in currentPlayer.InventoryWeapons)
+                {
+                    Console.WriteLine(weapon);
+                }
+                Console.ReadKey();                
+            }
+            else if (userChoice == 19)
+            {
+                foreach (Armor armor in currentPlayer.InventoryArmors)
+                {
+                    Console.WriteLine(armor);
+                }
+                Console.ReadKey();
+            }
+            else if (userChoice == 20)
+            {
+                foreach (Potion potion in currentPlayer.InventoryPotions)
+                {
+                    Console.WriteLine(potion);
+                }
+                Console.ReadKey();
+            }
+            else if (userChoice == 21)
+            {
+                exitViewInventory = true;
+            }
+            else
+            {
+                Console.ReadKey();
+            }
+        } while (!exitViewInventory);
+    }
+    public static void EquipItemMenu()
+    {
+
     }
 }
 

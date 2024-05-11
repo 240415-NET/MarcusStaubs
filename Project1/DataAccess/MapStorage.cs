@@ -36,5 +36,12 @@ public class MapStorage : IMapStorage
         string gameMapString = JsonSerializer.Serialize(gameMap);
         File.WriteAllText(filePath, gameMapString);
     
+    //^TTTTTTT TT
+    //^TTTTTT   T
+    //^TTTTTTT TT
+    //^  _  TTTTT
+    //^ /_\ TTTTT
+    //^ |_| TTTTT
+    //^^^^^^^^^^^
     }
 }

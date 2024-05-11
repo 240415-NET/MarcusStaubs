@@ -108,4 +108,33 @@ public static class MapController
     {
         mapStorage.InitializeGameMap();
     }
+    public static void LoadItemFile()
+    {
+        ItemStorage.CreateInitialItemsList();
+    }
+
+    public static Dictionary<string,Item> GetAllGameItems()
+    {
+        Dictionary<string,Item> allGameItems = new();
+        ItemDTO itemsFromFile = ItemStorage.getAllMyItems();
+        foreach(Item item in itemsFromFile.Items)
+        {
+            allGameItems.Add(item.ItemID,item);
+        }
+        foreach(Weapon weapon in itemsFromFile.Weapons)
+        {
+            allGameItems.Add(weapon.ItemID,weapon);
+        }
+        foreach(Armor armor in itemsFromFile.Armors)
+        {
+            allGameItems.Add(armor.ItemID,armor);
+        }
+        foreach(Potion potion in itemsFromFile.Potions)
+        {
+            allGameItems.Add(potion.ItemID,potion);
+        }                        
+
+        return allGameItems;
+    }
+
 }
