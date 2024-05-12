@@ -35,10 +35,12 @@ public class Item
 public class Weapon : Item
 {
     public int AttackIncrease {get; set;}
+    public int buyLvlRequirement {get; set;}
 
-    public Weapon(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int AttackIncrease) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
+    public Weapon(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int AttackIncrease, int buyLvlRequirement) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
     {
         this.AttackIncrease = AttackIncrease;
+        this.buyLvlRequirement = buyLvlRequirement;
     }
     public override string ToString()
     {
@@ -60,10 +62,12 @@ public class Weapon : Item
 public class Armor : Item
 {
     public int MitigationIncrease {get; set;}
+    public int buyLvlRequirement {get; set;}
 
-    public Armor(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int MitigationIncrease) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
+    public Armor(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int MitigationIncrease,int buyLvlRequirement) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
     {
         this.MitigationIncrease = MitigationIncrease;
+        this.buyLvlRequirement = buyLvlRequirement;
     }
     public override string ToString()
     {
@@ -85,10 +89,12 @@ public class Armor : Item
 public class Potion : Item
 {
     public int HPRestoration {get; set;}
+    public int buyLvlRequirement {get; set;}
 
-    public Potion(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int HPRestoration) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
+    public Potion(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int HPRestoration, int buyLvlRequirement) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
     {
         this.HPRestoration = HPRestoration;
+        this.buyLvlRequirement = buyLvlRequirement;
     }
     public Potion() : base()
     {
@@ -97,6 +103,7 @@ public class Potion : Item
         this.ItemBaseValue = 0;
         this.QuantityOfItem = 0;
         this.HPRestoration = 0;
+        this.buyLvlRequirement = 0;
     }
     public override string ToString()
     {
@@ -115,6 +122,7 @@ public class Potion : Item
         this.ItemName = potion.ItemName;
         this.ItemBaseValue = potion.ItemBaseValue;
         this.QuantityOfItem = potion.QuantityOfItem;
-        this.HPRestoration = potion.HPRestoration;        
+        this.HPRestoration = potion.HPRestoration;  
+        this.buyLvlRequirement = potion.buyLvlRequirement;      
     }
 }

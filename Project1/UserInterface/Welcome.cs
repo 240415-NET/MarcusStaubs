@@ -272,6 +272,7 @@ public static class WelcomeToTheGame
             if (currentPlayer.CurrentLocation == 101805)
             {
                 TownMenu();
+                Console.Clear();
             }
             for (int i = 0; i < 17; i++)
             {
@@ -907,38 +908,41 @@ public static class WelcomeToTheGame
                 Console.ReadKey();
                 exitTheInn = true;
             }
-            else if (currentPlayer.PlayerGold >= 1 && currentPlayer.PlayerGold < 5)
-            {
-                Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  Can't afford a room (5 gold pieces)  <E>xit the Inn");
-            }
             else
             {
-                Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  <R>ent a room for the night (5 gold pieces)  <E>xit the Inn");
-            }
-            ConsoleKeyInfo keyPress = Console.ReadKey(true);
-            string userInput = keyPress.Key.ToString();
-            int userChoice = InputController.InventoryInput(userInput);
-            switch(userChoice)
-            {
-                case 1:
-                    Console.WriteLine("You pull up to the bar and order a mug of ale.");
-                    Console.WriteLine("While nursing your drink, you overhear chatter from the other patrons.");
-                    Console.WriteLine("<Random chitchat from other patrons that might actually say something eventually>");
-                    currentPlayer.PlayerGold -= 1;
-                    Console.ReadKey();
-                    break;
-                case 2:
-                    currentPlayer.RestInTheInn();
-                    Console.WriteLine("You go upstairs for a much needed bath and then settle into your cot for a restful night of sleep");
-                    //Different rest picture than the campfire. Maybe a bed or candle something?
-                    Console.ReadKey();
-                    break;
-                case 3:
-                    exitTheInn = true;
-                    break;
-                case 0:
-                    Console.ReadKey();
-                    break;    
+                if (currentPlayer.PlayerGold >= 1 && currentPlayer.PlayerGold < 5)
+                {
+                    Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  Can't afford a room (5 gold pieces)  <E>xit the Inn");
+                }
+                else
+                {
+                    Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  <R>ent a room for the night (5 gold pieces)  <E>xit the Inn");
+                }
+                ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                string userInput = keyPress.Key.ToString();
+                int userChoice = InputController.InnInput(userInput, currentPlayer.PlayerGold);
+                switch (userChoice)
+                {
+                    case 1:
+                        Console.WriteLine("You pull up to the bar and order a mug of ale.");
+                        Console.WriteLine("While nursing your drink, you overhear chatter from the other patrons.");
+                        Console.WriteLine("<Random chitchat from other patrons that might actually say something eventually>");
+                        currentPlayer.PlayerGold -= 1;
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        currentPlayer.RestInTheInn();
+                        Console.WriteLine("You go upstairs for a much needed bath and then settle into your cot for a restful night of sleep");
+                        //Different rest picture than the campfire. Maybe a bed or candle something?
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        exitTheInn = true;
+                        break;
+                    case 0:
+                        Console.ReadKey();
+                        break;
+                }
             }
         } while (!exitTheInn);
     }
@@ -951,8 +955,8 @@ public static class WelcomeToTheGame
             Console.Clear();
             Console.WriteLine("You walk over to the vendor's cart to have a look.");
             Console.WriteLine("Potion Vendor: Hello there! What can I interest you in today?");
-            
-            
+
+
             if (currentPlayer.PlayerGold < 2)
             {
                 Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
@@ -969,8 +973,8 @@ public static class WelcomeToTheGame
             Console.Clear();
             Console.WriteLine("You enter the shop and the merchant comes over to assist you.");
             Console.WriteLine("Arms Merchant: Welcome to my shop. How can I help you today?");
-            
-            
+
+
             if (currentPlayer.PlayerGold < 10)
             {
                 Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
@@ -1209,7 +1213,7 @@ public static class WelcomeToTheGame
                 {
                     newWeaponEquipped = true;
                 }
-                else if (weaponChoice > currentPlayer.InventoryArmors.Count() + 1 || weaponChoice < 1)
+                else if (weaponChoice > currentPlayer.InventoryWeapons.Count() + 1 || weaponChoice < 1)
                 {
                     Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
                     Console.ReadKey();
@@ -1265,7 +1269,7 @@ public static class WelcomeToTheGame
     }
     public static void BuySomethingMenu(int buyOption)
     {
-        switch(buyOption)
+        switch (buyOption)
         {
             case 1:
                 //Buy potions
@@ -1280,7 +1284,7 @@ public static class WelcomeToTheGame
     }
     public static void SellSomethingMenu(int sellOption)
     {
-        switch(sellOption)
+        switch (sellOption)
         {
             case 1:
                 //Sell potions
