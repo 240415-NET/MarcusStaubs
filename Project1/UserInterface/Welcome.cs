@@ -51,7 +51,7 @@ public static class WelcomeToTheGame
                         bool successfulLogin = LoginMenu();
                         if (successfulLogin)
                         {
-                            MainControlMenu();
+                            validInput = MainControlMenu();
                         }
                         else
                         {
@@ -178,7 +178,7 @@ public static class WelcomeToTheGame
         HelpMenu();
 
     }
-    public static void MainControlMenu()
+    public static bool MainControlMenu()
     {
         bool exitGame = false;
         int playerAction;
@@ -240,7 +240,7 @@ public static class WelcomeToTheGame
                     break;
                 case 7:
                     //Add in a save feature or ask if want to save.
-                    return;
+                    return true;
                 case 11:
                     HelpMenu();
                     break;
@@ -255,7 +255,9 @@ public static class WelcomeToTheGame
         if (amIDead)
         {
             GameOver();
+            return false;
         }
+        return true;
     }
     public static int DisplayCurrentLocation(int locationHash)
     {
@@ -296,11 +298,34 @@ public static class WelcomeToTheGame
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): North");
             }
-            Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+            if (currentPlayer.DoIHavePotions())
+            {
+                Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\t<D>rink Potion\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+            }
+            else
+            {
+                Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+            }
             keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
             userChoice = InputController.OutOfCombatInput(userInput);
-            if (userChoice != 0)
+            if (userChoice == 17 && currentPlayer.DoIHavePotions())
+            {
+                Potion drinkThis = PotionMenu();
+                if (drinkThis.ItemID == "potion0")
+                {
+                    userChoice = 0;
+                    Console.WriteLine("Well fine. Don't drink a potion then...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    currentPlayer.DrinkPotion(drinkThis);
+                    Console.WriteLine($"You drink a {drinkThis.ItemName}. Current HP: {currentPlayer.CurrentHitPoints}.");
+                    Console.ReadKey();
+                }
+            }
+            else if (userChoice != 0)
             {
                 exitCurrentRoom = true;
             }
@@ -329,7 +354,14 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             currentMonster.DisplayMonster(currentPlayer.Name, currentPlayer.CurrentHitPoints, currentPlayer.MaxHitPoints);
-            Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee?\t\t<H>elp");
+            if (currentPlayer.DoIHavePotions())
+            {
+                Console.WriteLine("\n\nDo you want to <A>ttack <F>lee or <D>rink a potion\t\t<H>elp");
+            }
+            else
+            {
+                Console.WriteLine("\n\nDo you want to <A>ttack or <F>lee\t\t<H>elp");
+            }
             keyPress = Console.ReadKey(true);
             userInput = keyPress.Key.ToString();
             userChoice = InputController.InCombatInput(userInput);
@@ -364,6 +396,26 @@ public static class WelcomeToTheGame
             else if (userChoice == 11)
             {
                 HelpMenu();
+            }
+            else if (userChoice == 17 && currentPlayer.DoIHavePotions())
+            {
+                Potion drinkThis = PotionMenu();
+                if (drinkThis.ItemID == "potion0")
+                {
+                    userChoice = 0;
+                    Console.WriteLine("Well fine. Don't drink a potion then...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    currentPlayer.DrinkPotion(drinkThis);
+                    Console.WriteLine($"You drink a {drinkThis.ItemName}. Current HP: {currentPlayer.CurrentHitPoints}.");
+                    Console.ReadKey();
+                }
+            }
+            else if (userChoice == 17 && !currentPlayer.DoIHavePotions())
+            {
+                userChoice = 0;
             }
             else if (userChoice == 0)
             {
@@ -502,7 +554,7 @@ public static class WelcomeToTheGame
                 }
             }
             Console.ResetColor();
-            Console.WriteLine($"There is nowhere to run. Press any key to attack the {bossMonster.Name}.");
+            Console.WriteLine($"There is nowhere to run and no time for a potion. Press any key to attack the {bossMonster.Name}.");
             Console.ReadKey();
             playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref bossMonster);
             if (playerAttack > 0)
@@ -791,23 +843,44 @@ public static class WelcomeToTheGame
     {
         Location currentLocation = locationReference[currentPlayer.CurrentLocation];
         bool exitTown = false;
-        int userChoice;
-        ConsoleKeyInfo keyPress;
         do
         {
+            Console.Clear();
             for (int i = 0; i < 17; i++)
             {
-                Console.WriteLine(currentLocation.LocationDisplay[i] + "     " + displayMap[i]);
+                Console.WriteLine(currentLocation.LocationDisplay[i]);
             }
             Console.WriteLine($"\nCurrent Location: {currentLocation.RoomName}");
+            Console.WriteLine("You have entered the village of CleverMadeUpName");
             Console.WriteLine(currentLocation.RoomDescription);
-            Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
+            Console.WriteLine("\nWhere would you like to go?");
+            Console.WriteLine("<D>ancing Dragon Inn\t\t<P>otion vendor\t\t<A>rms Merchant\t\t<L>eave Town\t\t<H>elp");
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            string userInput = keyPress.Key.ToString();
+            int userChoice = InputController.TownInput(userInput);
+            switch (userChoice)
+            {
+                case 1:
+                    InnMenu();
+                    break;
+                case 2:
+                    VendorMenu();
+                    break;
+                case 3:
+                    ArmsMerchantMenu();
+                    break;
+                case 4:
+                    exitTown = true;
+                    break;
+                default:
+                    Console.ReadKey();
+                    break;
+            }
         } while (!exitTown);
         /*
         Inn Menu
             Rest at Inn (different picture) - costs gold 
-            Have a drink - Costs 1 gold. Does nothing.  Maybe part of below rumors
-            Listen to rumors - Random list of stuff that could be said
+            Have a drink - Costs 1 gold. Does nothing.  Overhear chatter from patrons
         Vendor - Buys junk items / Sells potions
             Sell menu - List all items in player inventory or say nothing to sell
                 Option to sell x quantity or All
@@ -822,18 +895,92 @@ public static class WelcomeToTheGame
     }
     public static void InnMenu()
     {
-
+        //Draw an interior picture for the Inn
+        bool exitTheInn = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("You're in the Dancing Dragon Inn. For a small village, there are quite a few patrons.");
+            if (currentPlayer.PlayerGold < 1)
+            {
+                Console.WriteLine("You don't have any gold to spend. Press any key to return to town...");
+                Console.ReadKey();
+                exitTheInn = true;
+            }
+            else if (currentPlayer.PlayerGold >= 1 && currentPlayer.PlayerGold < 5)
+            {
+                Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  Can't afford a room (5 gold pieces)  <E>xit the Inn");
+            }
+            else
+            {
+                Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  <R>ent a room for the night (5 gold pieces)  <E>xit the Inn");
+            }
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            string userInput = keyPress.Key.ToString();
+            int userChoice = InputController.InventoryInput(userInput);
+            switch(userChoice)
+            {
+                case 1:
+                    Console.WriteLine("You pull up to the bar and order a mug of ale.");
+                    Console.WriteLine("While nursing your drink, you overhear chatter from the other patrons.");
+                    Console.WriteLine("<Random chitchat from other patrons that might actually say something eventually>");
+                    currentPlayer.PlayerGold -= 1;
+                    Console.ReadKey();
+                    break;
+                case 2:
+                    currentPlayer.RestInTheInn();
+                    Console.WriteLine("You go upstairs for a much needed bath and then settle into your cot for a restful night of sleep");
+                    //Different rest picture than the campfire. Maybe a bed or candle something?
+                    Console.ReadKey();
+                    break;
+                case 3:
+                    exitTheInn = true;
+                    break;
+                case 0:
+                    Console.ReadKey();
+                    break;    
+            }
+        } while (!exitTheInn);
     }
     public static void VendorMenu()
     {
-
+        //Maybe draw a picture of the potion vendor. Street cart with a guy there?
+        bool exitTheVendor = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("You walk over to the vendor's cart to have a look.");
+            Console.WriteLine("Potion Vendor: Hello there! What can I interest you in today?");
+            
+            
+            if (currentPlayer.PlayerGold < 2)
+            {
+                Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
+                Console.ReadKey();
+            }
+        } while (!exitTheVendor);
     }
     public static void ArmsMerchantMenu()
     {
-
+        //Maybe draw a picture of a Weapons and Armor shop counter with stuff on the walls behind it for this
+        bool exitTheMerchant = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("You enter the shop and the merchant comes over to assist you.");
+            Console.WriteLine("Arms Merchant: Welcome to my shop. How can I help you today?");
+            
+            
+            if (currentPlayer.PlayerGold < 10)
+            {
+                Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
+                Console.ReadKey();
+            }
+        } while (!exitTheMerchant);
     }
     public static void InventoryMenu()
     {
+        //Draw a picture for base inventory
         bool iMDone = false;
         if (currentPlayer.DoIHaveStuff())
         {
@@ -879,6 +1026,7 @@ public static class WelcomeToTheGame
     }
     public static void ViewInventoryMenu()
     {
+        //Probably use the same picture as base inventory
         bool exitViewInventory = false;
         do
         {
@@ -952,6 +1100,7 @@ public static class WelcomeToTheGame
     }
     public static void EquipMenu()
     {
+        //Maybe draw a picture of weapons and/or armor based on what options the user has
         if (currentPlayer.DoIHaveArmors() && currentPlayer.DoIHaveWeapons())
         {
             bool pickedWhatToEquip = false;
@@ -994,6 +1143,7 @@ public static class WelcomeToTheGame
     }
     public static void EquipArmorMenu()
     {
+        //Maybe display an image of just Armor stuffs
         bool newArmorEquipped = false;
         do
         {
@@ -1010,9 +1160,14 @@ public static class WelcomeToTheGame
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string keyPressString = keyPress.Key.ToString();
                 int armorChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
-                if (armorChoice > currentPlayer.InventoryArmors.Count())
+                if (armorChoice == currentPlayer.InventoryArmors.Count() + 1)
                 {
                     newArmorEquipped = true;
+                }
+                else if (armorChoice > currentPlayer.InventoryArmors.Count() + 1 || armorChoice < 1)
+                {
+                    Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
+                    Console.ReadKey();
                 }
                 else
                 {
@@ -1033,6 +1188,7 @@ public static class WelcomeToTheGame
     }
     public static void EquipWeaponMenu()
     {
+        //Maybe display and image of just weapon stuffs
         bool newWeaponEquipped = false;
         do
         {
@@ -1049,9 +1205,14 @@ public static class WelcomeToTheGame
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string keyPressString = keyPress.Key.ToString();
                 int weaponChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
-                if (weaponChoice > currentPlayer.InventoryWeapons.Count())
+                if (weaponChoice == currentPlayer.InventoryWeapons.Count() + 1)
                 {
                     newWeaponEquipped = true;
+                }
+                else if (weaponChoice > currentPlayer.InventoryArmors.Count() + 1 || weaponChoice < 1)
+                {
+                    Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
+                    Console.ReadKey();
                 }
                 else
                 {
@@ -1068,6 +1229,72 @@ public static class WelcomeToTheGame
                 newWeaponEquipped = false;
             }
         } while (!newWeaponEquipped);
+    }
+    public static Potion PotionMenu()
+    {
+        bool potionDrank = false;
+        Potion potionPicked = new Potion();
+        Console.WriteLine("Which potion would you like to use?");
+        for (int i = 0; i < currentPlayer.InventoryPotions.Count(); i++)
+        {
+            Console.WriteLine($"{i + 1}: {currentPlayer.InventoryPotions[i]}");
+        }
+        Console.WriteLine($"{currentPlayer.InventoryPotions.Count() + 1}: Don't drink a potion");
+        do
+        {
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            string keyPressString = keyPress.Key.ToString();
+            int potionChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
+            if (potionChoice == currentPlayer.InventoryPotions.Count() + 1)
+            {
+                return potionPicked;
+            }
+            else if (potionChoice > currentPlayer.InventoryPotions.Count() + 1 || potionChoice < 1)
+            {
+                Console.WriteLine("That wasn't an option. Pick an option or don't drink one.");
+                potionDrank = false;
+            }
+            else
+            {
+                potionPicked.CreateCopyOf(currentPlayer.InventoryPotions[potionChoice - 1]);
+                return potionPicked;
+            }
+        } while (!potionDrank);
+        return potionPicked;
+
+    }
+    public static void BuySomethingMenu(int buyOption)
+    {
+        switch(buyOption)
+        {
+            case 1:
+                //Buy potions
+                break;
+            case 2:
+                //Buy weapons
+                break;
+            case 3:
+                //Buy armors
+                break;
+        }
+    }
+    public static void SellSomethingMenu(int sellOption)
+    {
+        switch(sellOption)
+        {
+            case 1:
+                //Sell potions
+                break;
+            case 2:
+                //Sell weapons
+                break;
+            case 3:
+                //Sell armors
+                break;
+            case 4:
+                //Sell items
+                break;
+        }
     }
 }
 

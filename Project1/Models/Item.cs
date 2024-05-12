@@ -3,8 +3,8 @@ namespace Project1.Models;
 
 public class Item
 {
-    public string ItemID {get; set;}
-    public string ItemName {get; set;}
+    public string? ItemID {get; set;}
+    public string? ItemName {get; set;}
     public int ItemBaseValue {get; set;}
     public int QuantityOfItem {get; set;}
 
@@ -14,6 +14,10 @@ public class Item
         this.ItemName = ItemName;
         this.ItemBaseValue = ItemBaseValue;
         this.QuantityOfItem = QuantityOfItem;
+    }
+    public Item()
+    {
+
     }
     public override string ToString()
     {
@@ -86,7 +90,14 @@ public class Potion : Item
     {
         this.HPRestoration = HPRestoration;
     }
-
+    public Potion() : base()
+    {
+        this.ItemID = "potion0";
+        this.ItemName = "No potion";
+        this.ItemBaseValue = 0;
+        this.QuantityOfItem = 0;
+        this.HPRestoration = 0;
+    }
     public override string ToString()
     {
         if(QuantityOfItem > 1)
@@ -97,5 +108,13 @@ public class Potion : Item
         {
             return $"{this.QuantityOfItem} {this.ItemName}: Restores:{this.HPRestoration}HP.";
         }
+    }
+    public void CreateCopyOf(Potion potion)
+    {
+        this.ItemID = potion.ItemID;
+        this.ItemName = potion.ItemName;
+        this.ItemBaseValue = potion.ItemBaseValue;
+        this.QuantityOfItem = potion.QuantityOfItem;
+        this.HPRestoration = potion.HPRestoration;        
     }
 }

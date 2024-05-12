@@ -39,6 +39,8 @@ public class InputController
                 return 15;
             case "h":
                 return 11;
+            case "d":
+                return 17;
             default:
                 Console.WriteLine("I didn't understand what you wanted. Try again.");
                 Console.WriteLine("Press any key to continue...");
@@ -62,10 +64,8 @@ public class InputController
                 return 10;
             case "h":
                 return 11;
-            case "i":
-                return 17;
             case "d":
-                return 14;
+                return 17;
             default:
                 Console.WriteLine("I didn't understand what you wanted. Try again.");
                 Console.WriteLine("Press any key to continue...");
@@ -132,10 +132,84 @@ public class InputController
     }
     public static int TownInput(string userInput)
     {
+        userInput = userInput.ToLower();
+        if (String.IsNullOrEmpty(userInput))
+        {
+            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            return 0;
+        }
+        switch (userInput)
+        {
+            case "d":
+                return 1;
+            case "p":
+                return 2;
+            case "a":
+                return 3;
+            case "l":
+                return 4;
+            default:
+                Console.WriteLine("I didn't understand what you wanted. Try again.");
+                Console.WriteLine("Press any key to continue...");
+                return 0;
+        }
+    }
+    public static int InnInput(string userInput, int playerCash)
+    {
+        userInput = userInput.ToLower();
+        if (String.IsNullOrEmpty(userInput))
+        {
+            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            return 0;
+        }
+        if (userInput == "b" && playerCash >= 1)
+        {
+            return 1;
+        }
+        else if (userInput == "b" && playerCash < 1)
+        {
+            Console.WriteLine("You don't have enough gold to buy a drink");
+            return 0;
+        }
+        else if (userInput == "r" && playerCash >= 5)
+        {
+            return 2;
+        }
+        else if (userInput == "r" && playerCash < 5)
+        {
+            Console.WriteLine("You don't have enough gold to rent a room");
+            return 0;
+        }
+        else if (userInput == "e")
+        {
+            return 3;
+        }
+        Console.WriteLine("I didn't understand what you wanted. Try again.");
+        Console.WriteLine("Press any key to continue...");
         return 0;
     }
     public static int VendorInput(string userInput)
     {
+        userInput = userInput.ToLower();
+        if (String.IsNullOrEmpty(userInput))
+        {
+            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            return 0;
+        }
+        return 0;
+    }
+    public static int MerchantInput(string userInput)
+    {
+        userInput = userInput.ToLower();
+        if (String.IsNullOrEmpty(userInput))
+        {
+            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            return 0;
+        }
         return 0;
     }
 }
