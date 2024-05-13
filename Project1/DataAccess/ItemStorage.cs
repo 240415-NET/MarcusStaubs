@@ -3,10 +3,10 @@ using System.Text.Json;
 
 namespace Project1.Data;
 
-public class ItemStorage
+public class ItemStorage : IItemStorage
 {
     public static readonly string itemPath = "./TempDataStorage/ItemInfo.json";
-    public static void CreateInitialItemsList()
+    public void CreateInitialItemsList()
     {
         List<Item> items = new();
         Item spiderSilk = new Item("silk", "Spider Silk", 4, 1);
@@ -97,7 +97,7 @@ public class ItemStorage
         string itemsString = JsonSerializer.Serialize(allMyItems);
         File.WriteAllText(itemPath, itemsString);
     }
-    public static ItemDTO getAllMyItems()
+    public ItemDTO getAllMyItems()
     {
         ItemDTO allMyItems = JsonSerializer.Deserialize<ItemDTO>(File.ReadAllText(itemPath));
         return allMyItems;

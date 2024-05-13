@@ -26,8 +26,12 @@ Rest to heal
 	Can spawn monster based on location chance to spawn - Done
 
 Optional time permitting:
+	Pictures for Inn, Potion Vendor, Arms Merchant, Rest in Inn, Inventory, Drink Potion
 	Fill out storyline - Ick... last on my list
-	Buy/Sell equipment and inventory items
+	Add random chatter in the Inn when drinking
+	Add random after kill messages
+	
+	Buy/Sell equipment and inventory items - Done
 	Create a town - Done
 	Use items from inventory - Done
 	Pay to rest at inn with no monster spawn chance - Done

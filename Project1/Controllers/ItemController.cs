@@ -5,15 +5,16 @@ namespace Project1.Controllers;
 
 public class ItemController
 {
+    public static IItemStorage itemStorage = new ItemStorage();
     public static void LoadItemFile()
     {
-        ItemStorage.CreateInitialItemsList();
+        itemStorage.CreateInitialItemsList();
     }
 
     public static Dictionary<string,Item> GetAllGameItems()
     {
         Dictionary<string,Item> allGameItems = new();
-        ItemDTO itemsFromFile = ItemStorage.getAllMyItems();
+        ItemDTO itemsFromFile = itemStorage.getAllMyItems();
         foreach(Item item in itemsFromFile.Items)
         {
             allGameItems.Add(item.ItemID,item);
