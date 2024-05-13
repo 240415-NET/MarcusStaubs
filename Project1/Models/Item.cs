@@ -85,7 +85,8 @@ public class Weapon : Item
     public override string VendorSellingDisplay()
     {
         //Should add formatting to this output
-        return $"{ItemName}: Increases attack by {AttackIncrease} - {ItemBaseValue} gold pieces";
+        return String.Format(" {0,-27} |  {1,6} Attack  | {2,2} GP |",ItemName,AttackIncrease,ItemBaseValue);
+        //$"{ItemName}: Increases attack by {AttackIncrease} - {ItemBaseValue} gold pieces";
     }
     public override string PlayerSellingDisplay()
     {
@@ -136,7 +137,8 @@ public class Armor : Item
     public override string VendorSellingDisplay()
     {
         //Should add formatting to this output
-        return $"{ItemName}: Absorbs {MitigationIncrease} damage - {ItemBaseValue} gold pieces";
+        return String.Format(" {0,-27} |  Absorbs {1,2} Dmg | {2,2} GP |",ItemName,MitigationIncrease,ItemBaseValue);
+        //$"{ItemName}: Absorbs {MitigationIncrease} damage - {ItemBaseValue} gold pieces";
     }
     public override string PlayerSellingDisplay()
     {
@@ -187,7 +189,8 @@ public class Potion : Item
     public override string VendorSellingDisplay()
     {
         //Should add formatting to this output
-        return $"{ItemName}: restores {HPRestoration}HP - {ItemBaseValue} gold pieces";
+        return String.Format(" {0,-27} |  Restores {1,2} HP | {2,2} GP |",ItemName,HPRestoration,ItemBaseValue);
+        //return $"{ItemName}: restores {HPRestoration}HP - {ItemBaseValue} gold pieces";
     }
     public override string PlayerSellingDisplay()
     {

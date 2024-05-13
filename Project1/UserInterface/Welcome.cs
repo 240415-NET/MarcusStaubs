@@ -1017,7 +1017,7 @@ public static class WelcomeToTheGame
                     BuySomethingMenu(2);
                 }
             }
-            else if(userChoice == 2)
+            else if (userChoice == 2)
             {
                 if (currentPlayer.PlayerGold < 5)
                 {
@@ -1029,22 +1029,22 @@ public static class WelcomeToTheGame
                     BuySomethingMenu(3);
                 }
             }
-            else if(userChoice == 3)
+            else if (userChoice == 3)
             {
                 //Selling stuff
             }
-            else if(userChoice == 4)
+            else if (userChoice == 4)
             {
                 //Selling stuff
             }
-            else if(userChoice == 5)
+            else if (userChoice == 5)
             {
                 exitTheMerchant = true;
             }
             else
             {
 
-            }                                    
+            }
         } while (!exitTheMerchant);
     }
     public static void InventoryMenu()
@@ -1349,15 +1349,24 @@ public static class WelcomeToTheGame
             else
             {
                 Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
-                if(buyOption == 2){Console.WriteLine($"You are using {currentPlayer.EquippedWeapon.ItemName} which increases attack by {currentPlayer.EquippedWeapon.AttackIncrease}.");}
-                if(buyOption == 3){Console.WriteLine($"You are using {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");}
+                if (buyOption == 2) { Console.WriteLine($"You are using {currentPlayer.EquippedWeapon.ItemName} which increases attack by {currentPlayer.EquippedWeapon.AttackIncrease}."); }
+                if (buyOption == 3) { Console.WriteLine($"You are using {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
                 Console.WriteLine("\nWhat would you like to purchase?");
 
+                Console.WriteLine(" ___________________________________________________________");
+                Console.WriteLine("/   |                             |                 |       \\");
+                if (buyOption == 1) {Console.WriteLine("| # |        Potion Name          |   HP Restored   | Cost  |");}
+                if (buyOption == 2) {Console.WriteLine("| # |        Weapon Name          |   Attack Incr   | Cost  |");}
+                if (buyOption == 3) {Console.WriteLine("| # |         Armor Name          |   Absorb Dmg    | Cost  |");}
+                Console.WriteLine("|___|_____________________________|_________________|_______|");
+                Console.WriteLine("|   |                             |                 |       |");
                 for (int i = 0; i < saleOptions.Count(); i++)
                 {
-                    Console.WriteLine($"{i + 1}: {saleOptions[i].VendorSellingDisplay()}");
+                    Console.WriteLine($"| {i + 1} |{saleOptions[i].VendorSellingDisplay()}");
                 }
-                Console.WriteLine($"{saleOptions.Count() + 1} Leave without buying anything");
+                Console.WriteLine("|---|-----------------------------|-----------------|-------|");
+                Console.WriteLine($"| {saleOptions.Count() + 1} | Leave without purchase      |                 |       |");
+                Console.WriteLine("\\___|_____________________________|_________________|_______/");
                 try
                 {
                     ConsoleKeyInfo keyPress = Console.ReadKey(true);
