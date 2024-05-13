@@ -3,10 +3,11 @@ namespace Project1.Models;
 
 public class Item
 {
-    public string? ItemID {get; set;}
-    public string? ItemName {get; set;}
-    public int ItemBaseValue {get; set;}
-    public int QuantityOfItem {get; set;}
+    public string? ItemID { get; set; }
+    public string? ItemName { get; set; }
+    public int ItemBaseValue { get; set; }
+    public int QuantityOfItem { get; set; }
+    public int buyLvlRequirement { get; set; }
 
     public Item(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem)
     {
@@ -14,6 +15,7 @@ public class Item
         this.ItemName = ItemName;
         this.ItemBaseValue = ItemBaseValue;
         this.QuantityOfItem = QuantityOfItem;
+        this.buyLvlRequirement = 0;
     }
     public Item()
     {
@@ -21,7 +23,8 @@ public class Item
     }
     public override string ToString()
     {
-        if(QuantityOfItem > 1)
+        //Should add formatting to this output
+        if (QuantityOfItem > 1)
         {
             return $"{this.QuantityOfItem} {this.ItemName}s";
         }
@@ -30,21 +33,42 @@ public class Item
             return $"{this.QuantityOfItem} {this.ItemName}";
         }
     }
+    public virtual string VendorSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName} worth {ItemBaseValue} each";
+    }
+    public virtual string PlayerSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName} worth {ItemBaseValue / 3} each";
+    }
+    public void CopyFromOtherItem(Item itemToCopyFrom, int quantityForMe)
+    {
+        this.ItemID = itemToCopyFrom.ItemID;
+        this.ItemName = itemToCopyFrom.ItemName;
+        this.ItemBaseValue = itemToCopyFrom.ItemBaseValue;
+        this.QuantityOfItem = quantityForMe;
+        this.buyLvlRequirement = itemToCopyFrom.buyLvlRequirement;
+    }
 }
 
 public class Weapon : Item
 {
-    public int AttackIncrease {get; set;}
-    public int buyLvlRequirement {get; set;}
+    public int AttackIncrease { get; set; }
+    public Weapon() : base()
+    {
 
-    public Weapon(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int AttackIncrease, int buyLvlRequirement) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
+    }
+    public Weapon(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int AttackIncrease, int buyLvlRequirement) : base(ItemID, ItemName, ItemBaseValue, QuantityOfItem)
     {
         this.AttackIncrease = AttackIncrease;
         this.buyLvlRequirement = buyLvlRequirement;
     }
     public override string ToString()
     {
-        if(QuantityOfItem > 1)
+        //Should add formatting to this output
+        if (QuantityOfItem > 1)
         {
             return $"{this.QuantityOfItem} {this.ItemName}s: Attack increase:{this.AttackIncrease}.";
         }
@@ -53,25 +77,49 @@ public class Weapon : Item
             return $"{this.QuantityOfItem} {this.ItemName}: Attack increase:{this.AttackIncrease}.";
         }
     }
-        public string EquipOption()
+    public string EquipOption()
     {
+        //Should add formatting to this output
         return $"{this.ItemName}: Increases attack by {AttackIncrease}";
+    }
+    public override string VendorSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName}: Increases attack by {AttackIncrease} - {ItemBaseValue} gold pieces";
+    }
+    public override string PlayerSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName}: Increases attack by {AttackIncrease} - {ItemBaseValue / 3} gold pieces";
+    }
+    public void CopyFromOtherWeapon(Weapon itemToCopyFrom, int quantityForMe)
+    {
+        this.ItemID = itemToCopyFrom.ItemID;
+        this.ItemName = itemToCopyFrom.ItemName;
+        this.ItemBaseValue = itemToCopyFrom.ItemBaseValue;
+        this.QuantityOfItem = quantityForMe;
+        this.AttackIncrease = itemToCopyFrom.AttackIncrease;
+        this.buyLvlRequirement = itemToCopyFrom.buyLvlRequirement;
     }
 }
 
 public class Armor : Item
 {
-    public int MitigationIncrease {get; set;}
-    public int buyLvlRequirement {get; set;}
+    public int MitigationIncrease { get; set; }
 
-    public Armor(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int MitigationIncrease,int buyLvlRequirement) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
+    public Armor() : base()
+    {
+
+    }
+    public Armor(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int MitigationIncrease, int buyLvlRequirement) : base(ItemID, ItemName, ItemBaseValue, QuantityOfItem)
     {
         this.MitigationIncrease = MitigationIncrease;
         this.buyLvlRequirement = buyLvlRequirement;
     }
     public override string ToString()
     {
-        if(QuantityOfItem > 1)
+        //Should add formatting to this output
+        if (QuantityOfItem > 1)
         {
             return $"{this.QuantityOfItem} {this.ItemName}s: Armor:{this.MitigationIncrease}.";
         }
@@ -82,16 +130,35 @@ public class Armor : Item
     }
     public string EquipOption()
     {
+        //Should add formatting to this output
         return $"{this.ItemName}: Absorbs {MitigationIncrease} damage";
+    }
+    public override string VendorSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName}: Absorbs {MitigationIncrease} damage - {ItemBaseValue} gold pieces";
+    }
+    public override string PlayerSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName}: Absorbs {MitigationIncrease} damage - {ItemBaseValue / 3} gold pieces";
+    }
+    public void CopyFromOtherArmor(Armor itemToCopyFrom, int quantityForMe)
+    {
+        this.ItemID = itemToCopyFrom.ItemID;
+        this.ItemName = itemToCopyFrom.ItemName;
+        this.ItemBaseValue = itemToCopyFrom.ItemBaseValue;
+        this.QuantityOfItem = quantityForMe;
+        this.MitigationIncrease = itemToCopyFrom.MitigationIncrease;
+        this.buyLvlRequirement = itemToCopyFrom.buyLvlRequirement;
     }
 }
 
 public class Potion : Item
 {
-    public int HPRestoration {get; set;}
-    public int buyLvlRequirement {get; set;}
+    public int HPRestoration { get; set; }
 
-    public Potion(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int HPRestoration, int buyLvlRequirement) : base(ItemID,ItemName,ItemBaseValue, QuantityOfItem)
+    public Potion(string ItemID, string ItemName, int ItemBaseValue, int QuantityOfItem, int HPRestoration, int buyLvlRequirement) : base(ItemID, ItemName, ItemBaseValue, QuantityOfItem)
     {
         this.HPRestoration = HPRestoration;
         this.buyLvlRequirement = buyLvlRequirement;
@@ -107,7 +174,8 @@ public class Potion : Item
     }
     public override string ToString()
     {
-        if(QuantityOfItem > 1)
+        //Should add formatting to this output
+        if (QuantityOfItem > 1)
         {
             return $"{this.QuantityOfItem} {this.ItemName}s: Restores:{this.HPRestoration}HP";
         }
@@ -116,13 +184,23 @@ public class Potion : Item
             return $"{this.QuantityOfItem} {this.ItemName}: Restores:{this.HPRestoration}HP.";
         }
     }
-    public void CreateCopyOf(Potion potion)
+    public override string VendorSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName}: restores {HPRestoration}HP - {ItemBaseValue} gold pieces";
+    }
+    public override string PlayerSellingDisplay()
+    {
+        //Should add formatting to this output
+        return $"{ItemName}: restores {HPRestoration}HP - {ItemBaseValue / 3} gold pieces";
+    }
+    public void CreateCopyOf(Potion potion, int quantityForMe = 1)
     {
         this.ItemID = potion.ItemID;
         this.ItemName = potion.ItemName;
         this.ItemBaseValue = potion.ItemBaseValue;
-        this.QuantityOfItem = potion.QuantityOfItem;
-        this.HPRestoration = potion.HPRestoration;  
-        this.buyLvlRequirement = potion.buyLvlRequirement;      
+        this.QuantityOfItem = quantityForMe;
+        this.HPRestoration = potion.HPRestoration;
+        this.buyLvlRequirement = potion.buyLvlRequirement;
     }
 }

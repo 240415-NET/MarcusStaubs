@@ -1,0 +1,60 @@
+using Project1.Models;
+using Project1.Data;
+
+namespace Project1.Controllers;
+
+public class ItemController
+{
+    public static void LoadItemFile()
+    {
+        ItemStorage.CreateInitialItemsList();
+    }
+
+    public static Dictionary<string,Item> GetAllGameItems()
+    {
+        Dictionary<string,Item> allGameItems = new();
+        ItemDTO itemsFromFile = ItemStorage.getAllMyItems();
+        foreach(Item item in itemsFromFile.Items)
+        {
+            allGameItems.Add(item.ItemID,item);
+        }
+        foreach(Weapon weapon in itemsFromFile.Weapons)
+        {
+            allGameItems.Add(weapon.ItemID,weapon);
+        }
+        foreach(Armor armor in itemsFromFile.Armors)
+        {
+            allGameItems.Add(armor.ItemID,armor);
+        }
+        foreach(Potion potion in itemsFromFile.Potions)
+        {
+            allGameItems.Add(potion.ItemID,potion);
+        }                        
+
+        return allGameItems;
+    }    
+
+    public static List<Item> GetItemsForSale(int itemType, int playerLevel, Dictionary<string,Item> itemsToReference)
+    {
+        string strItemType = "";
+        switch (itemType)
+        {
+            case 1:
+                strItemType = "potion";
+                //Buy potions
+                break;
+            case 2:
+                strItemType = "weapon";
+                //Buy weapons
+                break;
+            case 3:
+                strItemType = "armor";
+                //Buy armors
+                break;
+        }
+        List<Item> itemsForSale = itemsToReference.Values.Where(x => x.ItemID.Contains(strItemType)).ToList();
+        List<Item> filteredItemsForSale = itemsForSale.Where(x => x.buyLvlRequirement <= playerLevel && x.buyLvlRequirement > 0).ToList();
+        return filteredItemsForSale;
+
+    }
+}

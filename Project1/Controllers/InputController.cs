@@ -199,7 +199,21 @@ public class InputController
             Console.WriteLine("Press any key to continue...");
             return 0;
         }
-        return 0;
+        switch (userInput)
+        {
+            case "b":
+                return 1;
+            case "s":
+                return 2;
+            case "i":
+                return 3;
+            case "r":
+                return 4;
+            default:
+                Console.WriteLine("I didn't understand what you wanted. Try again.");
+                Console.WriteLine("Press any key to continue...");
+                return 0;
+        }
     }
     public static int MerchantInput(string userInput)
     {
@@ -210,6 +224,51 @@ public class InputController
             Console.WriteLine("Press any key to continue...");
             return 0;
         }
-        return 0;
+        switch (userInput)
+        {
+            case "w":
+                return 1;
+            case "a":
+                return 2;
+            case "s":
+                return 3;
+            case "l":
+                return 4;
+            case "r":
+                return 5;                
+            default:
+                Console.WriteLine("I didn't understand what you wanted. Try again.");
+                Console.WriteLine("Press any key to continue...");
+                return 0;
+        }
+    }
+    public static int NeedAnIntegerFromUser(string userInput)
+    {
+        if (String.IsNullOrEmpty(userInput))
+        {
+            Console.WriteLine("That was... not very enlightening. You literally gave me nothing to work with. Try again.");
+            Console.WriteLine("Press any key to continue...");
+            return -1;
+        }
+        try
+        {
+            int numEntered = Convert.ToInt32(userInput);
+            if (numEntered < 0)
+            {
+                Console.WriteLine("You can't buy less than 0 of them. Try again.");
+                Console.WriteLine("Press any key to continue...");
+                return -1;
+            }
+            else
+            {
+                return numEntered;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("That wasn't a number. I'm asking you for a number...");
+            Console.WriteLine("Press any key to continue...");
+            return -1;
+        }
     }
 }

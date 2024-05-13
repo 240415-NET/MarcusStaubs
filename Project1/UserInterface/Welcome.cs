@@ -36,7 +36,7 @@ public static class WelcomeToTheGame
         //Load full map data from data source
         gameMap = MapController.LoadFullMap();
         //Load all items from data source
-        itemsReference = MapController.GetAllGameItems();
+        itemsReference = ItemController.GetAllGameItems();
         do
         {
             MainMenuDisplay();
@@ -64,8 +64,11 @@ public static class WelcomeToTheGame
                         break;
                     case 3:
                         return;
+                    case 995:
+                        BuySomethingMenu(1);
+                        break;
                     case 996:
-                        MapController.LoadItemFile();
+                        ItemController.LoadItemFile();
                         break;
                     case 997:
                         LocationController.RecreateLocationFile();
@@ -955,11 +958,36 @@ public static class WelcomeToTheGame
             Console.Clear();
             Console.WriteLine("You walk over to the vendor's cart to have a look.");
             Console.WriteLine("Potion Vendor: Hello there! What can I interest you in today?");
-
-
-            if (currentPlayer.PlayerGold < 2)
+            Console.WriteLine("<B>uy potions  <S>ell potions  Sell <I>tems  <R>eturn to village square.");
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            string userInput = keyPress.Key.ToString();
+            int userChoice = InputController.VendorInput(userInput);
+            if (userChoice == 1)
             {
-                Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
+                if (currentPlayer.PlayerGold < 2)
+                {
+                    Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    BuySomethingMenu(1);
+                }
+            }
+            else if (userChoice == 2)
+            {
+                //still gotta write selling stuff
+            }
+            else if (userChoice == 3)
+            {
+                //still gotta write selling stuff
+            }
+            else if (userChoice == 4)
+            {
+                exitTheVendor = true;
+            }
+            else
+            {
                 Console.ReadKey();
             }
         } while (!exitTheVendor);
@@ -973,13 +1001,50 @@ public static class WelcomeToTheGame
             Console.Clear();
             Console.WriteLine("You enter the shop and the merchant comes over to assist you.");
             Console.WriteLine("Arms Merchant: Welcome to my shop. How can I help you today?");
-
-
-            if (currentPlayer.PlayerGold < 10)
+            Console.WriteLine("Buy <W>eapons  Buy <A>rmor  <S>ell Weapons  Se<l>l Armor  <R>eturn to village square.");
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            string userInput = keyPress.Key.ToString();
+            int userChoice = InputController.MerchantInput(userInput);
+            if (userChoice == 1)
             {
-                Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
-                Console.ReadKey();
+                if (currentPlayer.PlayerGold < 10 || currentPlayer.PlayerLevel < 3)
+                {
+                    Console.WriteLine("I don't have any weapons to sell you that you can use and afford.\nCome back when you have more money or are higher level.");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    BuySomethingMenu(2);
+                }
             }
+            else if(userChoice == 2)
+            {
+                if (currentPlayer.PlayerGold < 5)
+                {
+                    Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    BuySomethingMenu(3);
+                }
+            }
+            else if(userChoice == 3)
+            {
+                //Selling stuff
+            }
+            else if(userChoice == 4)
+            {
+                //Selling stuff
+            }
+            else if(userChoice == 5)
+            {
+                exitTheMerchant = true;
+            }
+            else
+            {
+
+            }                                    
         } while (!exitTheMerchant);
     }
     public static void InventoryMenu()
@@ -1269,18 +1334,101 @@ public static class WelcomeToTheGame
     }
     public static void BuySomethingMenu(int buyOption)
     {
-        switch (buyOption)
+        bool exitShop = false;
+        bool gotAQuantityICanAfford = false;
+        List<Item> saleOptions = ItemController.GetItemsForSale(buyOption, currentPlayer.PlayerLevel, itemsReference);
+        do
         {
-            case 1:
-                //Buy potions
-                break;
-            case 2:
-                //Buy weapons
-                break;
-            case 3:
-                //Buy armors
-                break;
-        }
+            Console.Clear();
+            if (saleOptions.Count() < 1)
+            {
+                Console.WriteLine("Sorry, I don't have anything I can sell to you. Try checking again when you're stronger.");
+                Console.ReadKey();
+                exitShop = true;
+            }
+            else
+            {
+                Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
+                if(buyOption == 2){Console.WriteLine($"You are using {currentPlayer.EquippedWeapon.ItemName} which increases attack by {currentPlayer.EquippedWeapon.AttackIncrease}.");}
+                if(buyOption == 3){Console.WriteLine($"You are using {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");}
+                Console.WriteLine("\nWhat would you like to purchase?");
+
+                for (int i = 0; i < saleOptions.Count(); i++)
+                {
+                    Console.WriteLine($"{i + 1}: {saleOptions[i].VendorSellingDisplay()}");
+                }
+                Console.WriteLine($"{saleOptions.Count() + 1} Leave without buying anything");
+                try
+                {
+                    ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                    string keyPressString = keyPress.Key.ToString();
+                    int userChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
+                    if (userChoice == saleOptions.Count() + 1)
+                    {
+                        exitShop = true;
+                    }
+                    else if (userChoice > saleOptions.Count() + 1 || userChoice < 1)
+                    {
+                        Console.WriteLine("That wasn't an option. Please choose one of the displayed numbers.");
+                        Console.ReadKey();
+                        exitShop = false;
+                    }
+                    else
+                    {
+                        do
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
+                            Console.WriteLine($"How many {saleOptions[userChoice - 1].ItemName} would you like to buy?");
+                            string userInput = (Console.ReadLine() ?? "").Trim();
+                            int numToBuy = InputController.NeedAnIntegerFromUser(userInput);
+                            if (numToBuy == -1)
+                            {
+                                Console.ReadKey();
+                            }
+                            else
+                            {
+                                if (currentPlayer.PlayerGold < saleOptions[userChoice - 1].ItemBaseValue * numToBuy)
+                                {
+                                    Console.WriteLine("You can't afford that many. Pick a lower number.");
+                                    Console.ReadKey();
+                                    gotAQuantityICanAfford = false;
+                                }
+                                else
+                                {
+                                    switch (buyOption)
+                                    {
+                                        case 1:
+                                            Potion potionToBuy = new();
+                                            potionToBuy.CreateCopyOf((Potion)saleOptions[userChoice - 1], numToBuy);
+                                            currentPlayer.BuySomething(buyOption, potionToBuy);
+                                            break;
+                                        case 2:
+                                            Weapon weaponToBuy = new();
+                                            weaponToBuy.CopyFromOtherWeapon((Weapon)saleOptions[userChoice - 1], numToBuy);
+                                            currentPlayer.BuySomething(buyOption, weaponToBuy);
+                                            break;
+                                        case 3:
+                                            Armor armorToBuy = new();
+                                            armorToBuy.CopyFromOtherArmor((Armor)saleOptions[userChoice - 1], numToBuy);
+                                            currentPlayer.BuySomething(buyOption, armorToBuy);
+                                            break;
+                                    }
+                                    gotAQuantityICanAfford = true;
+                                }
+                            }
+                        } while (!gotAQuantityICanAfford);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("I didn't understand what you wanted. Please try again using one of the displayed number options.");
+                    Console.ReadKey();
+                    exitShop = false;
+                }
+
+            }
+        } while (!exitShop);
     }
     public static void SellSomethingMenu(int sellOption)
     {
