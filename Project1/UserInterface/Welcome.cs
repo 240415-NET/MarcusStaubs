@@ -1441,19 +1441,25 @@ public static class WelcomeToTheGame
     }
     public static void SellSomethingMenu(int sellOption)
     {
+        bool exitMerchant = false;
+        bool gotAQuantityICanSell = false;
         switch (sellOption)
         {
             case 1:
                 //Sell potions
+                //Get List of potions from Player's inventory
                 break;
             case 2:
                 //Sell weapons
+                //Get List of weapons from Player's inventory
                 break;
             case 3:
                 //Sell armors
+                //Get List of armors from Player's inventory
                 break;
             case 4:
                 //Sell items
+                //Get List of items from Player's inventory
                 break;
         }
     }

@@ -35,13 +35,13 @@ public class Item
     }
     public virtual string VendorSellingDisplay()
     {
-        //Should add formatting to this output
+        //This output should never really be called from anywhere
         return $"{ItemName} worth {ItemBaseValue} each";
     }
     public virtual string PlayerSellingDisplay()
     {
-        //Should add formatting to this output
-        return $"{ItemName} worth {ItemBaseValue / 3} each";
+        return String.Format(" {0,-27} |                 | {1,2} GP |",ItemName,ItemBaseValue/3);
+        //$"{ItemName} worth {ItemBaseValue / 3} each";
     }
     public void CopyFromOtherItem(Item itemToCopyFrom, int quantityForMe)
     {
@@ -84,14 +84,11 @@ public class Weapon : Item
     }
     public override string VendorSellingDisplay()
     {
-        //Should add formatting to this output
         return String.Format(" {0,-27} |  {1,6} Attack  | {2,2} GP |",ItemName,AttackIncrease,ItemBaseValue);
-        //$"{ItemName}: Increases attack by {AttackIncrease} - {ItemBaseValue} gold pieces";
     }
     public override string PlayerSellingDisplay()
     {
-        //Should add formatting to this output
-        return $"{ItemName}: Increases attack by {AttackIncrease} - {ItemBaseValue / 3} gold pieces";
+        return String.Format(" {0,-27} |  {1,6} Attack  | {2,2} GP |",ItemName,AttackIncrease,ItemBaseValue/3);
     }
     public void CopyFromOtherWeapon(Weapon itemToCopyFrom, int quantityForMe)
     {
@@ -136,14 +133,11 @@ public class Armor : Item
     }
     public override string VendorSellingDisplay()
     {
-        //Should add formatting to this output
         return String.Format(" {0,-27} |  Absorbs {1,2} Dmg | {2,2} GP |",ItemName,MitigationIncrease,ItemBaseValue);
-        //$"{ItemName}: Absorbs {MitigationIncrease} damage - {ItemBaseValue} gold pieces";
     }
     public override string PlayerSellingDisplay()
     {
-        //Should add formatting to this output
-        return $"{ItemName}: Absorbs {MitigationIncrease} damage - {ItemBaseValue / 3} gold pieces";
+        return String.Format(" {0,-27} |  Absorbs {1,2} Dmg | {2,2} GP |",ItemName,MitigationIncrease,ItemBaseValue/3);
     }
     public void CopyFromOtherArmor(Armor itemToCopyFrom, int quantityForMe)
     {
@@ -188,14 +182,11 @@ public class Potion : Item
     }
     public override string VendorSellingDisplay()
     {
-        //Should add formatting to this output
         return String.Format(" {0,-27} |  Restores {1,2} HP | {2,2} GP |",ItemName,HPRestoration,ItemBaseValue);
-        //return $"{ItemName}: restores {HPRestoration}HP - {ItemBaseValue} gold pieces";
     }
     public override string PlayerSellingDisplay()
     {
-        //Should add formatting to this output
-        return $"{ItemName}: restores {HPRestoration}HP - {ItemBaseValue / 3} gold pieces";
+        return String.Format(" {0,-27} |  Restores {1,2} HP | {2,2} GP |",ItemName,HPRestoration,ItemBaseValue/3);
     }
     public void CreateCopyOf(Potion potion, int quantityForMe = 1)
     {

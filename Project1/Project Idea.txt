@@ -26,11 +26,11 @@ Rest to heal
 	Can spawn monster based on location chance to spawn - Done
 
 Optional time permitting:
-	Use items from inventory
-	Create a town
-	Buy/Sell equipment and inventory items
-	Pay to rest at inn with no monster spawn chance
 	Fill out storyline - Ick... last on my list
+	Buy/Sell equipment and inventory items
+	Create a town - Done
+	Use items from inventory - Done
+	Pay to rest at inn with no monster spawn chance - Done
 	Create an inventory - Done	
 	View equipment/inventory - Done
 	Equip weapons/armor to improve attack / defense beyond base - Done
