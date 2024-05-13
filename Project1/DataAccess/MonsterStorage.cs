@@ -9,7 +9,10 @@ public class MonsterStorage : IMonsterStorage
     public Dictionary<int, MonsterData> GetMonsterList()
     {
         Dictionary<int, MonsterData> monsterCatalog = new Dictionary<int, MonsterData>();
-        //string filePath = "./TempDataStorage/Monsters.json";
+        if(!File.Exists(filePath))
+        {
+            FirstEverMonsterFileCreation();
+        }
         List<MonsterData> monsterDataList = JsonSerializer.Deserialize<List<MonsterData>>(File.ReadAllText(filePath));
         foreach(MonsterData myMonster in monsterDataList)
         {

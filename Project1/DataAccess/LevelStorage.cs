@@ -10,6 +10,10 @@ public class LevelStorage : ILevelStorage
     public Dictionary<int,LevelChange> GetLevelList()
     {
         Dictionary<int,LevelChange> levelReference = new();
+        if(!File.Exists(filePath))
+        {
+            CreateLevelFile();
+        }
         List<LevelChange> levels = JsonSerializer.Deserialize<List<LevelChange>>(File.ReadAllText(filePath));
         foreach(LevelChange level in levels)
         {

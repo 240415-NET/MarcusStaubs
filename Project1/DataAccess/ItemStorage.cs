@@ -99,6 +99,10 @@ public class ItemStorage : IItemStorage
     }
     public ItemDTO getAllMyItems()
     {
+        if(!File.Exists(itemPath))
+        {
+            CreateInitialItemsList();
+        }
         ItemDTO allMyItems = JsonSerializer.Deserialize<ItemDTO>(File.ReadAllText(itemPath));
         return allMyItems;
     }

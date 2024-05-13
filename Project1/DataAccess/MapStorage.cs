@@ -9,6 +9,10 @@ public class MapStorage : IMapStorage
 
     public List<string> GetGameMap()
     {
+        if(!File.Exists(filePath))
+        {
+            InitializeGameMap();
+        }
         List<string> gameMap = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(filePath));
         return gameMap;
     }
@@ -35,13 +39,6 @@ public class MapStorage : IMapStorage
         gameMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         string gameMapString = JsonSerializer.Serialize(gameMap);
         File.WriteAllText(filePath, gameMapString);
-    
-    //^TTTTTTT TT
-    //^TTTTTT   T
-    //^TTTTTTT TT
-    //^  _  TTTTT
-    //^ /_\ TTTTT
-    //^ ||  TTTTT
-    //^^^^^^^^^^^
+
     }
 }

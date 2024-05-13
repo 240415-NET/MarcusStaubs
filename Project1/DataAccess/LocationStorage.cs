@@ -9,7 +9,10 @@ public class LocationStorage : ILocationStorage
     public Dictionary<int, Location> GetLocationsList()
     {
         Dictionary<int, Location> locationReference = new();
-        //string filePath = "./TempDataStorage/Locations.json";
+        if(!File.Exists(filePath))
+        {
+            CreateLocationFile();
+        }
         List<Location> locations = JsonSerializer.Deserialize<List<Location>>(File.ReadAllText(filePath));
         foreach (Location location in locations)
         {
