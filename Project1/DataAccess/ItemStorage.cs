@@ -42,7 +42,7 @@ public class ItemStorage
 
 
         List<Potion> potions = new();
-        Potion mnrHealingPotion = new Potion("potion1", "Minor Healing Potion", 2, 1, 5, 1);
+        Potion mnrHealingPotion = new Potion("potion1", "Minor Healing Potion", 3, 1, 5, 1);
         potions.Add(mnrHealingPotion);
         Potion lssHealingPotion = new Potion("potion2", "Lesser Healing Potion", 5, 1, 10, 5);
         potions.Add(lssHealingPotion);

@@ -40,7 +40,7 @@ public class Item
     }
     public virtual string PlayerSellingDisplay()
     {
-        return String.Format(" {0,-27} |                 | {1,2} GP |",ItemName,ItemBaseValue/3);
+        return String.Format(" {0,3} | {1,-27} |                 | {2,2} GP |", QuantityOfItem, ItemName, ItemBaseValue / 3);
         //$"{ItemName} worth {ItemBaseValue / 3} each";
     }
     public void CopyFromOtherItem(Item itemToCopyFrom, int quantityForMe)
@@ -84,11 +84,11 @@ public class Weapon : Item
     }
     public override string VendorSellingDisplay()
     {
-        return String.Format(" {0,-27} |  {1,6} Attack  | {2,2} GP |",ItemName,AttackIncrease,ItemBaseValue);
+        return String.Format(" {0,-27} |  {1,6} Attack  | {2,2} GP |", ItemName, AttackIncrease, ItemBaseValue);
     }
     public override string PlayerSellingDisplay()
     {
-        return String.Format(" {0,-27} |  {1,6} Attack  | {2,2} GP |",ItemName,AttackIncrease,ItemBaseValue/3);
+        return String.Format(" {0,3} | {1,-27} |  {2,6} Attack  | {3,2} GP |", QuantityOfItem, ItemName, AttackIncrease, ItemBaseValue / 3);
     }
     public void CopyFromOtherWeapon(Weapon itemToCopyFrom, int quantityForMe)
     {
@@ -133,11 +133,11 @@ public class Armor : Item
     }
     public override string VendorSellingDisplay()
     {
-        return String.Format(" {0,-27} |  Absorbs {1,2} Dmg | {2,2} GP |",ItemName,MitigationIncrease,ItemBaseValue);
+        return String.Format(" {0,-27} |  Absorbs {1,2} Dmg | {2,2} GP |", ItemName, MitigationIncrease, ItemBaseValue);
     }
     public override string PlayerSellingDisplay()
     {
-        return String.Format(" {0,-27} |  Absorbs {1,2} Dmg | {2,2} GP |",ItemName,MitigationIncrease,ItemBaseValue/3);
+        return String.Format(" {0,3} | {1,-27} |  Absorbs {2,2} Dmg | {3,2} GP |", QuantityOfItem, ItemName, MitigationIncrease, ItemBaseValue / 3);
     }
     public void CopyFromOtherArmor(Armor itemToCopyFrom, int quantityForMe)
     {
@@ -182,11 +182,11 @@ public class Potion : Item
     }
     public override string VendorSellingDisplay()
     {
-        return String.Format(" {0,-27} |  Restores {1,2} HP | {2,2} GP |",ItemName,HPRestoration,ItemBaseValue);
+        return String.Format(" {0,-27} |  Restores {1,2} HP | {2,2} GP |", ItemName, HPRestoration, ItemBaseValue);
     }
     public override string PlayerSellingDisplay()
     {
-        return String.Format(" {0,-27} |  Restores {1,2} HP | {2,2} GP |",ItemName,HPRestoration,ItemBaseValue/3);
+        return String.Format(" {0,3} | {1,-27} |  Restores {2,2} HP | {3,2} GP |", QuantityOfItem, ItemName, HPRestoration, ItemBaseValue / 3);
     }
     public void CreateCopyOf(Potion potion, int quantityForMe = 1)
     {

@@ -438,4 +438,42 @@ public class Player : LivingThing
         }
         PlayerGold += thingItself.ItemBaseValue / 3 * thingItself.QuantityOfItem;
     }
+    public List<Item> GetStuffToSell(int typeOfThing)
+    {
+        List<Item> itemsToSell = new();
+        switch (typeOfThing)
+        {
+            case 1:
+                foreach (Item potion in InventoryPotions)
+                {
+                    itemsToSell.Add(potion);
+                }
+                break;
+            case 2:
+                foreach (Item weapon in InventoryWeapons)
+                {
+                    if (weapon.ItemBaseValue / 3 >= 1)
+                    {
+                        itemsToSell.Add(weapon);
+                    }
+                }
+                break;
+            case 3:
+                foreach (Item armor in InventoryArmors)
+                {
+                    if (armor.ItemBaseValue / 3 >= 1)
+                    {
+                        itemsToSell.Add(armor);
+                    }
+                }
+                break;
+            case 4:
+                foreach (Item item in InventoryItems)
+                {
+                    itemsToSell.Add(item);
+                }
+                break;
+        }
+        return itemsToSell;
+    }
 }

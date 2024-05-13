@@ -976,11 +976,11 @@ public static class WelcomeToTheGame
             }
             else if (userChoice == 2)
             {
-                //still gotta write selling stuff
+                SellSomethingMenu(1);
             }
             else if (userChoice == 3)
             {
-                //still gotta write selling stuff
+                SellSomethingMenu(4);
             }
             else if (userChoice == 4)
             {
@@ -1031,11 +1031,11 @@ public static class WelcomeToTheGame
             }
             else if (userChoice == 3)
             {
-                //Selling stuff
+                SellSomethingMenu(2);
             }
             else if (userChoice == 4)
             {
-                //Selling stuff
+                SellSomethingMenu(3);
             }
             else if (userChoice == 5)
             {
@@ -1355,9 +1355,9 @@ public static class WelcomeToTheGame
 
                 Console.WriteLine(" ___________________________________________________________");
                 Console.WriteLine("/   |                             |                 |       \\");
-                if (buyOption == 1) {Console.WriteLine("| # |        Potion Name          |   HP Restored   | Cost  |");}
-                if (buyOption == 2) {Console.WriteLine("| # |        Weapon Name          |   Attack Incr   | Cost  |");}
-                if (buyOption == 3) {Console.WriteLine("| # |         Armor Name          |   Absorb Dmg    | Cost  |");}
+                if (buyOption == 1) { Console.WriteLine("| # |        Potion Name          |   HP Restored   | Cost  |"); }
+                if (buyOption == 2) { Console.WriteLine("| # |        Weapon Name          |   Attack Incr   | Cost  |"); }
+                if (buyOption == 3) { Console.WriteLine("| # |         Armor Name          |   Absorb Dmg    | Cost  |"); }
                 Console.WriteLine("|___|_____________________________|_________________|_______|");
                 Console.WriteLine("|   |                             |                 |       |");
                 for (int i = 0; i < saleOptions.Count(); i++)
@@ -1443,25 +1443,117 @@ public static class WelcomeToTheGame
     {
         bool exitMerchant = false;
         bool gotAQuantityICanSell = false;
-        switch (sellOption)
+        List<Item> itemsToSell = new();
+        do
         {
-            case 1:
-                //Sell potions
-                //Get List of potions from Player's inventory
-                break;
-            case 2:
-                //Sell weapons
-                //Get List of weapons from Player's inventory
-                break;
-            case 3:
-                //Sell armors
-                //Get List of armors from Player's inventory
-                break;
-            case 4:
-                //Sell items
-                //Get List of items from Player's inventory
-                break;
-        }
+            itemsToSell.Clear();
+            itemsToSell = currentPlayer.GetStuffToSell(sellOption);
+            Console.Clear();
+            if (itemsToSell.Count() < 1)
+            {
+                Console.WriteLine("Nothing to sell. Go get some stuff!");
+                Console.ReadKey();
+                exitMerchant = true;
+            }
+            else
+            {
+                Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
+                if (sellOption == 2) { Console.WriteLine($"You are using {currentPlayer.EquippedWeapon.ItemName} which increases attack by {currentPlayer.EquippedWeapon.AttackIncrease}."); }
+                if (sellOption == 3) { Console.WriteLine($"You are using {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
+                Console.WriteLine("\nWhat would you like to sell?");
+
+                Console.WriteLine(" _________________________________________________________________");
+                Console.WriteLine("/   |     |                             |                 |       \\");
+                if (sellOption == 1) { Console.WriteLine("| # | Qty |        Potion Name          |   HP Restored   | Value |"); }
+                if (sellOption == 2) { Console.WriteLine("| # | Qty |        Weapon Name          |   Attack Incr   | Value |"); }
+                if (sellOption == 3) { Console.WriteLine("| # | Qty |         Armor Name          |   Absorb Dmg    | Value |"); }
+                if (sellOption == 4) { Console.WriteLine("| # | Qty |         Item Name           |                 | Value |"); }
+                Console.WriteLine("|___|_____|_____________________________|_________________|_______|");
+                Console.WriteLine("|   |     |                             |                 |       |");
+                for (int i = 0; i < itemsToSell.Count(); i++)
+                {
+                    Console.WriteLine($"| {i + 1} |{itemsToSell[i].PlayerSellingDisplay()}");
+                }
+                Console.WriteLine("|---|-----|-----------------------------|-----------------|-------|");
+                Console.WriteLine($"| {itemsToSell.Count() + 1} |     | Leave without selling       |                 |       |");
+                Console.WriteLine("\\___|_____|_____________________________|_________________|_______/");
+                try
+                {
+                    ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                    string keyPressString = keyPress.Key.ToString();
+                    int userChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
+                    if (userChoice == itemsToSell.Count() + 1)
+                    {
+                        exitMerchant = true;
+                    }
+                    else if (userChoice > itemsToSell.Count() + 1 || userChoice < 1)
+                    {
+                        Console.WriteLine("That wasn't an option. Please choose one of the displayed numbers.");
+                        Console.ReadKey();
+                        exitMerchant = false;
+                    }
+                    else
+                    {
+                        do
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
+                            Console.WriteLine($"You have {itemsToSell[userChoice - 1].QuantityOfItem} to sell.");
+                            Console.WriteLine($"How many would you like to sell for {itemsToSell[userChoice - 1].ItemBaseValue/3} GP each?");
+                            string userInput = (Console.ReadLine() ?? "").Trim();
+                            int numToSell = InputController.NeedAnIntegerFromUser(userInput);
+                            if (numToSell == -1)
+                            {
+                                Console.ReadKey();
+                            }
+                            else
+                            {
+                                if (numToSell > itemsToSell[userChoice - 1].QuantityOfItem)
+                                {
+                                    Console.WriteLine("You don't have that many. Pick a lower number.");
+                                    Console.ReadKey();
+                                    gotAQuantityICanSell = false;
+                                }
+                                else
+                                {
+                                    switch (sellOption)
+                                    {
+                                        case 1:
+                                            Potion potionToSell = new();
+                                            potionToSell.CreateCopyOf((Potion)itemsToSell[userChoice - 1], numToSell);
+                                            currentPlayer.SellSomething(sellOption, potionToSell);
+                                            break;
+                                        case 2:
+                                            Weapon weaponToSell = new();
+                                            weaponToSell.CopyFromOtherWeapon((Weapon)itemsToSell[userChoice - 1], numToSell);
+                                            currentPlayer.SellSomething(sellOption, weaponToSell);
+                                            break;
+                                        case 3:
+                                            Armor armorToSell = new();
+                                            armorToSell.CopyFromOtherArmor((Armor)itemsToSell[userChoice - 1], numToSell);
+                                            currentPlayer.SellSomething(sellOption, armorToSell);
+                                            break;
+                                        case 4:
+                                            Item itemToSell = new();
+                                            itemToSell.CopyFromOtherItem(itemsToSell[userChoice - 1], numToSell);
+                                            currentPlayer.SellSomething(sellOption, itemToSell);
+                                            break;
+                                    }
+                                    gotAQuantityICanSell = true;
+                                }
+                            }
+                        } while (!gotAQuantityICanSell);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("I didn't understand what you wanted. Please try again using one of the displayed number options.");
+                    Console.ReadKey();
+                    exitMerchant = false;
+                }
+
+            }
+        } while (!exitMerchant);
     }
 }
 
