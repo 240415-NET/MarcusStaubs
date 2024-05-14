@@ -904,6 +904,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            DrawMeAPicture("tapRoom");
             Console.WriteLine("You're in the Dancing Dragon Inn. For a small village, there are quite a few patrons.");
             if (currentPlayer.PlayerGold < 1)
             {
@@ -934,8 +935,13 @@ public static class WelcomeToTheGame
                         Console.ReadKey();
                         break;
                     case 2:
+                        Console.Clear();
+                        Console.WriteLine("You go upstairs for a much needed bath");
+                        DrawMeAPicture("bathTime");
+                        Thread.Sleep(3000);
+                        Console.Clear();
                         currentPlayer.RestInTheInn();
-                        Console.WriteLine("You go upstairs for a much needed bath and then settle into your cot for a restful night of sleep");
+                        Console.WriteLine("Then settle into your cot for a restful night of sleep");
                         //Different rest picture than the campfire. Maybe a bed or candle something?
                         Console.ReadKey();
                         break;
@@ -1305,6 +1311,7 @@ public static class WelcomeToTheGame
     {
         bool potionDrank = false;
         Potion potionPicked = new Potion();
+        DrawMeAPicture("potions");
         Console.WriteLine("Which potion would you like to use?");
         for (int i = 0; i < currentPlayer.InventoryPotions.Count(); i++)
         {
@@ -1593,6 +1600,25 @@ public static class WelcomeToTheGame
             Console.WriteLine("               ~~~        ~~         ~~          ");
         }
 
+        if (pictureName == "bathTime")
+        {
+            Console.WriteLine("        o    .   _     .");
+            Console.WriteLine("          .     (_)         o");
+            Console.WriteLine("   o     @@@@@@           _       o");
+            Console.WriteLine("  _     @@@@@@@@  .   o  (_)   .");
+            Console.WriteLine(" (_)    @@@@ e(     O             _");
+            Console.WriteLine(" o       @@' _/   ,_ ,  o   o    (_)");
+            Console.WriteLine("  . O    _/ (_   / _/      .  ,        o");
+            Console.WriteLine("     o8o/    \\_/ / ,-.  ,oO8/( -TT");
+            Console.WriteLine("    o8o8O | | |  / /   \\Oo8OOo8Oo||     O");
+            Console.WriteLine("   Oo(\"\"o8\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"8oo\"\"\"\"\"\"\")");
+            Console.WriteLine("  _   `\\`'                  `'   /'   o");
+            Console.WriteLine(" (_)    \\                       /    _   .");
+            Console.WriteLine("      O  \\           _         /    (_)");
+            Console.WriteLine("o   .     `-. .----<(o)_--. .-'");
+            Console.WriteLine("   --------(_/------(_<_/--\\_)--------            ");
+        }
+
         if (pictureName == "restInn")
         {
             Console.WriteLine("                            @@@@");
@@ -1645,6 +1671,54 @@ public static class WelcomeToTheGame
             Console.WriteLine("           \\ [      ]__________________________|[      ]");
             Console.WriteLine("            \\[______]                          \\[______]");
 
+        }
+
+        if (pictureName == "tapRoom")
+        {
+            Console.WriteLine(" |    |    |    |____|____|____|____|____|/    |__  __|    |    |   o|    \\    |");
+            Console.WriteLine("_|____|____|____| _____________________  |     |  \\/  ,,;;;;;,, |    |    |    |");
+            Console.WriteLine("_______________  |   __         __   | | |     |    ,;;:::::::;;,    |    |    |");
+            Console.WriteLine("               | |   )(   ___   )(   | | |     |   ,;;::' , ':::;,   |    |    |");
+            Console.WriteLine("               | |  (  )  )-(  (  )  o | |  8  |   ;;::  /(   ::;;   |    |   / ");
+            Console.WriteLine("               | |__|  |_(   )_|  |_( )| |     /   ;;:: | '\\  ::;;   |  o |   \\ ");
+            Console.WriteLine("               | |__|__|_|___|_|__|_|_|| |     \\   ';;::.\\_/.::;;'___|    |    |");
+            Console.WriteLine("               | |_____________________| |     |    ';:::\\-/:::;'    |    |    |");
+            Console.WriteLine("               | |  )-(   __    )(   | | |     O      '';| |;'' |    |    |    |");
+            Console.WriteLine("               | | (   )  )(   (  )  | | |     |      |  '-'    |   / \\   |    8");
+            Console.WriteLine("               | |_|   |_(  )__|  |__| | |     |      |    |    |   \\ /   |    |");
+            Console.WriteLine("_______________| |_|___|_|__|__|__|___\\| |     /\\     |    |    |    |    |    |");
+            Console.WriteLine("_________________|__________________ ____|     \\/     |    |    |    |    |    |");
+            Console.WriteLine(" |    |    |    |    |__  | |\\      \\     \\    |__/-__|    |    |    |    |    |");
+            Console.WriteLine(" |    |    |    |    |)(  | | \\      \\    |    |      |    |    |    |    |    )");
+            Console.WriteLine("_|____|____|____|____( -)_|_|__\\______\\   |    |      0    |    |    |    |   ( ");
+            Console.WriteLine("                     {__}             `\\  |    /      |    |    |    |    | __..");
+            Console.WriteLine("________________________________________\\ |    |      |    |    |    |  ,-='  /");
+            Console.WriteLine("                                        |_|____|      |    |    | ___|_:--..____");
+            Console.WriteLine("_____       _____         _____      ___|_//=/  \\     |    |    |/ /    \\.,_____");
+            Console.WriteLine("_/_\\_|     |_/_\\_|       |_/_\\_|    |_/_\\_|=|    |    |    |    / /             ");
+            Console.WriteLine("|| ||       || ||         || ||      || |||=|~-, |____|____/\\__.-.--------------");
+            Console.WriteLine("|| ||       || ||         || ||      || |||=|^.`;|             | |______________");
+            Console.WriteLine("|| ||_______|| ||_________|| ||______||_||\\\\=\\`=.:             | | |            ");
+            Console.WriteLine("||=||       ||=||         ||=||      ||=||\"\"\"`^-,`.            | | |            ");
+            Console.WriteLine("|| ||       || ||         || ||      || ||   `.~,'             | |_]            ");
+
+        }
+
+        if (pictureName == "potions")
+        {
+            Console.WriteLine("                           _ô_             ");
+            Console.WriteLine("                          (___)               ");
+            Console.WriteLine("           _ô_             | |       _ô_      ");
+            Console.WriteLine("          (___)           _|_|_     (___)  ");
+            Console.WriteLine("           | |           . ___ .     | |   ");
+            Console.WriteLine("          _|_|_         /       \\   _|_|_     ");
+            Console.WriteLine("         . ___ .       /         \\ . ___ .    ");
+            Console.WriteLine("        /       \\     /           /       \\   ");
+            Console.WriteLine("       /~~~~~~~~~\\   (~~~~~~~~~~~/         \\  ");
+            Console.WriteLine("      /~          \\   \\  ~     ~/~~~~~~~~~~~\\ ");
+            Console.WriteLine("     (       ~     )   '.______(             )");
+            Console.WriteLine("      \\  ~     ~  /             \\  ~     ~  / ");
+            Console.WriteLine("       '._______.'               '._______.'      ");
         }
     }
 }
