@@ -1,4 +1,5 @@
 using Project1.Controllers;
+using Project1.UserInterfaces;
 
 namespace Project1.Models;
 
@@ -90,6 +91,7 @@ public class Player : LivingThing
     }
     public void RestInTheInn()
     {
+        WelcomeToTheGame.DrawMeAPicture("restInn");
         PlayerGold -= 5;
         CurrentHitPoints = MaxHitPoints;
     }

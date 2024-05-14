@@ -956,6 +956,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            DrawMeAPicture("vendor");
             Console.WriteLine("You walk over to the vendor's cart to have a look.");
             Console.WriteLine("Potion Vendor: Hello there! What can I interest you in today?");
             Console.WriteLine("<B>uy potions  <S>ell potions  Sell <I>tems  <R>eturn to village square.");
@@ -999,6 +1000,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            DrawMeAPicture("merchant");
             Console.WriteLine("You enter the shop and the merchant comes over to assist you.");
             Console.WriteLine("Arms Merchant: Welcome to my shop. How can I help you today?");
             Console.WriteLine("Buy <W>eapons  Buy <A>rmor  <S>ell Weapons  Se<l>l Armor  <R>eturn to village square.");
@@ -1499,7 +1501,7 @@ public static class WelcomeToTheGame
                             Console.Clear();
                             Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
                             Console.WriteLine($"You have {itemsToSell[userChoice - 1].QuantityOfItem} to sell.");
-                            Console.WriteLine($"How many would you like to sell for {itemsToSell[userChoice - 1].ItemBaseValue/3} GP each?");
+                            Console.WriteLine($"How many would you like to sell for {itemsToSell[userChoice - 1].ItemBaseValue / 3} GP each?");
                             string userInput = (Console.ReadLine() ?? "").Trim();
                             int numToSell = InputController.NeedAnIntegerFromUser(userInput);
                             if (numToSell == -1)
@@ -1554,6 +1556,96 @@ public static class WelcomeToTheGame
 
             }
         } while (!exitMerchant);
+    }
+    public static void DrawMeAPicture(string pictureName)
+    {
+        if (pictureName == "vendor")
+        {
+            Console.WriteLine("                            _           _       | |");
+            Console.WriteLine("                           (c)____c____(c)      | |");
+            Console.WriteLine("                            \\ ........../       | |");
+            Console.WriteLine("                             |.........|        | |");
+            Console.WriteLine("                              |=======|         | |");
+            Console.WriteLine("                             __o)\"\"\"\"::?        | |");
+            Console.WriteLine("                            C__    c)::;       _| |________________________ ");
+            Console.WriteLine("                               >--   ::       |____ _____ _________________");
+            Console.WriteLine("                               (____/             | _____`-' |  -|      |.'");
+            Console.WriteLine("                               } /\"\"|          ,.-'   |   '-.| - |      |__");
+            Console.WriteLine("                    __/       (|V ^ )\\       .' \\     |     / '.-|      | -");
+            Console.WriteLine("                    o | _____/ |#/ / |      /    \\    |    /    \\=======|'.");
+            Console.WriteLine("           @        o_|}|_____/|/ /  |     ' -._  \\   |   /  _.- ' _____|__");
+            Console.WriteLine("                          _____/ /   |    :     '-. .'\"'. .-'     :     |;;");
+            Console.WriteLine("              ======ooo}{|______)#   |    ;--------| (o) |--------;========");
+            Console.WriteLine("          ~~~~ ;    ;          ###---|8   :     _.- '._.' -._     :     |--");
+            Console.WriteLine("        ____;_____;____        ###====     . _.'  /   |  \\   '._ .______|==");
+            Console.WriteLine("       (///0///@///@///)       ###@@@@|     \\    /    |   \\     /");
+            Console.WriteLine("       /~~~~~~~~~~~~~~~\\       ###@@@@|      `. /     |    \\  .'");
+            Console.WriteLine("      |                 |      ###@@@@|        ` . _ _|_ _ .");
+            Console.WriteLine("      |                 |      ###xxxxx  \\/     ..-       -..");
+            Console.WriteLine("      |                 |      ###|| |   ~~");
+            Console.WriteLine("      \\~~~~~~~~~~~~~~~~~/       | || |         .._");
+            Console.WriteLine("       \\               /        C |C |   ");
+            Console.WriteLine("        \\_____________/          || ||    \\|/");
+            Console.WriteLine(" v    \\/ (o)(o) (o)(o)           || ::    ~~~");
+            Console.WriteLine(" ~    ~~                      Ccc__)__)                 \\/");
+            Console.WriteLine("  \\|/      ~   @* & ~                                   ~~");
+            Console.WriteLine("   ~           \\|/        !!        \\ !/ ");
+            Console.WriteLine("               ~~~        ~~         ~~          ");
+        }
+
+        if (pictureName == "restInn")
+        {
+            Console.WriteLine("                            @@@@");
+            Console.WriteLine("                           @@@@@@");
+            Console.WriteLine("                           @ o o |");
+            Console.WriteLine("                           |  >  |");
+            Console.WriteLine("                           | ._. |");
+            Console.WriteLine("                            \\___/");
+            Console.WriteLine("                           __| |__");
+            Console.WriteLine("                          /       \\");
+            Console.WriteLine("                         | |     | |");
+            Console.WriteLine("        _________________| |     | |_____________---__");
+            Console.WriteLine("       /                 | |_____| |         /  /  / /|");
+            Console.WriteLine("      /                  /_|  _  |_\\        /  /  / / |");
+            Console.WriteLine("     /                    / / / /          /  /__/ / /|");
+            Console.WriteLine("    /____________________/ / / /__________/___\\_/_/ / |");
+            Console.WriteLine("    |____________________| |_| |__________________|/  |");
+            Console.WriteLine("    |____________________| |_| |__________________|   /");
+            Console.WriteLine("____|              |     | | | | ||               |  /");
+            Console.WriteLine("    | o          o | o         o || o           o | /");
+            Console.WriteLine("    |______________|_____________||_______________|/");
+            Console.WriteLine("_______________________________________________________            ");
+        }
+
+        if (pictureName == "merchant")
+        {
+            Console.WriteLine("   |\\                     /)");
+            Console.WriteLine(" /\\_\\\\__               (_//");
+            Console.WriteLine("|   `>\\-`     _._       //`) .---.            |`-._/\\_.-`|");
+            Console.WriteLine(" \\ /` \\\\  _.-`:::`-._  //   /_____\\           |    ||    |");
+            Console.WriteLine("  `    \\|`    :::    `|/    ( '.' )           |___o()o___|");
+            Console.WriteLine("        |     :::     |      \\_-_/_           |__((<>))__|");
+            Console.WriteLine("        |.....:::.....|   .--`'V'//-.         \\   o\\/o   /");
+            Console.WriteLine("        |:::::::::::::|  / ,   |// , \\         \\   ||   /");
+            Console.WriteLine("        |     :::     | / /|   //  |\\ \\         \\  ||  /");
+            Console.WriteLine("        \\     :::     // / |__//   | \\_\\         '.||.'");
+            Console.WriteLine("         \\    :::    / \\ \\/---|[]==| / /           ``");
+            Console.WriteLine("          `-. ::: .-'   \\/\\__/ |   \\/\\/");
+            Console.WriteLine("           //`:::`\\\\     |/_   |   _\\|");
+            Console.WriteLine("          _________________|_______|________________");
+            Console.WriteLine("         |\\                                         \\ ");
+            Console.WriteLine("         |\\\\                                         \\");
+            Console.WriteLine("         | \\\\ ________________________________________\\");
+            Console.WriteLine("         |  \\[_________________________________________]");
+            Console.WriteLine("         |   [      ]                          |[      ]");
+            Console.WriteLine("         |   [      ]                          |[      ]");
+            Console.WriteLine("         |   [      ]                          |[      ]");
+            Console.WriteLine("         \\   [      ]                          |[      ]");
+            Console.WriteLine("          \\  [      ]                          |[      ]");
+            Console.WriteLine("           \\ [      ]__________________________|[      ]");
+            Console.WriteLine("            \\[______]                          \\[______]");
+
+        }
     }
 }
 

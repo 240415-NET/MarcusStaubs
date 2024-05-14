@@ -26,7 +26,7 @@ Rest to heal
 	Can spawn monster based on location chance to spawn - Done
 
 Optional time permitting:
-	Pictures for Inn, Potion Vendor, Arms Merchant, Rest in Inn, Inventory, Drink Potion
+	Pictures for Inn, Potion Vendor - Done, Arms Merchant - Done, Rest in Inn - Done, Inventory, Drink Potion
 	Fill out storyline - Ick... last on my list
 	Add random chatter in the Inn when drinking
 	Add random after kill messages
