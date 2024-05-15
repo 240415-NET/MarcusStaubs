@@ -1,5 +1,4 @@
 using System;
-using System.Formats.Asn1;
 using Project1;
 using Project1.Controllers;
 using Project1.Models;
@@ -15,6 +14,7 @@ public static class WelcomeToTheGame
     public static Player currentPlayer = new Player();
     public static List<string> gameMap = new();
     public static List<string> displayMap = new();
+    public static ChatterBox randomMessages = RandomTextController.InitializeRandomText();
     public static void Start()
     {
         string menuChoice;
@@ -39,7 +39,7 @@ public static class WelcomeToTheGame
         itemsReference = ItemController.GetAllGameItems();
         do
         {
-            MainMenuDisplay();
+            SplashScreens.MainMenuDisplay();
             menuChoice = Console.ReadLine();
             try
             {
@@ -101,9 +101,8 @@ public static class WelcomeToTheGame
         bool exitCondition = false;
         do
         {
-            //Console.Clear();
-            //Console.WriteLine("Please enter your character nameor enter Oops to return to the main menu");
-            LoginDisplay();
+            SplashScreens.LoginDisplay();
+            Console.Write("Name:");
             string userInput = (Console.ReadLine() ?? "").Trim();
             if (String.IsNullOrEmpty(userInput))
             {
@@ -140,7 +139,7 @@ public static class WelcomeToTheGame
     {
         bool validInput = false;
         string newPlayerName;
-        NewPlayerDisplay();
+        SplashScreens.NewPlayerDisplay();
         do
         {
             Console.Write("Name: ");
@@ -178,7 +177,7 @@ public static class WelcomeToTheGame
         Console.WriteLine("Just kidding!  We should probably quickly go over the basics.");
         Console.WriteLine("Press any key to view the Help documentation...");
         Console.ReadKey();
-        HelpMenu();
+        SplashScreens.HelpMenu();
 
     }
     public static bool MainControlMenu()
@@ -226,7 +225,7 @@ public static class WelcomeToTheGame
                     monsterSpawn = currentPlayer.Rest(locationReference[currentPlayer.CurrentLocation]);
                     if (monsterSpawn == 0)
                     {
-                        RestMenu();
+                        SplashScreens.RestMenu();
                     }
                     else
                     {
@@ -245,7 +244,7 @@ public static class WelcomeToTheGame
                     //Add in a save feature or ask if want to save.
                     return true;
                 case 11:
-                    HelpMenu();
+                    SplashScreens.HelpMenu();
                     break;
                 case 15:
                     InventoryMenu();
@@ -257,7 +256,7 @@ public static class WelcomeToTheGame
         } while (!exitGame && !amIDead);
         if (amIDead)
         {
-            GameOver();
+            SplashScreens.GameOver();
             return false;
         }
         return true;
@@ -399,7 +398,7 @@ public static class WelcomeToTheGame
             }
             else if (userChoice == 11)
             {
-                HelpMenu();
+                SplashScreens.HelpMenu();
             }
             else if (userChoice == 17 && currentPlayer.DoIHavePotions())
             {
@@ -685,151 +684,6 @@ public static class WelcomeToTheGame
         }
 
     }
-    public static void GameOver()
-    {
-        Console.Clear();
-        Console.ForegroundColor = ConsoleColor.DarkRed;
-        Console.WriteLine(" ▄▄ •  ▄▄▄· •   ▌  ▄  ·. ▄▄▄ .         ▌ ▐ ·▄▄▄ .▄▄▄  ");
-        Console.WriteLine("▐█ ▀  ▐█ ▀█ ·██ ▐███  ▀▄.▀·          █·█▌ ▀▄.▀·▀▄ █·");
-        Console.WriteLine("▄█ ▀█▄▄█▀▀█ ▐█ ▌▐▌▐█·▐▀▀ ▄     ▄█▀▄ ▐█▐█• ▐▀▀ ▄ ▐▀▀▄ ");
-        Console.WriteLine("▐█▄ ▐█▐█  ▐▌██ ██▌▐█▌▐█▄▄▌    ▐█▌.▐▌ ███ ▐█▄▄▌ ▐█  █▌");
-        Console.WriteLine("·▀▀▀▀  ▀  ▀ ▀▀  █ ▀▀▀ ▀▀▀      ▀█▄▀ . ▀   ▀▀▀ . ▀  ▀");
-        Console.WriteLine("\nYou're dead and the world is doomed or something.\nI don't know. The story for this game was never really fleshed out.\nJust go with your favorite fantasty game trope.");
-        Console.ReadKey();
-    }
-    public static void HelpMenu()
-    {
-        Console.Clear();
-        Console.WriteLine("           _____________________________________________________       ");
-        Console.WriteLine("         / \\                                                    \\    ");
-        Console.WriteLine("        |   |                                                    |    ");
-        Console.WriteLine("         \\_ |                                                    |    ");
-        Console.WriteLine("            |    Don't Panic!                                    |    ");
-        Console.WriteLine("            |                                                    |    ");
-        Console.WriteLine("            |     When in combat, you can <A>ttack or <Flee>     |    ");
-        Console.WriteLine("            |     Outside of combat, you can:                    |    ");
-        Console.WriteLine("            |        View your <C>haracter                       |    ");
-        Console.WriteLine("            |        <R>est to restore HP                        |    ");
-        Console.WriteLine("            |        Sa<v>e your game                            |    ");
-        Console.WriteLine("            |        E<x>it the game                             |    ");
-        Console.WriteLine("            |        Or move in an available direction           |    ");
-        Console.WriteLine("            |                                                    |    ");
-        Console.WriteLine("            |     Use the letter inside <> to take the           |    ");
-        Console.WriteLine("            |     desired action.                                |    ");
-        Console.WriteLine("            |                                                    |    ");
-        Console.WriteLine("            |     To move, use the first letter of the           |    ");
-        Console.WriteLine("            |     desired directions N,S,E,W or the arrow        |    ");
-        Console.WriteLine("            |     key for that direction.                        |    ");
-        Console.WriteLine("            |                                                    |    ");
-        Console.WriteLine("            |     You can return to this screen by pressing <H>  |	 ");
-        Console.WriteLine("            |   _________________________________________________|___ ");
-        Console.WriteLine("            |  /                                                    / ");
-        Console.WriteLine("            \\_/____________________________________________________/ ");
-        Console.ReadKey();
-    }
-    public static void RestMenu()
-    {
-        Console.Clear();
-        Console.WriteLine("                 (                 ,&&&.          ");
-        Console.WriteLine("                  )                .,.&&          ");
-        Console.WriteLine("                 (  (              \\=__/         ");
-        Console.WriteLine("                     )             ,'-'.          ");
-        Console.WriteLine("               (    (  ,,      _.__|/ /|          ");
-        Console.WriteLine("                ) /\\ -((------((_|___/ |         ");
-        Console.WriteLine("              (  // | (`'      ((  `'--|          ");
-        Console.WriteLine("            _ -.;_/ \\\\--._      \\\\ \\-._/.    ");
-        Console.WriteLine("           (_;-// | \\ \\-'.\\    <_,\\_\\`--'|   ");
-        Console.WriteLine("           ( `.__ _  ___,')      <_,-'__,'        ");
-        Console.WriteLine("            `'(_ )_)(_)_)'                        ");
-        Console.WriteLine("\nYou settle down to rest and tend to your wounds.  HP restored.");
-        Console.WriteLine("Press any key to continue your adventure...");
-        Console.ReadKey();
-    }
-    public static void NewPlayerDisplay()
-    {
-        Console.Clear();
-        Console.WriteLine("           ______________________________________________     ");
-        Console.WriteLine("         / \\                                             \\  ");
-        Console.WriteLine("        |   |                                            |    ");
-        Console.WriteLine("         \\_ |                                            |   ");
-        Console.WriteLine("            |    Welcome to new character creation!      |    ");
-        Console.WriteLine("            |                                            |    ");
-        Console.WriteLine("            |     I know that this can sometimes seem    |    ");
-        Console.WriteLine("            |     like and intmidating process.          |    ");
-        Console.WriteLine("            |     So many choices to make and the depth  |    ");
-        Console.WriteLine("            |     of your customization options.         |    ");
-        Console.WriteLine("            |                                            |    ");
-        Console.WriteLine("            |     We're going to try to keep it simple.  |    ");
-        Console.WriteLine("            |     When you're ready to start, please     |    ");
-        Console.WriteLine("            |     enter your character's name            |    ");
-        Console.WriteLine("            |                                            |    ");
-        Console.WriteLine("            |   _________________________________________|___ ");
-        Console.WriteLine("            |  /                                            / ");
-        Console.WriteLine("            \\_/____________________________________________/ ");
-    }
-    public static void MainMenuDisplay()
-    {
-        Console.Clear();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("                              @@@  @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@   @@@   @@@@@@   @@@@@@@   @@@   @@@@@@");
-        Console.WriteLine("                              @@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@  @@@@@@@@  @@@@@@@@   @@  @@@@@@@ ");
-        Console.WriteLine("                              @@!  @@!  @@!  @@!  @@@  @@!  @@@  @@!  @@@  @@!  @@!  @@@  @@!  @@@  @!   !@@ ");
-        Console.WriteLine("      _,.                     !@!  !@!  !@!  !@!  @!@  !@!  @!@  !@!  @!@  !@!  !@!  @!@  !@!  @!@       !@!    ");
-        Console.WriteLine("    ,` -.)                    @!!  !!@  @!@  @!@!@!@!  @!@!!@!   @!@!!@!   !!@  @!@  !@!  @!@!!@!        !!@@!!");
-        Console.WriteLine("   ( _/-\\\\-._                 !@!  !!!  !@!  !!!@!!!!  !!@!@!    !!@!@!    !!!  !@!  !!!  !!@!@!          !!@!!!");
-        Console.WriteLine("  /,|`--._,-^|            ,   !!:  !!:  !!:  !!:  !!!  !!: :!!   !!: :!!   !!:  !!:  !!!  !!: :!!             !:!");
-        Console.WriteLine("  \\_| |`-._/||          ,'|   :!:  :!:  :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:  :!:  !:!  :!:  !:!           !:!");
-        Console.WriteLine("    |  `-, / |         /  /    :::: :: :::   ::   :::  ::   :::  ::   :::   ::  ::::: ::  ::   :::       :::: :: ");
-        Console.WriteLine("    |     || |        /  /      :: :  : :     :   : :   :   : :   :   : :  :     : :  :    :   : :       :: : :");
-        Console.WriteLine("     `r-._||/   __   /  /         ");
-        Console.WriteLine(" __,-<_     )`-/  `./  /                      @@@@@@    @@@  @@@  @@@@@@@@   @@@@@@   @@@@@@@");
-        Console.WriteLine("'  \\   `---'   \\   /  /                      @@@@@@@@   @@@  @@@  @@@@@@@@  @@@@@@@   @@@@@@@");
-        Console.WriteLine("    |           |./  /                       @@!  @@@   @@!  @@@  @@!       !@@         @@!");
-        Console.WriteLine("    /           //  /                        !@!  @!@   !@!  @!@  !@!       !@!         !@!");
-        Console.WriteLine("\\_/' \\         |/  /                         @!@  !@!   @!@  !@!  @!!!:!    !!@@!!      @!!");
-        Console.WriteLine(" |    |   _,^-'/  /                          !@!  !!!   !@!  !!!  !!!!!:     !!@!!!     !!!");
-        Console.WriteLine(" |    , ``  (\\/  /_                          !!:!!:!:   !!:  !!!  !!:            !:!    !!:");
-        Console.WriteLine("  \\,.->._    \\X-=/^                          :!: :!:    :!:  !:!  :!:           !:!     :!:");
-        Console.WriteLine("  (  /   `-._//^`                            ::::: :!   ::::: ::   :: ::::  :::: ::      ::");
-        Console.WriteLine("   `Y-.____(__}                               : :  :::   : :  :   : :: ::   :: : :       :   ");
-        Console.WriteLine("    |     {__)                          ");
-        Console.WriteLine("          ()                           1: Continue Your Quest    2: Create New Character    3: Exit");
-        Console.ResetColor();
-    }
-    public static void LoginDisplay()
-    {
-        Console.Clear();
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.WriteLine("   /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\    ");
-        Console.WriteLine("  /  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\");
-        Console.WriteLine(" / /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\ \\ ");
-        Console.WriteLine("/ / / /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\ \\ \\");
-        Console.WriteLine("\\ \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ / / /");
-        Console.WriteLine(" \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /");
-        Console.WriteLine("  \\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  /\\  / ");
-        Console.WriteLine("   \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/  \\/");
-        Console.WriteLine("      _,.                     ");
-        Console.WriteLine("    ,` -.)                   @@@        @@@@@@    @@@@@@@@  @@@  @@@  @@@ ");
-        Console.WriteLine("   ( _/-\\-._                 @@@       @@@@@@@@  @@@@@@@@@  @@@  @@@@ @@@");
-        Console.WriteLine("  /,|`--._,-^|            ,  @@!       @@!  @@@  !@@        @@!  @@!@!@@@  ");
-        Console.WriteLine("  \\_| |`-._/||          ,'|  !@!       !@!  @!@  !@!        !@!  !@!!@!@! ");
-        Console.WriteLine("    |  `-, / |         /  /  @!!       @!@  !@!  !@! @!@!@  !!@  @!@ !!@!   ");
-        Console.WriteLine("    |     || |        /  /   !!!       !@!  !!!  !!! !!@!!  !!!  !@!  !!!");
-        Console.WriteLine("     `r-._||/   __   /  /    !!:       !!:  !!!  :!!   !!:  !!:  !!:  !!!");
-        Console.WriteLine(" __,-<_     )`-/  `./  /      :!:      :!:  !:!  :!:   !::  :!:  :!:  !:! ");
-        Console.WriteLine("'  \\   `---'   \\   /  /       :: ::::  ::::: ::   ::: ::::   ::   ::   ::");
-        Console.WriteLine("    |           |./  /       : :: : :   : :  :    :: :: :   :    ::    : ");
-        Console.WriteLine("    /           //  /        ");
-        Console.WriteLine("\\_/' \\         |/  /       Welcome back... Hero, yeah, we're going ");
-        Console.WriteLine(" |    |   _,^-'/  /        to pretend you're a hero.    ");
-        Console.WriteLine(" |    , ``  (\\/  /_         ");
-        Console.WriteLine("  \\,.->._    \\X-=/^        I don't actually remember who you are or");
-        Console.WriteLine("  (  /   `-._//^`          what this whole thing is about.  ");
-        Console.WriteLine("   `Y-.____(__}              ");
-        Console.WriteLine("    |     {__)             Maybe you throw me a bone and remind me");
-        Console.WriteLine("          ()               what your name is?        ");
-        Console.ResetColor();
-    }
     public static void DisplayCharacter()
     {
         Console.Clear();
@@ -876,6 +730,9 @@ public static class WelcomeToTheGame
                 case 4:
                     exitTown = true;
                     break;
+                case 5:
+                    SplashScreens.HelpMenu();
+                    break;                    
                 default:
                     Console.ReadKey();
                     break;
@@ -904,7 +761,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
-            DrawMeAPicture("tapRoom");
+            SplashScreens.DrawMeAPicture("tapRoom");
             Console.WriteLine("You're in the Dancing Dragon Inn. For a small village, there are quite a few patrons.");
             if (currentPlayer.PlayerGold < 1)
             {
@@ -920,7 +777,7 @@ public static class WelcomeToTheGame
                 }
                 else
                 {
-                    Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  <R>ent a room for the night (5 gold pieces)  <E>xit the Inn");
+                    Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  <R>ent a room for the night (5 gold pieces)  E<x>it the Inn");
                 }
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string userInput = keyPress.Key.ToString();
@@ -930,14 +787,14 @@ public static class WelcomeToTheGame
                     case 1:
                         Console.WriteLine("You pull up to the bar and order a mug of ale.");
                         Console.WriteLine("While nursing your drink, you overhear chatter from the other patrons.");
-                        Console.WriteLine("<Random chitchat from other patrons that might actually say something eventually>");
+                        Console.WriteLine(randomMessages.GetChatter());
                         currentPlayer.PlayerGold -= 1;
                         Console.ReadKey();
                         break;
                     case 2:
                         Console.Clear();
                         Console.WriteLine("You go upstairs for a much needed bath");
-                        DrawMeAPicture("bathTime");
+                        SplashScreens.DrawMeAPicture("bathTime");
                         Thread.Sleep(3000);
                         Console.Clear();
                         currentPlayer.RestInTheInn();
@@ -962,7 +819,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
-            DrawMeAPicture("vendor");
+            SplashScreens.DrawMeAPicture("vendor");
             Console.WriteLine("You walk over to the vendor's cart to have a look.");
             Console.WriteLine("Potion Vendor: Hello there! What can I interest you in today?");
             Console.WriteLine("<B>uy potions  <S>ell potions  Sell <I>tems  <R>eturn to village square.");
@@ -1006,7 +863,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
-            DrawMeAPicture("merchant");
+            SplashScreens.DrawMeAPicture("merchant");
             Console.WriteLine("You enter the shop and the merchant comes over to assist you.");
             Console.WriteLine("Arms Merchant: Welcome to my shop. How can I help you today?");
             Console.WriteLine("Buy <W>eapons  Buy <A>rmor  <S>ell Weapons  Se<l>l Armor  <R>eturn to village square.");
@@ -1064,6 +921,7 @@ public static class WelcomeToTheGame
             do
             {
                 Console.Clear();
+                SplashScreens.DrawMeAPicture("randomStuffGo");
                 Console.WriteLine("Would you like to <B>rowse your inventory or E<q>uip an item? <D> when done.");
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string userInput = keyPress.Key.ToString();
@@ -1108,6 +966,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            SplashScreens.DrawMeAPicture("randomStuffGo");
             Console.WriteLine("What kind of items would you like to look at? <D> when done.");
             Console.WriteLine(currentPlayer.KindsOfStuffIHave());
             ConsoleKeyInfo keyPress = Console.ReadKey(true);
@@ -1184,6 +1043,7 @@ public static class WelcomeToTheGame
             do
             {
                 Console.Clear();
+                SplashScreens.DrawMeAPicture("swordAndShield");
                 Console.WriteLine("Would you like to equip a new <W>eapon or <A>rmor? <D>one to exit menu.");
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string userInput = keyPress.Key.ToString();
@@ -1225,6 +1085,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            SplashScreens.DrawMeAPicture("swordAndShield");
             Console.WriteLine($"You are currently wearing {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");
             for (int i = 0; i < currentPlayer.InventoryArmors.Count(); i++)
             {
@@ -1270,6 +1131,7 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
+            SplashScreens.DrawMeAPicture("swordAndShield");
             Console.WriteLine($"You are currently wielding {currentPlayer.EquippedWeapon.ItemName} which does {currentPlayer.EquippedWeapon.AttackIncrease} extra damage.");
             for (int i = 0; i < currentPlayer.InventoryWeapons.Count(); i++)
             {
@@ -1311,7 +1173,7 @@ public static class WelcomeToTheGame
     {
         bool potionDrank = false;
         Potion potionPicked = new Potion();
-        DrawMeAPicture("potions");
+        SplashScreens.DrawMeAPicture("potions");
         Console.WriteLine("Which potion would you like to use?");
         for (int i = 0; i < currentPlayer.InventoryPotions.Count(); i++)
         {
@@ -1563,163 +1425,6 @@ public static class WelcomeToTheGame
 
             }
         } while (!exitMerchant);
-    }
-    public static void DrawMeAPicture(string pictureName)
-    {
-        if (pictureName == "vendor")
-        {
-            Console.WriteLine("                            _           _       | |");
-            Console.WriteLine("                           (c)____c____(c)      | |");
-            Console.WriteLine("                            \\ ........../       | |");
-            Console.WriteLine("                             |.........|        | |");
-            Console.WriteLine("                              |=======|         | |");
-            Console.WriteLine("                             __o)\"\"\"\"::?        | |");
-            Console.WriteLine("                            C__    c)::;       _| |________________________ ");
-            Console.WriteLine("                               >--   ::       |____ _____ _________________");
-            Console.WriteLine("                               (____/             | _____`-' |  -|      |.'");
-            Console.WriteLine("                               } /\"\"|          ,.-'   |   '-.| - |      |__");
-            Console.WriteLine("                    __/       (|V ^ )\\       .' \\     |     / '.-|      | -");
-            Console.WriteLine("                    o | _____/ |#/ / |      /    \\    |    /    \\=======|'.");
-            Console.WriteLine("           @        o_|}|_____/|/ /  |     ' -._  \\   |   /  _.- ' _____|__");
-            Console.WriteLine("                          _____/ /   |    :     '-. .'\"'. .-'     :     |;;");
-            Console.WriteLine("              ======ooo}{|______)#   |    ;--------| (o) |--------;========");
-            Console.WriteLine("          ~~~~ ;    ;          ###---|8   :     _.- '._.' -._     :     |--");
-            Console.WriteLine("        ____;_____;____        ###====     . _.'  /   |  \\   '._ .______|==");
-            Console.WriteLine("       (///0///@///@///)       ###@@@@|     \\    /    |   \\     /");
-            Console.WriteLine("       /~~~~~~~~~~~~~~~\\       ###@@@@|      `. /     |    \\  .'");
-            Console.WriteLine("      |                 |      ###@@@@|        ` . _ _|_ _ .");
-            Console.WriteLine("      |                 |      ###xxxxx  \\/     ..-       -..");
-            Console.WriteLine("      |                 |      ###|| |   ~~");
-            Console.WriteLine("      \\~~~~~~~~~~~~~~~~~/       | || |         .._");
-            Console.WriteLine("       \\               /        C |C |   ");
-            Console.WriteLine("        \\_____________/          || ||    \\|/");
-            Console.WriteLine(" v    \\/ (o)(o) (o)(o)           || ::    ~~~");
-            Console.WriteLine(" ~    ~~                      Ccc__)__)                 \\/");
-            Console.WriteLine("  \\|/      ~   @* & ~                                   ~~");
-            Console.WriteLine("   ~           \\|/        !!        \\ !/ ");
-            Console.WriteLine("               ~~~        ~~         ~~          ");
-        }
-
-        if (pictureName == "bathTime")
-        {
-            Console.WriteLine("        o    .   _     .");
-            Console.WriteLine("          .     (_)         o");
-            Console.WriteLine("   o     @@@@@@           _       o");
-            Console.WriteLine("  _     @@@@@@@@  .   o  (_)   .");
-            Console.WriteLine(" (_)    @@@@ e(     O             _");
-            Console.WriteLine(" o       @@' _/   ,_ ,  o   o    (_)");
-            Console.WriteLine("  . O    _/ (_   / _/      .  ,        o");
-            Console.WriteLine("     o8o/    \\_/ / ,-.  ,oO8/( -TT");
-            Console.WriteLine("    o8o8O | | |  / /   \\Oo8OOo8Oo||     O");
-            Console.WriteLine("   Oo(\"\"o8\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"8oo\"\"\"\"\"\"\")");
-            Console.WriteLine("  _   `\\`'                  `'   /'   o");
-            Console.WriteLine(" (_)    \\                       /    _   .");
-            Console.WriteLine("      O  \\           _         /    (_)");
-            Console.WriteLine("o   .     `-. .----<(o)_--. .-'");
-            Console.WriteLine("   --------(_/------(_<_/--\\_)--------            ");
-        }
-
-        if (pictureName == "restInn")
-        {
-            Console.WriteLine("                            @@@@");
-            Console.WriteLine("                           @@@@@@");
-            Console.WriteLine("                           @ o o |");
-            Console.WriteLine("                           |  >  |");
-            Console.WriteLine("                           | ._. |");
-            Console.WriteLine("                            \\___/");
-            Console.WriteLine("                           __| |__");
-            Console.WriteLine("                          /       \\");
-            Console.WriteLine("                         | |     | |");
-            Console.WriteLine("        _________________| |     | |_____________---__");
-            Console.WriteLine("       /                 | |_____| |         /  /  / /|");
-            Console.WriteLine("      /                  /_|  _  |_\\        /  /  / / |");
-            Console.WriteLine("     /                    / / / /          /  /__/ / /|");
-            Console.WriteLine("    /____________________/ / / /__________/___\\_/_/ / |");
-            Console.WriteLine("    |____________________| |_| |__________________|/  |");
-            Console.WriteLine("    |____________________| |_| |__________________|   /");
-            Console.WriteLine("____|              |     | | | | ||               |  /");
-            Console.WriteLine("    | o          o | o         o || o           o | /");
-            Console.WriteLine("    |______________|_____________||_______________|/");
-            Console.WriteLine("_______________________________________________________            ");
-        }
-
-        if (pictureName == "merchant")
-        {
-            Console.WriteLine("   |\\                     /)");
-            Console.WriteLine(" /\\_\\\\__               (_//");
-            Console.WriteLine("|   `>\\-`     _._       //`) .---.            |`-._/\\_.-`|");
-            Console.WriteLine(" \\ /` \\\\  _.-`:::`-._  //   /_____\\           |    ||    |");
-            Console.WriteLine("  `    \\|`    :::    `|/    ( '.' )           |___o()o___|");
-            Console.WriteLine("        |     :::     |      \\_-_/_           |__((<>))__|");
-            Console.WriteLine("        |.....:::.....|   .--`'V'//-.         \\   o\\/o   /");
-            Console.WriteLine("        |:::::::::::::|  / ,   |// , \\         \\   ||   /");
-            Console.WriteLine("        |     :::     | / /|   //  |\\ \\         \\  ||  /");
-            Console.WriteLine("        \\     :::     // / |__//   | \\_\\         '.||.'");
-            Console.WriteLine("         \\    :::    / \\ \\/---|[]==| / /           ``");
-            Console.WriteLine("          `-. ::: .-'   \\/\\__/ |   \\/\\/");
-            Console.WriteLine("           //`:::`\\\\     |/_   |   _\\|");
-            Console.WriteLine("          _________________|_______|________________");
-            Console.WriteLine("         |\\                                         \\ ");
-            Console.WriteLine("         |\\\\                                         \\");
-            Console.WriteLine("         | \\\\ ________________________________________\\");
-            Console.WriteLine("         |  \\[_________________________________________]");
-            Console.WriteLine("         |   [      ]                          |[      ]");
-            Console.WriteLine("         |   [      ]                          |[      ]");
-            Console.WriteLine("         |   [      ]                          |[      ]");
-            Console.WriteLine("         \\   [      ]                          |[      ]");
-            Console.WriteLine("          \\  [      ]                          |[      ]");
-            Console.WriteLine("           \\ [      ]__________________________|[      ]");
-            Console.WriteLine("            \\[______]                          \\[______]");
-
-        }
-
-        if (pictureName == "tapRoom")
-        {
-            Console.WriteLine(" |    |    |    |____|____|____|____|____|/    |__  __|    |    |   o|    \\    |");
-            Console.WriteLine("_|____|____|____| _____________________  |     |  \\/  ,,;;;;;,, |    |    |    |");
-            Console.WriteLine("_______________  |   __         __   | | |     |    ,;;:::::::;;,    |    |    |");
-            Console.WriteLine("               | |   )(   ___   )(   | | |     |   ,;;::' , ':::;,   |    |    |");
-            Console.WriteLine("               | |  (  )  )-(  (  )  o | |  8  |   ;;::  /(   ::;;   |    |   / ");
-            Console.WriteLine("               | |__|  |_(   )_|  |_( )| |     /   ;;:: | '\\  ::;;   |  o |   \\ ");
-            Console.WriteLine("               | |__|__|_|___|_|__|_|_|| |     \\   ';;::.\\_/.::;;'___|    |    |");
-            Console.WriteLine("               | |_____________________| |     |    ';:::\\-/:::;'    |    |    |");
-            Console.WriteLine("               | |  )-(   __    )(   | | |     O      '';| |;'' |    |    |    |");
-            Console.WriteLine("               | | (   )  )(   (  )  | | |     |      |  '-'    |   / \\   |    8");
-            Console.WriteLine("               | |_|   |_(  )__|  |__| | |     |      |    |    |   \\ /   |    |");
-            Console.WriteLine("_______________| |_|___|_|__|__|__|___\\| |     /\\     |    |    |    |    |    |");
-            Console.WriteLine("_________________|__________________ ____|     \\/     |    |    |    |    |    |");
-            Console.WriteLine(" |    |    |    |    |__  | |\\      \\     \\    |__/-__|    |    |    |    |    |");
-            Console.WriteLine(" |    |    |    |    |)(  | | \\      \\    |    |      |    |    |    |    |    )");
-            Console.WriteLine("_|____|____|____|____( -)_|_|__\\______\\   |    |      0    |    |    |    |   ( ");
-            Console.WriteLine("                     {__}             `\\  |    /      |    |    |    |    | __..");
-            Console.WriteLine("________________________________________\\ |    |      |    |    |    |  ,-='  /");
-            Console.WriteLine("                                        |_|____|      |    |    | ___|_:--..____");
-            Console.WriteLine("_____       _____         _____      ___|_//=/  \\     |    |    |/ /    \\.,_____");
-            Console.WriteLine("_/_\\_|     |_/_\\_|       |_/_\\_|    |_/_\\_|=|    |    |    |    / /             ");
-            Console.WriteLine("|| ||       || ||         || ||      || |||=|~-, |____|____/\\__.-.--------------");
-            Console.WriteLine("|| ||       || ||         || ||      || |||=|^.`;|             | |______________");
-            Console.WriteLine("|| ||_______|| ||_________|| ||______||_||\\\\=\\`=.:             | | |            ");
-            Console.WriteLine("||=||       ||=||         ||=||      ||=||\"\"\"`^-,`.            | | |            ");
-            Console.WriteLine("|| ||       || ||         || ||      || ||   `.~,'             | |_]            ");
-
-        }
-
-        if (pictureName == "potions")
-        {
-            Console.WriteLine("                           _ô_             ");
-            Console.WriteLine("                          (___)               ");
-            Console.WriteLine("           _ô_             | |       _ô_      ");
-            Console.WriteLine("          (___)           _|_|_     (___)  ");
-            Console.WriteLine("           | |           . ___ .     | |   ");
-            Console.WriteLine("          _|_|_         /       \\   _|_|_     ");
-            Console.WriteLine("         . ___ .       /         \\ . ___ .    ");
-            Console.WriteLine("        /       \\     /           /       \\   ");
-            Console.WriteLine("       /~~~~~~~~~\\   (~~~~~~~~~~~/         \\  ");
-            Console.WriteLine("      /~          \\   \\  ~     ~/~~~~~~~~~~~\\ ");
-            Console.WriteLine("     (       ~     )   '.______(             )");
-            Console.WriteLine("      \\  ~     ~  /             \\  ~     ~  / ");
-            Console.WriteLine("       '._______.'               '._______.'      ");
-        }
     }
 }
 

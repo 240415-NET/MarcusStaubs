@@ -91,7 +91,7 @@ public class Player : LivingThing
     }
     public void RestInTheInn()
     {
-        WelcomeToTheGame.DrawMeAPicture("restInn");
+        SplashScreens.DrawMeAPicture("restInn");
         PlayerGold -= 5;
         CurrentHitPoints = MaxHitPoints;
     }

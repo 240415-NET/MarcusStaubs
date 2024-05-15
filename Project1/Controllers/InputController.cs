@@ -149,6 +149,8 @@ public class InputController
                 return 3;
             case "l":
                 return 4;
+            case "h":
+                return 5;
             default:
                 Console.WriteLine("I didn't understand what you wanted. Try again.");
                 Console.WriteLine("Press any key to continue...");
@@ -182,7 +184,7 @@ public class InputController
             Console.WriteLine("You don't have enough gold to rent a room");
             return 0;
         }
-        else if (userInput == "e")
+        else if (userInput == "x")
         {
             return 3;
         }

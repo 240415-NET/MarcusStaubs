@@ -26,11 +26,14 @@ Rest to heal
 	Can spawn monster based on location chance to spawn - Done
 
 Optional time permitting:
-	Pictures for Inn - Done, Potion Vendor - Done, Arms Merchant - Done, Rest in Inn - Done w/extra lol, ***Inventory***, Drink Potion - Ugly but done
 	Fill out storyline - Ick... last on my list
 	Add random chatter in the Inn when drinking
 	Add random after kill messages
-	
+	Add random game over messages based on what killed you
+
+	Break apart the monolithic Welcome.cs file... I should really probably do that and just pass stuff by ref or val where needed.
+
+	Pictures for Inn - Done, Potion Vendor - Done, Arms Merchant - Done, Rest in Inn - Done w/extra lol, Inventory - Done, Drink Potion - Ugly but done	
 	Buy/Sell equipment and inventory items - Done
 	Create a town - Done
 	Use items from inventory - Done
