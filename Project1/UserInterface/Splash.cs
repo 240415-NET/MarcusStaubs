@@ -2,11 +2,11 @@ namespace Project1.UserInterfaces;
 
 public class SplashScreens
 {
-    public static void GameOver(string tauntingMessage = "")
+    public static void GameOver()
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.DarkRed;
-        Console.WriteLine(tauntingMessage);
+        Console.WriteLine("");
         Console.WriteLine(" ▄▄ •  ▄▄▄· •   ▌  ▄  ·. ▄▄▄ .         ▌ ▐ ·▄▄▄ .▄▄▄  ");
         Console.WriteLine("▐█ ▀  ▐█ ▀█ ·██ ▐███  ▀▄.▀·          █·█▌ ▀▄.▀·▀▄ █·");
         Console.WriteLine("▄█ ▀█▄▄█▀▀█ ▐█ ▌▐▌▐█·▐▀▀ ▄     ▄█▀▄ ▐█▐█• ▐▀▀ ▄ ▐▀▀▄ ");
@@ -47,7 +47,7 @@ public class SplashScreens
         Console.WriteLine("            |  /                                                    / ");
         Console.WriteLine("            \\_/____________________________________________________/ ");
         Console.ReadKey();
-    }  
+    }
     public static void RestMenu()
     {
         Console.Clear();
@@ -362,5 +362,5 @@ public class SplashScreens
             Console.WriteLine("                                   \\ |/");
             Console.WriteLine("                                    \\/ ");
         }
-    }                          
+    }
 }

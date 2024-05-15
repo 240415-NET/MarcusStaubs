@@ -452,6 +452,7 @@ public static class WelcomeToTheGame
             else if (!playerRanAway && userChoice != 0 && userChoice != 11)
             {
                 Console.WriteLine($"You have slain {currentMonster.Name}!");
+                Console.WriteLine(randomMessages.GetChatter(currentMonster.MonsterID));
                 Console.ReadKey();
                 isSomeoneDead = true;
             }

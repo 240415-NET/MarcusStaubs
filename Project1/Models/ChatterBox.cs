@@ -3,40 +3,24 @@ namespace Project1.Models;
 public class ChatterBox
 {
     public List<KillChatter> killChatters { get; set; }
-    public List<DeathChatter> deathChatters { get; set; }
     public GeneralChatter innChatters { get; set; }
 
     public ChatterBox()
     {
         killChatters = new List<KillChatter>();
-        deathChatters = new List<DeathChatter>();
         innChatters = new GeneralChatter();
     }
     public string GetChatter()
     {
         return innChatters.GetRandomMessage();
     }
-    public string GetChatter(int chatType, int monsterType)
+    public string GetChatter(int monsterType)
     {
-        if (chatType == 1)
+        foreach (KillChatter messages in killChatters)
         {
-
-            foreach (KillChatter messages in killChatters)
+            if (messages.monsterType == monsterType)
             {
-                if (messages.monsterType == monsterType)
-                {
-                    return messages.GetRandomMessage();
-                }
-            }
-        }
-        else
-        {
-            foreach (DeathChatter messages in deathChatters)
-            {
-                if (messages.monsterType == monsterType)
-                {
-                    return messages.GetRandomMessage();
-                }
+                return messages.GetRandomMessage();
             }
         }
         return String.Empty;
@@ -46,18 +30,24 @@ public class ChatterBox
 public class KillChatter : GeneralChatter
 {
     public int monsterType { get; set; }
-
-}
-
-public class DeathChatter : GeneralChatter
-{
-    public int monsterType { get; set; }
+    public KillChatter(int monsterType, List<string> messages) : base(messages)
+    {
+        this.monsterType = monsterType;
+    }
 }
 
 public class GeneralChatter
 {
     public List<string>? messages { get; set; }
 
+    public GeneralChatter()
+    {
+
+    }
+    public GeneralChatter(List<string> messages)
+    {
+        this.messages = messages;
+    }
     public string GetRandomMessage()
     {
         Random rand = new Random();
