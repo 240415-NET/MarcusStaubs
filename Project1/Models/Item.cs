@@ -15,7 +15,7 @@ public class Item
         this.ItemName = ItemName;
         this.ItemBaseValue = ItemBaseValue;
         this.QuantityOfItem = QuantityOfItem;
-        this.buyLvlRequirement = 0;
+        buyLvlRequirement = 0;
     }
     public Item()
     {

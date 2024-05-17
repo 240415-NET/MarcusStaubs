@@ -6,7 +6,9 @@ namespace Project1.Controllers;
 public class PlayerController
 {
     private static IPlayerStorage playerStorage = new PlayerStorage();
-    private static ILevelStorage levelStorage = new LevelStorage();
+    private static IPlayerStorage alternatePlayerStorage = new PlayerStorage();
+    private static ILevelStorage levelStorage = new SqlLevelStorage();
+    private static ILevelStorage alternateLevelStorage = new LevelStorage();
     public static Player CreateNewPlayer(string name)
     {
         Player currentPlayer = new Player(name);
@@ -36,8 +38,14 @@ public class PlayerController
     }
     public static Dictionary<int, LevelChange> InitializeLevelInfo()
     {
-        Dictionary<int, LevelChange> levelRef = levelStorage.GetLevelList();
-        return levelRef;
+        if(levelStorage.GetLevelList() != null)
+        {
+            return levelStorage.GetLevelList();
+        }
+        else
+        {
+            return alternateLevelStorage.GetLevelList();
+        }
     }
     public static int GetXPRequirementFromDictionary(LevelChange levelReference)
     {
