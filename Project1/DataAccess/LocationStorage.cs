@@ -341,7 +341,7 @@ public class LocationStorage : ILocationStorage
         locationList.Add(loc101803);
 
         List<int> room101804 = new List<int> { 1271, 1272 };
-        Location loc101804 = new Location(101804, "Forest", 7, "This is a forest. With trees and stuff.\nYou see more forest to the south and a clearing to the east of you.", 50, room101804, forest1);
+        Location loc101804 = new Location(101804, "Forest", 7, "This is a forest. With trees and stuff.\nYou see a clearing to the east of you and what appears to be a village to the south.", 50, room101804, forest1);
         locationList.Add(loc101804);
 
         List<int> room101805 = new List<int> { 1151 };
@@ -366,7 +366,7 @@ public class LocationStorage : ILocationStorage
         locationList.Add(loc102804);
 
         List<int> room102805 = new List<int> { 1271, 1272 };
-        Location loc102805 = new Location(102805, "Forest", 11, "This is a forest. With trees and stuff.\nThe forest keeps going to east and west with a clearing to the north.", 50, room102805, forest4);
+        Location loc102805 = new Location(102805, "Forest", 11, "This is a forest. With trees and stuff.\nThe forest keeps going to east with a clearing to the north and a small village to the west.", 50, room102805, forest4);
         locationList.Add(loc102805);
 
 

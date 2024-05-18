@@ -64,21 +64,6 @@ public static class WelcomeToTheGame
                         break;
                     case 3:
                         return;
-                    case 995:
-                        BuySomethingMenu(1);
-                        break;
-                    case 996:
-                        ItemController.LoadItemFile();
-                        break;
-                    case 997:
-                        LocationController.RecreateLocationFile();
-                        break;
-                    case 998:
-                        MonsterController.ReloadMonsterList();
-                        break;
-                    case 999:
-                        MapController.ReloadMapFile();
-                        break;
                     default:
                         Console.WriteLine("1, 2, or 3. Pick again");
                         validInput = false;

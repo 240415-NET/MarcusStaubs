@@ -5,7 +5,7 @@ namespace Project1.Controllers;
 
 public class PlayerController
 {
-    private static IPlayerStorage playerStorage = new PlayerStorage();
+    private static IPlayerStorage playerStorage = new SqlPlayerStorage();
     private static IPlayerStorage alternatePlayerStorage = new PlayerStorage();
     private static ILevelStorage levelStorage = new SqlLevelStorage();
     private static ILevelStorage alternateLevelStorage = new LevelStorage();
@@ -21,24 +21,47 @@ public class PlayerController
     }
     public static bool DoesPlayerExist(string name)
     {
-        Player currentPlayer = playerStorage.GetPlayerInfo(name);
-        if (currentPlayer == null)
+        if (StorageHelper.GetSqlConnectionString() == null)
         {
-            return false;
+            if (alternatePlayerStorage.GetPlayerInfo(name) == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         else
         {
-            return true;
+            if (playerStorage.GetPlayerInfo(name) == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
+
+
     }
     public static Player LoadExistingCharacter(string name)
     {
-        Player currentPlayer = playerStorage.GetPlayerInfo(name);
-        return currentPlayer;
+        if (StorageHelper.GetSqlConnectionString() == null)
+        {
+            Player currentPlayer = alternatePlayerStorage.GetPlayerInfo(name);
+            return currentPlayer;
+        }
+        else
+        {
+            Player currentPlayer = playerStorage.GetPlayerInfo(name);
+            return currentPlayer;            
+        }
     }
     public static Dictionary<int, LevelChange> InitializeLevelInfo()
     {
-        if(levelStorage.GetLevelList() != null)
+        if (levelStorage.GetLevelList() != null)
         {
             return levelStorage.GetLevelList();
         }

@@ -14,4 +14,11 @@ public class ItemDTO
         Armors = new List<Armor>();
         Potions = new List<Potion>();
     }
+    public ItemDTO(List<Item> allItems, List<Weapon> allWeapons, List<Armor> allArmors, List<Potion> allPotions)
+    {
+        this.Items = allItems;
+        this.Weapons = allWeapons;
+        this.Armors = allArmors;
+        this.Potions = allPotions;
+    }
 }

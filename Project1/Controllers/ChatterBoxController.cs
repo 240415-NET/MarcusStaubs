@@ -8,8 +8,8 @@ public static class RandomTextController
     {
         ChatterBox newChatBox = new ChatterBox();
         List<string> innList = new List<string>();
-        innList.Add("<Barfly>  I heard there are creepy little lizard monsters in that cave to the East of the waterfall.\n<Other barfly> Yeah, you'd have to be really strong or really dumb to go exploring in there.");
-        innList.Add("<Jeff>Have you heard the gospel of biscuits?\n<Crowd>Shut up, Jeff.  You're drunk.");
+        innList.Add("<Barfly>  I heard there are creepy little lizard monsters in that cave to the East of the waterfall.\n<Other barfly> Yeah, you would have to be really strong or really dumb to go exploring in there.");
+        innList.Add("<Jeff>Have you heard the gospel of biscuits?\n<Crowd>Shut up, Jeff.  You are drunk.");
         innList.Add("<Inn Keep>(sigh) why do I put up with these people… One of these days I'm going to retire to a nice farm in the middle of nowhere.");
         innList.Add("<Drunk Village Guard>I hate (hic) that stupid arms merchant.\n<Sober Village Guard>What is it this time, Phil? Are you still on about that sword?\n<Drunk Village Guard>Yeah! I've got the gold but he won't even show it to me, says I'm not strong enough! Me!? Not strong enough!?!!\n<Sober Village Guard>It's his shop, man. Just have to level up.");
         innList.Add("<Bar Patron>What is the airspeed velocity of an unladen swallow?\n<Village Idiot>I don't know…");

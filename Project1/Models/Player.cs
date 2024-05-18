@@ -23,7 +23,12 @@ public class Player : LivingThing
     public List<Potion> InventoryPotions { get; set; }
     public Player() : base()
     {
-
+        PlayerMap = new();
+        ExploredLocations = new();
+        InventoryItems = new();
+        InventoryWeapons = new();
+        InventoryPotions = new();
+        InventoryArmors = new();
     }
     public Player(string Name) : base(Name)
     {
