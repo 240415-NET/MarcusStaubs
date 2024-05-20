@@ -136,6 +136,10 @@ public class Player : LivingThing
                 CurrentLocation -= 1000;
                 break;
         }
+        if(CurrentLocation == 106800)
+        {
+            this.InventoryWeapons.Add(new Weapon("weapon20","Ultimate Sword",0,1,50,0));
+        } 
     }
     public bool DoIHaveStuff()
     {

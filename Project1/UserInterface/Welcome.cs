@@ -184,7 +184,7 @@ public static class WelcomeToTheGame
                 case 4:
                 case 8:
                     //Movement  
-                    if (Movement.CanIMoveThisWay(playerAction, locationReference[currentPlayer.CurrentLocation].EnumMovementOptions, locationReference[currentPlayer.CurrentLocation].RoomHash, currentPlayer.PlayerLevel))
+                    if (Movement.CanIMoveThisWay(playerAction, locationReference[currentPlayer.CurrentLocation].EnumMovementOptions, locationReference[currentPlayer.CurrentLocation].RoomHash, currentPlayer.PlayerLevel, currentPlayer.EquippedWeapon.ItemID, currentPlayer.InventoryWeapons))
                     {
 
                         currentPlayer.TimeToMove(playerAction);
@@ -636,36 +636,7 @@ public static class WelcomeToTheGame
         }
         else
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("VVVVVVVV           VVVVVVVV iiii                               tttt                                                                      !!! ");
-            Console.WriteLine("V::::::V           V::::::Vi::::i                           ttt:::t                                                                     !!:!!");
-            Console.WriteLine("V::::::V           V::::::V iiii                            t:::::t                                                                     !:::!");
-            Console.WriteLine("V::::::V           V::::::V                                 t:::::t                                                                     !:::!");
-            Console.WriteLine(" V:::::V           V:::::Viiiiiii     ccccccccccccccccttttttt:::::ttttttt       ooooooooooo   rrrrr   rrrrrrrrryyyyyyy           yyyyyyy!:::!");
-            Console.WriteLine("  V:::::V         V:::::V i:::::i   cc:::::::::::::::ct:::::::::::::::::t     oo:::::::::::oo r::::rrr:::::::::ry:::::y         y:::::y !:::!");
-            Console.WriteLine("   V:::::V       V:::::V   i::::i  c:::::::::::::::::ct:::::::::::::::::t    o:::::::::::::::or:::::::::::::::::ry:::::y       y:::::y  !:::!");
-            Console.WriteLine("    V:::::V     V:::::V    i::::i c:::::::cccccc:::::ctttttt:::::::tttttt    o:::::ooooo:::::orr::::::rrrrr::::::ry:::::y     y:::::y   !:::!");
-            Console.WriteLine("     V:::::V   V:::::V     i::::i c::::::c     ccccccc      t:::::t          o::::o     o::::o r:::::r     r:::::r y:::::y   y:::::y    !:::!");
-            Console.WriteLine("      V:::::V V:::::V      i::::i c:::::c                   t:::::t          o::::o     o::::o r:::::r     rrrrrrr  y:::::y y:::::y     !:::!");
-            Console.WriteLine("       V:::::V:::::V       i::::i c:::::c                   t:::::t          o::::o     o::::o r:::::r               y:::::y:::::y      !!:!!");
-            Console.WriteLine("        V:::::::::V        i::::i c::::::c     ccccccc      t:::::t    tttttto::::o     o::::o r:::::r                y:::::::::y        !!! ");
-            Console.WriteLine("         V:::::::V        i::::::ic:::::::cccccc:::::c      t::::::tttt:::::to:::::ooooo:::::o r:::::r                 y:::::::y             ");
-            Console.WriteLine("          V:::::V         i::::::i c:::::::::::::::::c      tt::::::::::::::to:::::::::::::::o r:::::r                  y:::::y          !!! ");
-            Console.WriteLine("           V:::V          i::::::i  cc:::::::::::::::c        tt:::::::::::tt oo:::::::::::oo  r:::::r                 y:::::y          !!:!!");
-            Console.WriteLine("            VVV           iiiiiiii    cccccccccccccccc          ttttttttttt     ooooooooooo    rrrrrrr                y:::::y            !!! ");
-            Console.WriteLine("                                                                                                                     y:::::y                 ");
-            Console.WriteLine("                                                                                                                    y:::::y                  ");
-            Console.WriteLine("                                                                                                                   y:::::y                   ");
-            Console.WriteLine("                                                                                                                  y:::::y                    ");
-            Console.WriteLine("                                                                                                                 yyyyyyy                     ");
-            Console.ResetColor();
-            Console.WriteLine($"You did it! You managed to kill a {bossMonster.Name} with your bare hands.");
-            Console.WriteLine("I don't know if that was clear before but you don't have any weapons.");
-            Console.WriteLine("You've been punching and kicking, or in some cases stomping or biting, things to death.");
-            Console.WriteLine("Good show! Congratulations! I should probably create some kind of cool or cheesy splash screen to celebrate this occasion.");
-            Console.WriteLine("Maybe I'll do that later if I have time but there are other things I want to do here.  Like maybe give you weapons and armor.");
-            Console.ReadKey();
+            SplashScreens.VictoryMenu(currentPlayer);
             return 7;
         }
 
@@ -718,7 +689,7 @@ public static class WelcomeToTheGame
                     break;
                 case 5:
                     SplashScreens.HelpMenu();
-                    break;                    
+                    break;
                 default:
                     Console.ReadKey();
                     break;

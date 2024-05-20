@@ -1,3 +1,5 @@
+using Project1.Models;
+
 namespace Project1.UserInterfaces;
 
 public class SplashScreens
@@ -362,5 +364,36 @@ public class SplashScreens
             Console.WriteLine("                                   \\ |/");
             Console.WriteLine("                                    \\/ ");
         }
+    }
+    public static void VictoryMenu(Player currentPlayer)
+    {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("VVVVVVVV           VVVVVVVV iiii                               tttt                                                                      !!! ");
+            Console.WriteLine("V::::::V           V::::::Vi::::i                           ttt:::t                                                                     !!:!!");
+            Console.WriteLine("V::::::V           V::::::V iiii                            t:::::t                                                                     !:::!");
+            Console.WriteLine("V::::::V           V::::::V                                 t:::::t                                                                     !:::!");
+            Console.WriteLine(" V:::::V           V:::::Viiiiiii     ccccccccccccccccttttttt:::::ttttttt       ooooooooooo   rrrrr   rrrrrrrrryyyyyyy           yyyyyyy!:::!");
+            Console.WriteLine("  V:::::V         V:::::V i:::::i   cc:::::::::::::::ct:::::::::::::::::t     oo:::::::::::oo r::::rrr:::::::::ry:::::y         y:::::y !:::!");
+            Console.WriteLine("   V:::::V       V:::::V   i::::i  c:::::::::::::::::ct:::::::::::::::::t    o:::::::::::::::or:::::::::::::::::ry:::::y       y:::::y  !:::!");
+            Console.WriteLine("    V:::::V     V:::::V    i::::i c:::::::cccccc:::::ctttttt:::::::tttttt    o:::::ooooo:::::orr::::::rrrrr::::::ry:::::y     y:::::y   !:::!");
+            Console.WriteLine("     V:::::V   V:::::V     i::::i c::::::c     ccccccc      t:::::t          o::::o     o::::o r:::::r     r:::::r y:::::y   y:::::y    !:::!");
+            Console.WriteLine("      V:::::V V:::::V      i::::i c:::::c                   t:::::t          o::::o     o::::o r:::::r     rrrrrrr  y:::::y y:::::y     !:::!");
+            Console.WriteLine("       V:::::V:::::V       i::::i c:::::c                   t:::::t          o::::o     o::::o r:::::r               y:::::y:::::y      !!:!!");
+            Console.WriteLine("        V:::::::::V        i::::i c::::::c     ccccccc      t:::::t    tttttto::::o     o::::o r:::::r                y:::::::::y        !!! ");
+            Console.WriteLine("         V:::::::V        i::::::ic:::::::cccccc:::::c      t::::::tttt:::::to:::::ooooo:::::o r:::::r                 y:::::::y             ");
+            Console.WriteLine("          V:::::V         i::::::i c:::::::::::::::::c      tt::::::::::::::to:::::::::::::::o r:::::r                  y:::::y          !!! ");
+            Console.WriteLine("           V:::V          i::::::i  cc:::::::::::::::c        tt:::::::::::tt oo:::::::::::oo  r:::::r                 y:::::y          !!:!!");
+            Console.WriteLine("            VVV           iiiiiiii    cccccccccccccccc          ttttttttttt     ooooooooooo    rrrrrrr                y:::::y            !!! ");
+            Console.WriteLine("                                                                                                                     y:::::y                 ");
+            Console.WriteLine("                                                                                                                    y:::::y                  ");
+            Console.WriteLine("                                                                                                                   y:::::y                   ");
+            Console.WriteLine("                                                                                                                  y:::::y                    ");
+            Console.WriteLine("                                                                                                                 yyyyyyy                     ");
+            Console.ResetColor();
+            Console.WriteLine($"You did it! You managed to kill a Young Red Dragon with your trusty {currentPlayer.EquippedWeapon.ItemName}.");
+            Console.WriteLine("Good show! Congratulations! I should probably create a cooler or cheesier splash screen to celebrate this occasion.");
+            Console.WriteLine("Maybe I'll do that later... but I wouldn't count on it");
+            Console.ReadKey();        
     }
 }

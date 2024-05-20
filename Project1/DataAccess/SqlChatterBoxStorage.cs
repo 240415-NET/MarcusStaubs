@@ -130,7 +130,6 @@ public class SqlChatterBoxStorage : IChatterBoxStorage
             connection.Close();
         }
     }
-
     public ChatterBox GetChatterBox()
     {
         string connString = StorageHelper.GetSqlConnectionString();

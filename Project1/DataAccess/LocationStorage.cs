@@ -9,7 +9,7 @@ public class LocationStorage : ILocationStorage
     public Dictionary<int, Location> GetLocationsList()
     {
         Dictionary<int, Location> locationReference = new();
-        if(!File.Exists(filePath))
+        if (!File.Exists(filePath))
         {
             CreateLocationFile();
         }
@@ -327,6 +327,25 @@ public class LocationStorage : ILocationStorage
         town.Add("     |       |[  === ] /|   .:::::;;;::::::::;;;:::::.   |\\ [=  ===] |       |  ");
         town.Add("_____|_______|[== = =]/ |  .:::::;;;::::::::::;;;:::::.  | \\[ ==  =]_|_______|__");
 
+        List<string> secretTunnel = new();
+        secretTunnel.Add("    ________________________________(_)________________________________         ");
+        secretTunnel.Add("    \\              /                |=|             \\__                }        ");
+        secretTunnel.Add("    |            _/                 |=|                \\               |        ");
+        secretTunnel.Add("    \\           /               /|__|_|__|\\             \\              )        ");
+        secretTunnel.Add("     \\         /               (    ( )    )             |            /         ");
+        secretTunnel.Add(" -   /        /                 \\|\\/\\\"/\\/|/               \\           \\  '      ");
+        secretTunnel.Add(" _  |         |                   |  Y  |                  \\           ..   '   ");
+        secretTunnel.Add("   -=         /                   |  |  |                   \\           |  '    ");
+        secretTunnel.Add(".' -|        |                    |  |  |                    }          / -.    ");
+        secretTunnel.Add(" #  /        |                   _|  |  |                    :          |. .    ");
+        secretTunnel.Add(".  -|        (                __/ |  |  |\\                   /          / __ .  ");
+        secretTunnel.Add(" ., |        |               /  \\ |  |  |  \\                 |          |..     ");
+        secretTunnel.Add("-  .(        /              /   __|  |  |   |                :          /'  --. ");
+        secretTunnel.Add("  . {        ;            _/_/\\/  |  |  |   |\\               /          ).      ");
+        secretTunnel.Add(".   |         :          /    <   +\\ |  |\\ />  \\                       | :  -   ");
+        secretTunnel.Add(".   ''        \\         /      >   + \\  | \\_   |            '          .  ;     ");
+        secretTunnel.Add("  ;  \\_________\\________|            + \\|+  \\  < \\_________/___________/   .    ");
+
 
         List<int> room101801 = new List<int> { 1341, 1272, 1271 };
         Location loc101801 = new Location(101801, "Well", 6, "This is a forest. But there is a well here.\nA very ugly well that looks like it was drawn by a third grader.\nPretty cool but there isn't anything special about it.", 50, room101801, well);
@@ -416,6 +435,9 @@ public class LocationStorage : ILocationStorage
         Location loc105802 = new Location(105802, "Mountain Path", 10, "A mountain path. You can see a meadow ahead.\nIt looks nice, you should go check that out.", 30, room105802, mtnPath);
         locationList.Add(loc105802);
 
+        List<int> room106800 = new List<int> { 1151, 1271 };
+        Location loc106800 = new Location(106800, "Hidden Cave", 4, "Using your rusty dagger to pry away some loose stones behind the water fall, you found a hidden cave\nIn center of the room, you see a sword lodged amonst some small boulders\nDespite how long it must have lain here undisturbed based on the stale air and dust on the cave floor\nthe sword is in pristine condition\n\nYou have obtained the ultimate sword!", 0, room106800, secretTunnel);
+        locationList.Add(loc106800);
 
         List<int> room106801 = new List<int> { 1151, 1271 };
         Location loc106801 = new Location(106801, "Small Pond", 4, "You see a small pond. Too bad you can't swim.\nYou do take a few minutes to soak your aching feet.", 30, room106801, mtnPond);
