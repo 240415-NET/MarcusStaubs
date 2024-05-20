@@ -10,6 +10,11 @@ public class ChatterBox
         killChatters = new List<KillChatter>();
         innChatters = new GeneralChatter();
     }
+    public ChatterBox(GeneralChatter innChatters, List<KillChatter> killChatters)
+    {
+        this.innChatters = innChatters;
+        this.killChatters = killChatters;
+    }
     public string GetChatter()
     {
         return innChatters.GetRandomMessage();
@@ -30,6 +35,10 @@ public class ChatterBox
 public class KillChatter : GeneralChatter
 {
     public int monsterType { get; set; }
+    public KillChatter()
+    {
+        messages = new();
+    }
     public KillChatter(int monsterType, List<string> messages) : base(messages)
     {
         this.monsterType = monsterType;
@@ -39,10 +48,9 @@ public class KillChatter : GeneralChatter
 public class GeneralChatter
 {
     public List<string>? messages { get; set; }
-
     public GeneralChatter()
     {
-
+        messages = new();
     }
     public GeneralChatter(List<string> messages)
     {

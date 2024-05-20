@@ -43,8 +43,6 @@ public class PlayerController
                 return true;
             }
         }
-
-
     }
     public static Player LoadExistingCharacter(string name)
     {

@@ -1,1 +1,247 @@
-[{"PlayerID":"214ff9e3-cf1d-4dd4-83ae-3b6b32bc875a","PlayerLevel":8,"Strength":19,"Dexterity":21,"Constitution":26,"EquippedWeapon":{"AttackIncrease":4,"ItemID":"weapon6","ItemName":"Dull Shortsword","ItemBaseValue":20,"QuantityOfItem":1,"buyLvlRequirement":7},"EquippedArmor":{"MitigationIncrease":3,"ItemID":"armor4","ItemName":"Leather Armor","ItemBaseValue":20,"QuantityOfItem":1,"buyLvlRequirement":7},"PlayerXP":850,"CurrentLocation":101804,"PlayerMap":["^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^","^.....TTTTT.........^     ^^H^^                                   ^","^..O..TTTTT.........^     ^^o^^                                   ^","^.....TTTTT.........^     ^   ^                                   ^","^TTTTT..............^^^^^^^   ^^*********                         ^","^TTTTT...............                   *                         ^","^TTTTT..............^^^^^^^   ^^*****   *                         ^","^TTTTTTTTTTTTTTT....^     ^   ^     *   *******   *               ^","^TTTTTTTTTTTTTTT....^     ^   ^     *             *               ^","^TTTTTTTTTTTTTTT....^     ^   ^     *   *******   *               ^","^TTTTTTT TTTTTTTTTTT^     ^   ^     *   *     *   *               ^","^TTTTTT   TTTTTTTTTT^     ^   ^     *   *     *   *               ^","^TTTTTTT TTTTTTTTTTT^     ^   ^     *****     *   *               ^","^ n n TTTTTTTTTTTTTT^     ^   ^                                   ^","^n  n TTTTTTTTTTTTTT^     ^   ^                                   ^","^  n  TTTTTTTTTTTTTT^     ^^^^^                                   ^","^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"],"ExploredLocations":[106805,106804,106803,106802,106801,105802,104802,104801,103801,103802,102801,101801,101802,102802,103803,102803,102804,102805,101805,101804,101803,103805,104805,104804,103804,104803,107802,108802,108803,108804,109803,110803,110804],"PlayerGold":191,"InventoryItems":[{"ItemID":"silk","ItemName":"Spider Silk","ItemBaseValue":4,"QuantityOfItem":3,"buyLvlRequirement":0},{"ItemID":"fang","ItemName":"Spider Fang","ItemBaseValue":6,"QuantityOfItem":3,"buyLvlRequirement":0},{"ItemID":"fur","ItemName":"Rat Fur","ItemBaseValue":4,"QuantityOfItem":2,"buyLvlRequirement":0},{"ItemID":"purse","ItemName":"Crude Purse","ItemBaseValue":12,"QuantityOfItem":2,"buyLvlRequirement":0},{"ItemID":"scraps","ItemName":"Leather Scraps","ItemBaseValue":9,"QuantityOfItem":1,"buyLvlRequirement":0},{"ItemID":"tail","ItemName":"Rat Tail","ItemBaseValue":3,"QuantityOfItem":1,"buyLvlRequirement":0}],"InventoryWeapons":[{"AttackIncrease":1,"ItemID":"weapon1","ItemName":"Crooked Stick","ItemBaseValue":1,"QuantityOfItem":1,"buyLvlRequirement":0},{"AttackIncrease":2,"ItemID":"weapon2","ItemName":"Tree Branch","ItemBaseValue":1,"QuantityOfItem":8,"buyLvlRequirement":0},{"AttackIncrease":3,"ItemID":"weapon4","ItemName":"Rusty Dagger","ItemBaseValue":10,"QuantityOfItem":3,"buyLvlRequirement":0},{"AttackIncrease":3,"ItemID":"weapon5","ItemName":"Bent Spear","ItemBaseValue":10,"QuantityOfItem":1,"buyLvlRequirement":0}],"InventoryArmors":[{"MitigationIncrease":0,"ItemID":"armor1","ItemName":"Dirty Rags","ItemBaseValue":1,"QuantityOfItem":1,"buyLvlRequirement":0}],"InventoryPotions":[{"HPRestoration":5,"ItemID":"potion1","ItemName":"Minor Healing Potion","ItemBaseValue":2,"QuantityOfItem":1,"buyLvlRequirement":0}],"Name":"Bob","MaxHitPoints":50,"CurrentHitPoints":50},{"PlayerID":"ca044c7a-9517-45b5-99a1-392251a22031","PlayerLevel":1,"Strength":3,"Dexterity":2,"Constitution":3,"EquippedWeapon":{"AttackIncrease":1,"ItemID":"weapon1","ItemName":"Crooked Stick","ItemBaseValue":1,"QuantityOfItem":1,"buyLvlRequirement":0},"EquippedArmor":{"MitigationIncrease":0,"ItemID":"armor1","ItemName":"Dirty Rags","ItemBaseValue":1,"QuantityOfItem":1,"buyLvlRequirement":0},"PlayerXP":0,"CurrentLocation":106805,"PlayerMap":["^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                                                                 ^","^                         ^   ^                                   ^","^                         ^   ^                                   ^","^                         ^^^^^                                   ^","^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"],"ExploredLocations":[106805],"PlayerGold":0,"InventoryItems":[],"InventoryWeapons":[],"InventoryArmors":[],"InventoryPotions":[{"HPRestoration":5,"ItemID":"potion1","ItemName":"Minor Healing Potion","ItemBaseValue":2,"QuantityOfItem":1,"buyLvlRequirement":1}],"Name":"Roosevelt","MaxHitPoints":10,"CurrentHitPoints":10}]
+[
+    {
+        "PlayerID": "214ff9e3-cf1d-4dd4-83ae-3b6b32bc875a",
+        "PlayerLevel": 8,
+        "Strength": 19,
+        "Dexterity": 21,
+        "Constitution": 26,
+        "EquippedWeapon": {
+            "AttackIncrease": 4,
+            "ItemID": "weapon6",
+            "ItemName": "Dull Shortsword",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1,
+            "buyLvlRequirement": 7
+        },
+        "EquippedArmor": {
+            "MitigationIncrease": 3,
+            "ItemID": "armor4",
+            "ItemName": "Leather Armor",
+            "ItemBaseValue": 20,
+            "QuantityOfItem": 1,
+            "buyLvlRequirement": 7
+        },
+        "PlayerXP": 850,
+        "CurrentLocation": 101804,
+        "PlayerMap": [
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+            "^.....TTTTT.........^     ^^H^^                                   ^",
+            "^..O..TTTTT.........^     ^^o^^                                   ^",
+            "^.....TTTTT.........^     ^   ^                                   ^",
+            "^TTTTT..............^^^^^^^   ^^*********                         ^",
+            "^TTTTT...............                   *                         ^",
+            "^TTTTT..............^^^^^^^   ^^*****   *                         ^",
+            "^TTTTTTTTTTTTTTT....^     ^   ^     *   *******   *               ^",
+            "^TTTTTTTTTTTTTTT....^     ^   ^     *             *               ^",
+            "^TTTTTTTTTTTTTTT....^     ^   ^     *   *******   *               ^",
+            "^TTTTTTT TTTTTTTTTTT^     ^   ^     *   *     *   *               ^",
+            "^TTTTTT   TTTTTTTTTT^     ^   ^     *   *     *   *               ^",
+            "^TTTTTTT TTTTTTTTTTT^     ^   ^     *****     *   *               ^",
+            "^ n n TTTTTTTTTTTTTT^     ^   ^                                   ^",
+            "^n  n TTTTTTTTTTTTTT^     ^   ^                                   ^",
+            "^  n  TTTTTTTTTTTTTT^     ^^^^^                                   ^",
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+        ],
+        "ExploredLocations": [
+            106805,
+            106804,
+            106803,
+            106802,
+            106801,
+            105802,
+            104802,
+            104801,
+            103801,
+            103802,
+            102801,
+            101801,
+            101802,
+            102802,
+            103803,
+            102803,
+            102804,
+            102805,
+            101805,
+            101804,
+            101803,
+            103805,
+            104805,
+            104804,
+            103804,
+            104803,
+            107802,
+            108802,
+            108803,
+            108804,
+            109803,
+            110803,
+            110804
+        ],
+        "PlayerGold": 191,
+        "InventoryItems": [
+            {
+                "ItemID": "silk",
+                "ItemName": "Spider Silk",
+                "ItemBaseValue": 4,
+                "QuantityOfItem": 3,
+                "buyLvlRequirement": 0
+            },
+            {
+                "ItemID": "fang",
+                "ItemName": "Spider Fang",
+                "ItemBaseValue": 6,
+                "QuantityOfItem": 3,
+                "buyLvlRequirement": 0
+            },
+            {
+                "ItemID": "fur",
+                "ItemName": "Rat Fur",
+                "ItemBaseValue": 4,
+                "QuantityOfItem": 2,
+                "buyLvlRequirement": 0
+            },
+            {
+                "ItemID": "purse",
+                "ItemName": "Crude Purse",
+                "ItemBaseValue": 12,
+                "QuantityOfItem": 2,
+                "buyLvlRequirement": 0
+            },
+            {
+                "ItemID": "scraps",
+                "ItemName": "Leather Scraps",
+                "ItemBaseValue": 9,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 0
+            },
+            {
+                "ItemID": "tail",
+                "ItemName": "Rat Tail",
+                "ItemBaseValue": 3,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 0
+            }
+        ],
+        "InventoryWeapons": [
+            {
+                "AttackIncrease": 1,
+                "ItemID": "weapon1",
+                "ItemName": "Crooked Stick",
+                "ItemBaseValue": 1,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 0
+            },
+            {
+                "AttackIncrease": 2,
+                "ItemID": "weapon2",
+                "ItemName": "Tree Branch",
+                "ItemBaseValue": 1,
+                "QuantityOfItem": 8,
+                "buyLvlRequirement": 0
+            },
+            {
+                "AttackIncrease": 3,
+                "ItemID": "weapon4",
+                "ItemName": "Rusty Dagger",
+                "ItemBaseValue": 10,
+                "QuantityOfItem": 3,
+                "buyLvlRequirement": 0
+            },
+            {
+                "AttackIncrease": 3,
+                "ItemID": "weapon5",
+                "ItemName": "Bent Spear",
+                "ItemBaseValue": 10,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 0
+            }
+        ],
+        "InventoryArmors": [
+            {
+                "MitigationIncrease": 0,
+                "ItemID": "armor1",
+                "ItemName": "Dirty Rags",
+                "ItemBaseValue": 1,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 0
+            }
+        ],
+        "InventoryPotions": [
+            {
+                "HPRestoration": 5,
+                "ItemID": "potion1",
+                "ItemName": "Minor Healing Potion",
+                "ItemBaseValue": 2,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 0
+            }
+        ],
+        "Name": "Bob",
+        "MaxHitPoints": 50,
+        "CurrentHitPoints": 50
+    },
+    {
+        "PlayerID": "ca044c7a-9517-45b5-99a1-392251a22031",
+        "PlayerLevel": 1,
+        "Strength": 3,
+        "Dexterity": 2,
+        "Constitution": 3,
+        "EquippedWeapon": {
+            "AttackIncrease": 1,
+            "ItemID": "weapon1",
+            "ItemName": "Crooked Stick",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1,
+            "buyLvlRequirement": 0
+        },
+        "EquippedArmor": {
+            "MitigationIncrease": 0,
+            "ItemID": "armor1",
+            "ItemName": "Dirty Rags",
+            "ItemBaseValue": 1,
+            "QuantityOfItem": 1,
+            "buyLvlRequirement": 0
+        },
+        "PlayerXP": 0,
+        "CurrentLocation": 106805,
+        "PlayerMap": [
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                                                                 ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^   ^                                   ^",
+            "^                         ^^^^^                                   ^",
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+        ],
+        "ExploredLocations": [
+            106805
+        ],
+        "PlayerGold": 0,
+        "InventoryItems": [],
+        "InventoryWeapons": [],
+        "InventoryArmors": [],
+        "InventoryPotions": [
+            {
+                "HPRestoration": 5,
+                "ItemID": "potion1",
+                "ItemName": "Minor Healing Potion",
+                "ItemBaseValue": 2,
+                "QuantityOfItem": 1,
+                "buyLvlRequirement": 1
+            }
+        ],
+        "Name": "Roosevelt",
+        "MaxHitPoints": 10,
+        "CurrentHitPoints": 10
+    }
+]

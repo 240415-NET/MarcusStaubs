@@ -99,10 +99,9 @@ public class SqlPlayerStorage : IPlayerStorage
                 cmd7.Parameters.AddWithValue("@playerQuantity", item.QuantityOfItem);
                 cmd7.ExecuteNonQuery();
             }
-
+            connection.Close();
         }
     }
-
     public Player GetPlayerInfo(string playerName)
     {
         Player foundPlayer = new();
@@ -142,6 +141,7 @@ public class SqlPlayerStorage : IPlayerStorage
             }
             if (foundPlayer.Name == "not found")
             {
+                connection.Close();
                 return null;
             }
             else
@@ -209,7 +209,6 @@ public class SqlPlayerStorage : IPlayerStorage
             }
         }
     }
-
     public Weapon GetWeaponInventoryItemFromTable(string weaponID, int playerQuantity)
     {
         string connString = StorageHelper.GetSqlConnectionString();
@@ -229,6 +228,7 @@ public class SqlPlayerStorage : IPlayerStorage
             int AttackIncrease = reader.GetInt32(4);
 
             Weapon foundWeapon = new Weapon(ItemID, ItemName, ItemBaseValue, playerQuantity, AttackIncrease, buyLvlRequirement);
+            connection.Close();
             return foundWeapon;
         }
         connection.Close();
@@ -253,6 +253,7 @@ public class SqlPlayerStorage : IPlayerStorage
             int mitigationIncrease = reader.GetInt32(4);
 
             Armor foundArmor = new Armor(ItemID, ItemName, ItemBaseValue, playerQuantity, mitigationIncrease, buyLvlRequirement);
+            connection.Close();
             return foundArmor;
         }
         connection.Close();
@@ -277,6 +278,7 @@ public class SqlPlayerStorage : IPlayerStorage
             int hpRestored = reader.GetInt32(4);
 
             Potion foundPotion = new Potion(ItemID, ItemName, ItemBaseValue, playerQuantity, hpRestored, buyLvlRequirement);
+            connection.Close();
             return foundPotion;
         }
         connection.Close();
@@ -299,6 +301,7 @@ public class SqlPlayerStorage : IPlayerStorage
             int ItemBaseValue = reader.GetInt32(2);
 
             Item foundItem = new Item(ItemID, ItemName, ItemBaseValue, playerQuantity);
+            connection.Close();
             return foundItem;
         }
         connection.Close();
@@ -350,6 +353,8 @@ public class SqlPlayerStorage : IPlayerStorage
             using SqlCommand cmd7 = new SqlCommand(cmdText, connection);
             cmd7.Parameters.AddWithValue("@playerID", playerID);
             cmd7.ExecuteNonQuery();
+            connection.Close();
         }
+        
     }
 }

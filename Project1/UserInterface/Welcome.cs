@@ -14,7 +14,7 @@ public static class WelcomeToTheGame
     public static Player currentPlayer = new Player();
     public static List<string> gameMap = new();
     public static List<string> displayMap = new();
-    public static ChatterBox randomMessages = RandomTextController.InitializeRandomText();
+    public static ChatterBox randomMessages = RandomTextController.GetRandomText();
     public static void Start()
     {
         string menuChoice;
