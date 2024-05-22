@@ -7,11 +7,6 @@ public class ItemController
 {
     public static IItemStorage itemStorage = new SqlItemStorage();
     public static IItemStorage alternateItemStorage = new ItemStorage();
-    public static void LoadItemFile()
-    {
-        alternateItemStorage.CreateInitialItemsList();
-    }
-
     public static Dictionary<string,Item> GetAllGameItems()
     {
         Dictionary<string,Item> allGameItems = new();
@@ -43,7 +38,6 @@ public class ItemController
 
         return allGameItems;
     }    
-
     public static List<Item> GetItemsForSale(int itemType, int playerLevel, Dictionary<string,Item> itemsToReference)
     {
         string strItemType = "";

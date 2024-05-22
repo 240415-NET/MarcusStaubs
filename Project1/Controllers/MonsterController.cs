@@ -10,7 +10,6 @@ public static class MonsterController
     {
         return monsterStorage.GetMonsterList();
     }
-
     public static bool DodgeAttack(int monsterDodge, int playerDexterity)
     {
         double QuarterPlayerDex = (double)playerDexterity / 6;
@@ -32,10 +31,5 @@ public static class MonsterController
                 return false;
             }
         }
-    }
-
-    public static void ReloadMonsterList()
-    {
-        monsterStorage.FirstEverMonsterFileCreation();
     }
 }

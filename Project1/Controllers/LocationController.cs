@@ -80,49 +80,4 @@ public static class LocationController
         }
 
     }    
-    public static void PickALocationColor(Location location, int playerLevel)
-    {
-        switch(location.RoomName)
-        {
-            case "Forest":   
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                break;
-            case "Meadow": 
-                Console.ForegroundColor = ConsoleColor.Green;        
-                break;
-            case "Well":         
-                Console.ForegroundColor = ConsoleColor.Green;
-                break; 
-            case "Forest Clearing":         
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                break;
-            case "Cave Entrance":    
-                Console.ForegroundColor = ConsoleColor.DarkGray;     
-                break;
-            case "Underground Tunnel":         
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                break;
-            case "Boss Lair":
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                break;
-            case "Mysterious Door":  
-                if(playerLevel < 10)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;       
-                    break;                 
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    break;
-                }
-            default:
-                Console.ForegroundColor = ConsoleColor.Gray;
-                break;                                                  
-        }
-    }
-    public static void RecreateLocationFile()
-    {
-        locationStorage.CreateLocationFile();
-    }
 }

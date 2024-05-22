@@ -25,7 +25,6 @@ public static class CombatController
         }
         return playerAttack;
     }
-
     public static bool DoesPlayerFleeSuccessfully(int chanceToFlee)
     {
         Random rand = new Random();

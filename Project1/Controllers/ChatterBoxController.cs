@@ -20,8 +20,4 @@ public static class RandomTextController
             return myChatBox;
         }
     }
-    public static void InitializeChatterBox()
-    {
-        myChatStorage.InitializeChatterBox();
-    }
 }

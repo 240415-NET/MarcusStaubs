@@ -16,7 +16,7 @@ public class SqlPlayerStorage : IPlayerStorage
         }
         else
         {
-            ClearExitingPlayerDataFromDBTables(currentPlayer.PlayerID);  //I should probably update/insert/delete as needed but clearing it all first is the easier path for now
+            ClearExitingPlayerDataFromDBTables(currentPlayer.PlayerID);  
             using SqlConnection connection = new SqlConnection(connString);
             connection.Open();
             //Add player attributes to Player table

@@ -20,21 +20,6 @@ public class MonsterStorage : IMonsterStorage
         }
         return monsterCatalog;
     }
-
-    public static void ReadAndDisplayMonsters()
-    {
-        //string filePath = "./TempDataStorage/Monsters.json";
-        List<MonsterData> monsterDataList = JsonSerializer.Deserialize<List<MonsterData>>(File.ReadAllText(filePath));
-        foreach(MonsterData myMonster in monsterDataList)
-        {
-            Console.WriteLine($"Name: {myMonster.Name}");
-            Console.WriteLine($"HP: {myMonster.CurrentHitPoints}/{myMonster.MaxHitPoints} Attack: {myMonster.MonsterAttack} Dodge: {myMonster.MonsterDodge}");
-            foreach(string imageLine in myMonster.MonsterDisplay)
-            {
-                Console.WriteLine(imageLine);
-            }
-        }
-    }
     public void FirstEverMonsterFileCreation()
     {
         List<MonsterData> monsterList = new();
