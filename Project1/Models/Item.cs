@@ -1,8 +1,11 @@
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Project1.Models;
 
 public class Item
 {
+    [Required]
     public string? ItemID { get; set; }
     public string? ItemName { get; set; }
     public int ItemBaseValue { get; set; }

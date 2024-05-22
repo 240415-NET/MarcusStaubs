@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Project1.Models;
 
 public class LevelChange
 {
+    [Required]
     public int LevelNum {get; set;}
     public int XPRequiredForLevel {get; set;}
     public int MaxHitPointIncrease {get; set;}

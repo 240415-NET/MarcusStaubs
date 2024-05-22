@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Project1.Models;
 
 public class Location
 {
+    [Required]
     public int RoomHash {get; set;}
     public string RoomName {get; set;}
     public int EnumMovementOptions {get; set;}

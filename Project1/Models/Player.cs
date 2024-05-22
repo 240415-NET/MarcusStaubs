@@ -1,10 +1,12 @@
 using Project1.Controllers;
 using Project1.UserInterfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project1.Models;
 
 public class Player : LivingThing
 {
+    [Required]
     public Guid PlayerID { get; set; }
     public int PlayerLevel { get; set; }
     public int Strength { get; set; }

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Project1.Models;
 public class Monster : LivingThing
 {
@@ -11,7 +13,7 @@ public class Monster : LivingThing
     public string HitText { get; set; }
     public int ChanceToFlee { get; set; }
     public List<string> MonsterDisplay { get; set; }
-    public List<string> LootTable {get; set;}
+    public List<string> LootTable { get; set; }
     public Monster(MonsterData baseMonster) : base(baseMonster.Name, baseMonster.MaxHitPoints, baseMonster.CurrentHitPoints)
     {
         MonsterID = baseMonster.MonsterID;
@@ -62,12 +64,12 @@ public class Monster : LivingThing
     public string LootDrop()
     {
         Random rand = new Random();
-        int result = rand.Next(0,101);
-        for(int i=1; i <= LootTable.Count(); i++)
+        int result = rand.Next(0, 101);
+        for (int i = 1; i <= LootTable.Count(); i++)
         {
-            if(result < 80/LootTable.Count() * i)
+            if (result < 80 / LootTable.Count() * i)
             {
-                return LootTable[i-1];
+                return LootTable[i - 1];
             }
         }
         return "No loot";
@@ -79,6 +81,7 @@ public struct MonsterData
     public string Name { get; set; }
     public int MaxHitPoints { get; set; }
     public int CurrentHitPoints { get; set; }
+    [Required]
     public int MonsterID { get; set; }
     public int MonsterAttack { get; set; }
     public int MonsterDodge { get; set; }
@@ -89,7 +92,7 @@ public struct MonsterData
     public string HitText { get; set; }
     public int ChanceToFlee { get; set; }
     public List<string> MonsterDisplay { get; set; }
-    public List<string> LootTable {get; set;}
+    public List<string> LootTable { get; set; }
 
     public MonsterData(string Name, int MaxHitPoints, int CurrentHitPoints, int MonsterID, int MonsterAttack, int MonsterDodge, int RewardXP, int RewardGold, string AttackText, string DodgeText, string HitText, int ChanceToFlee, List<string> MonsterDisplay, List<string> LootTable)
     {
