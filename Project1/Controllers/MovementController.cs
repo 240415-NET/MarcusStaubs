@@ -13,7 +13,7 @@ public enum MoveDirection
 
 public static class Movement
 {
-    public static bool CanIMoveThisWay(int direction, int locationOptions, int currentLocation, int currentPlayerLevel, string weaponID, List<Weapon> weaponInventory)
+    public static bool CanIMoveThisWay(int direction, int locationOptions, int currentLocation, int currentPlayerLevel, string weaponID, List<PlayerInventoryWeapon> weaponInventory)
     {
         bool hasCoolSword = false;
         if (currentLocation == 112804 && currentPlayerLevel < 10 && direction == 4)
@@ -22,9 +22,9 @@ public static class Movement
         }
         else if (currentLocation == 106801 && direction == 1 && weaponID == "weapon4")
         {
-            foreach (Weapon weapon in weaponInventory)
+            foreach (PlayerInventoryWeapon weapon in weaponInventory)
             {
-                if (weapon.ItemID == "weapon20")
+                if (weapon.WeaponID == "weapon20")
                 {
                     hasCoolSword = true;
                 }

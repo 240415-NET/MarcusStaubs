@@ -19,10 +19,10 @@ public class Player : LivingThing
     public List<string> PlayerMap { get; set; }
     public List<int> ExploredLocations { get; set; }
     public int PlayerGold { get; set; }
-    public List<Item> InventoryItems { get; set; }
-    public List<Weapon> InventoryWeapons { get; set; }
-    public List<Armor> InventoryArmors { get; set; }
-    public List<Potion> InventoryPotions { get; set; }
+    public List<PlayerInventoryItem> InventoryItems { get; set; }
+    public List<PlayerInventoryWeapon> InventoryWeapons { get; set; }
+    public List<PlayerInventoryArmor> InventoryArmors { get; set; }
+    public List<PlayerInventoryPotion> InventoryPotions { get; set; }
     public Player() : base()
     {
         PlayerMap = new();
@@ -68,11 +68,11 @@ public class Player : LivingThing
         List<int> exploredLoc = new();
         exploredLoc.Add(106805);
         ExploredLocations = exploredLoc;
-        InventoryItems = new List<Item>();
-        InventoryWeapons = new List<Weapon>();
-        InventoryArmors = new List<Armor>();
-        InventoryPotions = new List<Potion>();
-        InventoryPotions.Add(new Potion("potion1", "Minor Healing Potion", 2, 1, 5, 1));
+        InventoryItems = new List<PlayerInventoryItem>();
+        InventoryWeapons = new List<PlayerInventoryWeapon>();
+        InventoryArmors = new List<PlayerInventoryArmor>();
+        InventoryPotions = new List<PlayerInventoryPotion>();
+        InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID,1,"potion1"));
     }
     public override string ToString()
     {
@@ -140,7 +140,7 @@ public class Player : LivingThing
         }
         if(CurrentLocation == 106800)
         {
-            this.InventoryWeapons.Add(new Weapon("weapon20","Ultimate Sword",0,1,50,0));
+            this.InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,"weapon20"));
         } 
     }
     public bool DoIHaveStuff()
@@ -231,13 +231,13 @@ public class Player : LivingThing
         {
             for (int i = 0; i < InventoryWeapons.Count(); i++)
             {
-                if (InventoryWeapons[i].ItemID == loot.ItemID)
+                if (InventoryWeapons[i].WeaponID == loot.ItemID)
                 {
-                    InventoryWeapons[i].QuantityOfItem++;
+                    InventoryWeapons[i].playerQuantity++;
                     newLoot = false;
                 }
             }
-            if (newLoot) { InventoryWeapons.Add((Weapon)loot); }
+            if (newLoot) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,loot.ItemID)); }
         }
         else
         {
@@ -245,11 +245,11 @@ public class Player : LivingThing
             {
                 if (InventoryItems[i].ItemID == loot.ItemID)
                 {
-                    InventoryItems[i].QuantityOfItem++;
+                    InventoryItems[i].playerQuantity++;
                     newLoot = false;
                 }
             }
-            if (newLoot) { InventoryItems.Add(loot); }
+            if (newLoot) { InventoryItems.Add(new PlayerInventoryItem(this.PlayerID,1,loot.ItemID)); }
         }
 
 
@@ -259,24 +259,24 @@ public class Player : LivingThing
         bool dupWeapon = false;
         for (int i = 0; i < InventoryWeapons.Count(); i++)
         {
-            if (InventoryWeapons[i].ItemID == EquippedWeapon.ItemID)
+            if (InventoryWeapons[i].WeaponID == EquippedWeapon.ItemID)
             {
-                InventoryWeapons[i].QuantityOfItem++;
+                InventoryWeapons[i].playerQuantity++;
                 dupWeapon = true;
             }
-            if (InventoryWeapons[i].ItemID == newWeapon.ItemID)
+            if (InventoryWeapons[i].WeaponID == newWeapon.ItemID)
             {
-                if (InventoryWeapons[i].QuantityOfItem == 1)
+                if (InventoryWeapons[i].playerQuantity == 1)
                 {
                     InventoryWeapons.RemoveAt(i);
                 }
                 else
                 {
-                    InventoryWeapons[i].QuantityOfItem--;
+                    InventoryWeapons[i].playerQuantity--;
                 }
             }
         }
-        if (!dupWeapon) { InventoryWeapons.Add(EquippedWeapon); }
+        if (!dupWeapon) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,EquippedWeapon.ItemID)); }
         EquippedWeapon = newWeapon;
     }
     public void EquipArmor(Armor newArmor)
@@ -284,24 +284,24 @@ public class Player : LivingThing
         bool dupArmor = false;
         for (int i = 0; i < InventoryArmors.Count(); i++)
         {
-            if (InventoryArmors[i].ItemID == EquippedArmor.ItemID)
+            if (InventoryArmors[i].ArmorID == EquippedArmor.ItemID)
             {
-                InventoryArmors[i].QuantityOfItem++;
+                InventoryArmors[i].playerQuantity++;
                 dupArmor = true;
             }
-            if (InventoryArmors[i].ItemID == newArmor.ItemID)
+            if (InventoryArmors[i].ArmorID == newArmor.ItemID)
             {
-                if (InventoryArmors[i].QuantityOfItem == 1)
+                if (InventoryArmors[i].playerQuantity == 1)
                 {
                     InventoryArmors.RemoveAt(i);
                 }
                 else
                 {
-                    InventoryArmors[i].QuantityOfItem--;
+                    InventoryArmors[i].playerQuantity--;
                 }
             }
         }
-        if (!dupArmor) { InventoryArmors.Add(EquippedArmor); }
+        if (!dupArmor) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID,1,EquippedArmor.ItemID)); }
         EquippedArmor = newArmor;
     }
     public void Ding(LevelChange newLevel)
@@ -319,11 +319,11 @@ public class Player : LivingThing
         if (CurrentHitPoints > MaxHitPoints) { CurrentHitPoints = MaxHitPoints; }
         for (int i = 0; i < InventoryPotions.Count(); i++)
         {
-            if (InventoryPotions[i].ItemID == potion.ItemID)
+            if (InventoryPotions[i].PotionID == potion.ItemID)
             {
-                if (InventoryPotions[i].QuantityOfItem > 1)
+                if (InventoryPotions[i].playerQuantity > 1)
                 {
-                    InventoryPotions[i].QuantityOfItem--;
+                    InventoryPotions[i].playerQuantity--;
                 }
                 else
                 {
@@ -341,37 +341,37 @@ public class Player : LivingThing
                 //1 = Potion
                 for (int i = 0; i < InventoryPotions.Count(); i++)
                 {
-                    if (thingItself.ItemID == InventoryPotions[i].ItemID)
+                    if (thingItself.ItemID == InventoryPotions[i].PotionID)
                     {
-                        InventoryPotions[i].QuantityOfItem += thingItself.QuantityOfItem;
+                        InventoryPotions[i].playerQuantity += thingItself.QuantityOfItem;
                         alreadyHaveOne = true;
                     }
                 }
-                if (!alreadyHaveOne) { InventoryPotions.Add((Potion)thingItself); }
+                if (!alreadyHaveOne) { InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID,1,thingItself.ItemID)); }
                 break;
             case 2:
                 //2 = Weapon
                 for (int i = 0; i < InventoryWeapons.Count(); i++)
                 {
-                    if (thingItself.ItemID == InventoryWeapons[i].ItemID)
+                    if (thingItself.ItemID == InventoryWeapons[i].WeaponID)
                     {
-                        InventoryWeapons[i].QuantityOfItem += thingItself.QuantityOfItem;
+                        InventoryWeapons[i].playerQuantity += thingItself.QuantityOfItem;
                         alreadyHaveOne = true;
                     }
                 }
-                if (!alreadyHaveOne) { InventoryWeapons.Add((Weapon)thingItself); }
+                if (!alreadyHaveOne) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,thingItself.ItemID)); }
                 break;
             case 3:
                 //3 = Armor
                 for (int i = 0; i < InventoryArmors.Count(); i++)
                 {
-                    if (thingItself.ItemID == InventoryArmors[i].ItemID)
+                    if (thingItself.ItemID == InventoryArmors[i].ArmorID)
                     {
-                        InventoryArmors[i].QuantityOfItem += thingItself.QuantityOfItem;
+                        InventoryArmors[i].playerQuantity += thingItself.QuantityOfItem;
                         alreadyHaveOne = true;
                     }
                 }
-                if (!alreadyHaveOne) { InventoryArmors.Add((Armor)thingItself); }
+                if (!alreadyHaveOne) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID,1,thingItself.ItemID)); }
                 break;
         }
         PlayerGold -= thingItself.ItemBaseValue * thingItself.QuantityOfItem;
@@ -384,15 +384,15 @@ public class Player : LivingThing
                 //1 = Potion
                 for (int i = 0; i < InventoryPotions.Count(); i++)
                 {
-                    if (thingItself.ItemID == InventoryPotions[i].ItemID)
+                    if (thingItself.ItemID == InventoryPotions[i].PotionID)
                     {
-                        if (InventoryPotions[i].QuantityOfItem - thingItself.QuantityOfItem == 0)
+                        if (InventoryPotions[i].playerQuantity - thingItself.QuantityOfItem == 0)
                         {
                             InventoryPotions.RemoveAt(i);
                         }
                         else
                         {
-                            InventoryPotions[i].QuantityOfItem -= thingItself.QuantityOfItem;
+                            InventoryPotions[i].playerQuantity -= thingItself.QuantityOfItem;
                         }
                     }
                 }
@@ -401,15 +401,15 @@ public class Player : LivingThing
                 //2 = Weapon
                 for (int i = 0; i < InventoryWeapons.Count(); i++)
                 {
-                    if (thingItself.ItemID == InventoryWeapons[i].ItemID)
+                    if (thingItself.ItemID == InventoryWeapons[i].WeaponID)
                     {
-                        if (InventoryWeapons[i].QuantityOfItem - thingItself.QuantityOfItem == 0)
+                        if (InventoryWeapons[i].playerQuantity - thingItself.QuantityOfItem == 0)
                         {
                             InventoryWeapons.RemoveAt(i);
                         }
                         else
                         {
-                            InventoryWeapons[i].QuantityOfItem -= thingItself.QuantityOfItem;
+                            InventoryWeapons[i].playerQuantity -= thingItself.QuantityOfItem;
                         }
                     }
                 }
@@ -418,15 +418,15 @@ public class Player : LivingThing
                 //3 = Armor
                 for (int i = 0; i < InventoryArmors.Count(); i++)
                 {
-                    if (thingItself.ItemID == InventoryArmors[i].ItemID)
+                    if (thingItself.ItemID == InventoryArmors[i].ArmorID)
                     {
-                        if (InventoryArmors[i].QuantityOfItem - thingItself.QuantityOfItem == 0)
+                        if (InventoryArmors[i].playerQuantity - thingItself.QuantityOfItem == 0)
                         {
                             InventoryArmors.RemoveAt(i);
                         }
                         else
                         {
-                            InventoryArmors[i].QuantityOfItem -= thingItself.QuantityOfItem;
+                            InventoryArmors[i].playerQuantity -= thingItself.QuantityOfItem;
                         }
                     }
                 }
@@ -437,13 +437,13 @@ public class Player : LivingThing
                 {
                     if (thingItself.ItemID == InventoryItems[i].ItemID)
                     {
-                        if (InventoryItems[i].QuantityOfItem - thingItself.QuantityOfItem == 0)
+                        if (InventoryItems[i].playerQuantity - thingItself.QuantityOfItem == 0)
                         {
                             InventoryItems.RemoveAt(i);
                         }
                         else
                         {
-                            InventoryItems[i].QuantityOfItem -= thingItself.QuantityOfItem;
+                            InventoryItems[i].playerQuantity -= thingItself.QuantityOfItem;
                         }
                     }
                 }
@@ -451,37 +451,37 @@ public class Player : LivingThing
         }
         PlayerGold += thingItself.ItemBaseValue / 3 * thingItself.QuantityOfItem;
     }
-    public List<Item> GetStuffToSell(int typeOfThing)
+    public List<InventoryItem> GetStuffToSell(int typeOfThing)
     {
-        List<Item> itemsToSell = new();
+        List<InventoryItem> itemsToSell = new();
         switch (typeOfThing)
         {
             case 1:
-                foreach (Item potion in InventoryPotions)
+                foreach (InventoryItem potion in InventoryPotions)
                 {
                     itemsToSell.Add(potion);
                 }
                 break;
             case 2:
-                foreach (Item weapon in InventoryWeapons)
+                foreach (InventoryItem weapon in InventoryWeapons)
                 {
-                    if (weapon.ItemBaseValue / 3 >= 1)
-                    {
+                    // if (weapon.ItemBaseValue / 3 >= 1)
+                    // {
                         itemsToSell.Add(weapon);
-                    }
+                    //}
                 }
                 break;
             case 3:
-                foreach (Item armor in InventoryArmors)
+                foreach (InventoryItem armor in InventoryArmors)
                 {
-                    if (armor.ItemBaseValue / 3 >= 1)
-                    {
+                    // if (armor.ItemBaseValue / 3 >= 1)
+                    // {
                         itemsToSell.Add(armor);
-                    }
+                    // }
                 }
                 break;
             case 4:
-                foreach (Item item in InventoryItems)
+                foreach (InventoryItem item in InventoryItems)
                 {
                     itemsToSell.Add(item);
                 }

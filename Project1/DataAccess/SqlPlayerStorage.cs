@@ -60,43 +60,43 @@ public class SqlPlayerStorage : IPlayerStorage
                 cmd3.ExecuteNonQuery();
             }
             //Add player's weapon inventory to player weapon inventory table
-            foreach (Weapon weapon in currentPlayer.InventoryWeapons)
+            foreach (PlayerInventoryWeapon weapon in currentPlayer.InventoryWeapons)
             {
                 cmdText = @"INSERT INTO Player_Inventory_Weapons (PlayerID, WeaponType, PlayerQuantity) VALUES (@playerID, @weaponType, @playerQuantity)";
                 using SqlCommand cmd4 = new SqlCommand(cmdText, connection);
                 cmd4.Parameters.AddWithValue("@playerID", currentPlayer.PlayerID);
-                cmd4.Parameters.AddWithValue("@weaponType", weapon.ItemID);
-                cmd4.Parameters.AddWithValue("@playerQuantity", weapon.QuantityOfItem);
+                cmd4.Parameters.AddWithValue("@weaponType", weapon.WeaponID);
+                cmd4.Parameters.AddWithValue("@playerQuantity", weapon.playerQuantity);
                 cmd4.ExecuteNonQuery();
             }
             //Add player's armor inventory to player armor inventory table
-            foreach (Armor armor in currentPlayer.InventoryArmors)
+            foreach (PlayerInventoryArmor armor in currentPlayer.InventoryArmors)
             {
                 cmdText = @"INSERT INTO Player_Inventory_Armors (PlayerID, ArmorType, PlayerQuantity) VALUES (@playerID, @armorType, @playerQuantity)";
                 using SqlCommand cmd5 = new SqlCommand(cmdText, connection);
                 cmd5.Parameters.AddWithValue("@playerID", currentPlayer.PlayerID);
-                cmd5.Parameters.AddWithValue("@armorType", armor.ItemID);
-                cmd5.Parameters.AddWithValue("@playerQuantity", armor.QuantityOfItem);
+                cmd5.Parameters.AddWithValue("@armorType", armor.ArmorID);
+                cmd5.Parameters.AddWithValue("@playerQuantity", armor.playerQuantity);
                 cmd5.ExecuteNonQuery();
             }
             //Add player's potion inventory to player potion inventory table
-            foreach (Potion potion in currentPlayer.InventoryPotions)
+            foreach (PlayerInventoryPotion potion in currentPlayer.InventoryPotions)
             {
                 cmdText = @"INSERT INTO Player_Inventory_Potions (PlayerID, PotionType, PlayerQuantity) VALUES (@playerID, @potionType, @playerQuantity)";
                 using SqlCommand cmd6 = new SqlCommand(cmdText, connection);
                 cmd6.Parameters.AddWithValue("@playerID", currentPlayer.PlayerID);
-                cmd6.Parameters.AddWithValue("@potionType", potion.ItemID);
-                cmd6.Parameters.AddWithValue("@playerQuantity", potion.QuantityOfItem);
+                cmd6.Parameters.AddWithValue("@potionType", potion.PotionID);
+                cmd6.Parameters.AddWithValue("@playerQuantity", potion.playerQuantity);
                 cmd6.ExecuteNonQuery();
             }
             //Add player's item inventory to player inventory inventory table
-            foreach (Item item in currentPlayer.InventoryItems)
+            foreach (PlayerInventoryItem item in currentPlayer.InventoryItems)
             {
                 cmdText = @"INSERT INTO Player_Inventory_Items (PlayerID, ItemType, PlayerQuantity) VALUES (@playerID, @itemType, @playerQuantity)";
                 using SqlCommand cmd7 = new SqlCommand(cmdText, connection);
                 cmd7.Parameters.AddWithValue("@playerID", currentPlayer.PlayerID);
                 cmd7.Parameters.AddWithValue("@itemType", item.ItemID);
-                cmd7.Parameters.AddWithValue("@playerQuantity", item.QuantityOfItem);
+                cmd7.Parameters.AddWithValue("@playerQuantity", item.playerQuantity);
                 cmd7.ExecuteNonQuery();
             }
             connection.Close();
@@ -151,43 +151,43 @@ public class SqlPlayerStorage : IPlayerStorage
             else
             {
                 //pull player's weapon inventory from DB
-                cmdText = "SELECT WeaponID, WeaponName, BaseValue, PlayerQuantity, BuyLvlRequirement, AttackIncrease FROM Player_Inventory_Weapons piw JOIN Game_Weapons gw on piw.WeaponType = gw.WeaponID where PlayerID = @playerID";
+                cmdText = "SELECT PlayerID, WeaponType, PlayerQuantity FROM Player_Inventory_Weapons where PlayerID = @playerID";
                 using SqlCommand cmd3 = new SqlCommand(cmdText, connection);
                 cmd3.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader3 = cmd3.ExecuteReader();
                 while (reader3.Read())
                 {
-                    Weapon newWeapon = new Weapon(reader3.GetString(0), reader3.GetString(1), reader3.GetInt32(2), reader3.GetInt32(3), reader3.GetInt32(5), reader3.GetInt32(4));
+                    PlayerInventoryWeapon newWeapon = new PlayerInventoryWeapon(new Guid(reader3.GetString(0)), reader3.GetInt32(2), reader3.GetString(1));
                     foundPlayer.InventoryWeapons.Add(newWeapon);
                 }
                 //pull player's armor inventory from DB
-                cmdText = "SELECT ArmorID, ArmorName, BaseValue, PlayerQuantity, BuyLvlRequirement, MitigationIncrease FROM Player_Inventory_Armors pia JOIN Game_Armors ga on pia.ArmorType = ga.ArmorID where PlayerID = @playerID";
+                cmdText = "SELECT PlayerID, ArmorType, PlayerQuantity FROM Player_Inventory_Armors where PlayerID = @playerID";
                 using SqlCommand cmd4 = new SqlCommand(cmdText, connection);
                 cmd4.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader4 = cmd4.ExecuteReader();
                 while (reader4.Read())
                 {
-                    Armor newArmor = new Armor(reader4.GetString(0), reader4.GetString(1), reader4.GetInt32(2), reader4.GetInt32(3), reader4.GetInt32(5), reader4.GetInt32(4));
+                    PlayerInventoryArmor newArmor = new PlayerInventoryArmor(new Guid(reader4.GetString(0)), reader4.GetInt32(2), reader4.GetString(1));
                     foundPlayer.InventoryArmors.Add(newArmor);
                 }
                 //pull player's potion inventory from DB
-                cmdText = "SELECT PotionID, PotionName, BaseValue, PlayerQuantity, BuyLvlRequirement, HPRestored FROM Player_Inventory_Potions pip JOIN Game_Potions gp on pip.PotionType = gp.PotionID where PlayerID = @playerID";
+                cmdText = "SELECT PlayerID, PotionType, PlayerQuantity FROM Player_Inventory_Potions where PlayerID = @playerID";
                 using SqlCommand cmd5 = new SqlCommand(cmdText, connection);
                 cmd5.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader5 = cmd5.ExecuteReader();
                 while (reader5.Read())
                 {
-                    Potion newPotion = new Potion(reader5.GetString(0), reader5.GetString(1), reader5.GetInt32(2), reader5.GetInt32(3), reader5.GetInt32(5), reader5.GetInt32(4));
+                    PlayerInventoryPotion newPotion = new PlayerInventoryPotion(new Guid(reader5.GetString(0)), reader5.GetInt32(2), reader5.GetString(1));
                     foundPlayer.InventoryPotions.Add(newPotion);
                 }
                 //pull player's item inventory from DB
-                cmdText = "SELECT ItemID, ItemName, BaseValue, PlayerQuantity FROM Player_Inventory_Items pii JOIN Game_Items gi on pii.ItemType = gi.ItemID where PlayerID = @playerID";
+                cmdText = "SELECT PlayerID, ItemType, PlayerQuantity FROM Player_Inventory_Items where PlayerID = @playerID";
                 using SqlCommand cmd6 = new SqlCommand(cmdText, connection);
                 cmd6.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader6 = cmd6.ExecuteReader();
                 while (reader6.Read())
                 {
-                    Item newItem = new Item(reader6.GetString(0), reader6.GetString(1), reader6.GetInt32(2), reader6.GetInt32(3));
+                    PlayerInventoryItem newItem = new PlayerInventoryItem(new Guid(reader6.GetString(0)), reader6.GetInt32(2), reader6.GetString(1));
                     foundPlayer.InventoryItems.Add(newItem);
                 }
                 //pull player's explored locations
