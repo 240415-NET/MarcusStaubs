@@ -59,7 +59,7 @@ public class PlayerController
     }
     public static Dictionary<int, LevelChange> InitializeLevelInfo()
     {
-        if (levelStorage.GetLevelList() != null)
+        if (StorageHelper.GetSqlConnectionString() != null)
         {
             return levelStorage.GetLevelList();
         }

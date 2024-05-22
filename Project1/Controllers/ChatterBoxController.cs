@@ -9,7 +9,7 @@ public static class RandomTextController
     public static IChatterBoxStorage alternateChatStorage = new ChatterBoxStorage();
     public static ChatterBox GetRandomText()
     {
-        if (myChatStorage.GetChatterBox() != null)
+        if (StorageHelper.GetSqlConnectionString() != null)
         {
             ChatterBox myChatBox = myChatStorage.GetChatterBox();
             return myChatBox;

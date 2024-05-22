@@ -334,6 +334,7 @@ public static class WelcomeToTheGame
         int playerAttack;
         int monsterAttack;
         bool amIDead = false;
+        bool leveledUp = false;
         ConsoleKeyInfo keyPress;
         Console.WriteLine($"You have encountered a {currentMonster.Name}!");
         Console.WriteLine("Press any key to start the fight...");
@@ -461,6 +462,7 @@ public static class WelcomeToTheGame
                 {
                     currentPlayer.Ding(levelReference[currentPlayer.PlayerLevel + 1]);
                     Console.WriteLine($"Congratulations! You have reached level {currentPlayer.PlayerLevel}!");
+                    leveledUp = true;
                 }
             }
             else
@@ -484,6 +486,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
             }
             Console.ReadKey();
+            if(leveledUp){DisplayCharacter();}
         }
         else
         {

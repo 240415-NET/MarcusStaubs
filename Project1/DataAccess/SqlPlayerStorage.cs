@@ -113,13 +113,15 @@ public class SqlPlayerStorage : IPlayerStorage
         }
         else
         {
-            string foundEquippedWeapon = "";
-            string foundEquippedArmor = "";
-
             using SqlConnection connection = new SqlConnection(connString);
             connection.Open();
 
-            string cmdText = "SELECT PlayerID, Name, CurrentHP, MaximumHP, PlayerLevel, Strength, Dexterity, Constitution, EquippedWeapon, EquippedArmor, PlayerXP, CurrentLocation, PlayerGold FROM Player where Name = @playerName";
+            string cmdText = @"SELECT PlayerID, Name, CurrentHP, MaximumHP, PlayerLevel, Strength, Dexterity, Constitution, EquippedWeapon, gw.WeaponName, gw.BaseValue, gw.BaseQuantity, gw.BuyLvlRequirement, gw.AttackIncrease,
+                            EquippedArmor, ga.ArmorName, ga.BaseValue, ga.BaseQuantity, ga.BuyLvlRequirement, ga.MitigationIncrease, PlayerXP, CurrentLocation, PlayerGold
+                            FROM Player pl 
+                            JOIN Game_Armors ga on pl.EquippedArmor = ga.ArmorID 
+                            Join Game_Weapons gw on pl.EquippedWeapon = gw.WeaponID 
+                            WHERE Name = @playerName";
             using SqlCommand cmd = new SqlCommand(cmdText, connection);
             cmd.Parameters.AddWithValue("@playerName", playerName);
             using SqlDataReader reader = cmd.ExecuteReader();
@@ -133,11 +135,13 @@ public class SqlPlayerStorage : IPlayerStorage
                 foundPlayer.Strength = reader.GetInt32(5);
                 foundPlayer.Dexterity = reader.GetInt32(6);
                 foundPlayer.Constitution = reader.GetInt32(7);
-                foundEquippedWeapon = reader.GetString(8);
-                foundEquippedArmor = reader.GetString(9);
-                foundPlayer.PlayerXP = reader.GetInt32(10);
-                foundPlayer.CurrentLocation = reader.GetInt32(11);
-                foundPlayer.PlayerGold = reader.GetInt32(12);
+                Weapon playerWeapon = new Weapon(reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetInt32(13), reader.GetInt32(12));
+                foundPlayer.EquippedWeapon = playerWeapon;
+                Armor playerArmor = new Armor(reader.GetString(14), reader.GetString(15), reader.GetInt32(16), reader.GetInt32(17), reader.GetInt32(19), reader.GetInt32(18));
+                foundPlayer.EquippedArmor = playerArmor;
+                foundPlayer.PlayerXP = reader.GetInt32(20);
+                foundPlayer.CurrentLocation = reader.GetInt32(21);
+                foundPlayer.PlayerGold = reader.GetInt32(22);
             }
             if (foundPlayer.Name == "not found")
             {
@@ -146,45 +150,45 @@ public class SqlPlayerStorage : IPlayerStorage
             }
             else
             {
-                //pull details of player's equipped weapon from DB
-                foundPlayer.EquippedWeapon = GetWeaponInventoryItemFromTable(foundEquippedWeapon, 1);
-                //pull details of player's equipped armor from DB
-                foundPlayer.EquippedArmor = GetArmorInventoryItemFromTable(foundEquippedArmor, 1);
                 //pull player's weapon inventory from DB
-                cmdText = "SELECT WeaponType, PlayerQuantity FROM Player_Inventory_Weapons where PlayerID = @playerID";
+                cmdText = "SELECT WeaponID, WeaponName, BaseValue, PlayerQuantity, BuyLvlRequirement, AttackIncrease FROM Player_Inventory_Weapons piw JOIN Game_Weapons gw on piw.WeaponType = gw.WeaponID where PlayerID = @playerID";
                 using SqlCommand cmd3 = new SqlCommand(cmdText, connection);
                 cmd3.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader3 = cmd3.ExecuteReader();
                 while (reader3.Read())
                 {
-                    foundPlayer.InventoryWeapons.Add(GetWeaponInventoryItemFromTable(reader3.GetString(0), reader3.GetInt32(1)));
+                    Weapon newWeapon = new Weapon(reader3.GetString(0), reader3.GetString(1), reader3.GetInt32(2), reader3.GetInt32(3), reader3.GetInt32(5), reader3.GetInt32(4));
+                    foundPlayer.InventoryWeapons.Add(newWeapon);
                 }
                 //pull player's armor inventory from DB
-                cmdText = "SELECT ArmorType, PlayerQuantity FROM Player_Inventory_Armors where PlayerID = @playerID";
+                cmdText = "SELECT ArmorID, ArmorName, BaseValue, PlayerQuantity, BuyLvlRequirement, MitigationIncrease FROM Player_Inventory_Armors pia JOIN Game_Armors ga on pia.ArmorType = ga.ArmorID where PlayerID = @playerID";
                 using SqlCommand cmd4 = new SqlCommand(cmdText, connection);
                 cmd4.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader4 = cmd4.ExecuteReader();
                 while (reader4.Read())
                 {
-                    foundPlayer.InventoryArmors.Add(GetArmorInventoryItemFromTable(reader4.GetString(0), reader4.GetInt32(1)));
+                    Armor newArmor = new Armor(reader4.GetString(0), reader4.GetString(1), reader4.GetInt32(2), reader4.GetInt32(3), reader4.GetInt32(5), reader4.GetInt32(4));
+                    foundPlayer.InventoryArmors.Add(newArmor);
                 }
                 //pull player's potion inventory from DB
-                cmdText = "SELECT PotionType, PlayerQuantity FROM Player_Inventory_Potions where PlayerID = @playerID";
+                cmdText = "SELECT PotionID, PotionName, BaseValue, PlayerQuantity, BuyLvlRequirement, HPRestored FROM Player_Inventory_Potions pip JOIN Game_Potions gp on pip.PotionType = gp.PotionID where PlayerID = @playerID";
                 using SqlCommand cmd5 = new SqlCommand(cmdText, connection);
                 cmd5.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader5 = cmd5.ExecuteReader();
                 while (reader5.Read())
                 {
-                    foundPlayer.InventoryPotions.Add(GetPotionInventoryItemFromTable(reader5.GetString(0), reader5.GetInt32(1)));
+                    Potion newPotion = new Potion(reader5.GetString(0), reader5.GetString(1), reader5.GetInt32(2), reader5.GetInt32(3), reader5.GetInt32(5), reader5.GetInt32(4));
+                    foundPlayer.InventoryPotions.Add(newPotion);
                 }
                 //pull player's item inventory from DB
-                cmdText = "SELECT ItemType, PlayerQuantity FROM Player_Inventory_Items where PlayerID = @playerID";
+                cmdText = "SELECT ItemID, ItemName, BaseValue, PlayerQuantity FROM Player_Inventory_Items pii JOIN Game_Items gi on pii.ItemType = gi.ItemID where PlayerID = @playerID";
                 using SqlCommand cmd6 = new SqlCommand(cmdText, connection);
                 cmd6.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader6 = cmd6.ExecuteReader();
                 while (reader6.Read())
                 {
-                    foundPlayer.InventoryItems.Add(GetItemInventoryItemFromTable(reader6.GetString(0), reader6.GetInt32(1)));
+                    Item newItem = new Item(reader6.GetString(0), reader6.GetString(1), reader6.GetInt32(2), reader6.GetInt32(3));
+                    foundPlayer.InventoryItems.Add(newItem);
                 }
                 //pull player's explored locations
                 cmdText = "SELECT LocationID FROM Player_Explored_Locations where PlayerID = @playerID";
@@ -208,104 +212,6 @@ public class SqlPlayerStorage : IPlayerStorage
                 return foundPlayer;
             }
         }
-    }
-    public Weapon GetWeaponInventoryItemFromTable(string weaponID, int playerQuantity)
-    {
-        string connString = StorageHelper.GetSqlConnectionString();
-        using SqlConnection connection = new SqlConnection(connString);
-        connection.Open();
-
-        string cmdText = "SELECT WeaponID, WeaponName, BaseValue, BuyLvlRequirement, AttackIncrease FROM Game_Weapons where WeaponID = @equippedWeapon";
-        using SqlCommand cmd = new SqlCommand(cmdText, connection);
-        cmd.Parameters.AddWithValue("@equippedWeapon", weaponID);
-        using SqlDataReader reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            string ItemID = reader.GetString(0);
-            string ItemName = reader.GetString(1);
-            int ItemBaseValue = reader.GetInt32(2);
-            int buyLvlRequirement = reader.GetInt32(3);
-            int AttackIncrease = reader.GetInt32(4);
-
-            Weapon foundWeapon = new Weapon(ItemID, ItemName, ItemBaseValue, playerQuantity, AttackIncrease, buyLvlRequirement);
-            connection.Close();
-            return foundWeapon;
-        }
-        connection.Close();
-        return null;
-    }
-    public Armor GetArmorInventoryItemFromTable(string armorID, int playerQuantity)
-    {
-        string connString = StorageHelper.GetSqlConnectionString();
-        using SqlConnection connection = new SqlConnection(connString);
-        connection.Open();
-
-        string cmdText = "SELECT ArmorID, ArmorName, BaseValue, BuyLvlRequirement, MitigationIncrease FROM Game_Armors where ArmorID = @equippedArmor";
-        using SqlCommand cmd = new SqlCommand(cmdText, connection);
-        cmd.Parameters.AddWithValue("@equippedArmor", armorID);
-        using SqlDataReader reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            string ItemID = reader.GetString(0);
-            string ItemName = reader.GetString(1);
-            int ItemBaseValue = reader.GetInt32(2);
-            int buyLvlRequirement = reader.GetInt32(3);
-            int mitigationIncrease = reader.GetInt32(4);
-
-            Armor foundArmor = new Armor(ItemID, ItemName, ItemBaseValue, playerQuantity, mitigationIncrease, buyLvlRequirement);
-            connection.Close();
-            return foundArmor;
-        }
-        connection.Close();
-        return null;
-    }
-    public Potion GetPotionInventoryItemFromTable(string potionID, int playerQuantity)
-    {
-        string connString = StorageHelper.GetSqlConnectionString();
-        using SqlConnection connection = new SqlConnection(connString);
-        connection.Open();
-
-        string cmdText = "SELECT PotionID, PotionName, BaseValue, BuyLvlRequirement, HPRestored FROM Game_Potions where PotionID = @potionID";
-        using SqlCommand cmd = new SqlCommand(cmdText, connection);
-        cmd.Parameters.AddWithValue("@potionID", potionID);
-        using SqlDataReader reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            string ItemID = reader.GetString(0);
-            string ItemName = reader.GetString(1);
-            int ItemBaseValue = reader.GetInt32(2);
-            int buyLvlRequirement = reader.GetInt32(3);
-            int hpRestored = reader.GetInt32(4);
-
-            Potion foundPotion = new Potion(ItemID, ItemName, ItemBaseValue, playerQuantity, hpRestored, buyLvlRequirement);
-            connection.Close();
-            return foundPotion;
-        }
-        connection.Close();
-        return null;
-    }
-    public Item GetItemInventoryItemFromTable(string itemID, int playerQuantity)
-    {
-        string connString = StorageHelper.GetSqlConnectionString();
-        using SqlConnection connection = new SqlConnection(connString);
-        connection.Open();
-
-        string cmdText = "SELECT ItemID, ItemName, BaseValue FROM Game_Items where ItemID = @itemID";
-        using SqlCommand cmd = new SqlCommand(cmdText, connection);
-        cmd.Parameters.AddWithValue("@itemID", itemID);
-        using SqlDataReader reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            string ItemID = reader.GetString(0);
-            string ItemName = reader.GetString(1);
-            int ItemBaseValue = reader.GetInt32(2);
-
-            Item foundItem = new Item(ItemID, ItemName, ItemBaseValue, playerQuantity);
-            connection.Close();
-            return foundItem;
-        }
-        connection.Close();
-        return null;
     }
     public void ClearExitingPlayerDataFromDBTables(Guid playerID)
     {

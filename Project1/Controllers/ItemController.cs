@@ -16,7 +16,7 @@ public class ItemController
     {
         Dictionary<string,Item> allGameItems = new();
         ItemDTO itemsFromFile = new ItemDTO();
-        if(itemStorage.getAllMyItems() != null)
+        if(StorageHelper.GetSqlConnectionString() != null)
         {
             itemsFromFile = itemStorage.getAllMyItems();
         }
