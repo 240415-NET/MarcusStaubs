@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Project1.Models;
 
 public class ChatterBox
@@ -32,8 +35,10 @@ public class ChatterBox
     }
 }
 
+[Table("Kill_Chatter")]
 public class KillChatter : GeneralChatter
 {
+    [Required]
     public int monsterType { get; set; }
     public KillChatter()
     {
@@ -45,8 +50,11 @@ public class KillChatter : GeneralChatter
     }
 }
 
+//[Table("General_Chatter")]
 public class GeneralChatter
 {
+    [Key]
+    public int ID {get; set;}
     public List<string>? messages { get; set; }
     public GeneralChatter()
     {

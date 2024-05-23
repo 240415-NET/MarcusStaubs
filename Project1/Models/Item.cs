@@ -1,8 +1,10 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project1.Models;
 
+[Table("Game_Items")]
 public class Item
 {
     [Required]
@@ -38,13 +40,11 @@ public class Item
     }
     public virtual string VendorSellingDisplay()
     {
-        //This output should never really be called from anywhere
         return $"{ItemName} worth {ItemBaseValue} each";
     }
     public virtual string PlayerSellingDisplay()
     {
         return String.Format(" {0,3} | {1,-27} |                 | {2,2} GP |", QuantityOfItem, ItemName, ItemBaseValue / 3);
-        //$"{ItemName} worth {ItemBaseValue / 3} each";
     }
     public void CopyFromOtherItem(Item itemToCopyFrom, int quantityForMe)
     {
@@ -56,6 +56,7 @@ public class Item
     }
 }
 
+[Table("Game_Weapons")]
 public class Weapon : Item
 {
     public int AttackIncrease { get; set; }
@@ -104,6 +105,7 @@ public class Weapon : Item
     }
 }
 
+[Table("Game_Armors")]
 public class Armor : Item
 {
     public int MitigationIncrease { get; set; }
@@ -153,6 +155,7 @@ public class Armor : Item
     }
 }
 
+[Table("Game_Potions")]
 public class Potion : Item
 {
     public int HPRestoration { get; set; }

@@ -19,7 +19,7 @@ public static class MapController
         {
             if (!HasPlayerExplored(ref currentPlayer))
             {
-                currentPlayer.ExploredLocations.Add(currentPlayer.CurrentLocation);
+                currentPlayer.ExploredLocations.Add(new ExploredLocation(currentPlayer.PlayerID,currentPlayer.CurrentLocation));
                 FillPlayerMap(ref currentPlayer, gameMap, ref displayMap);
             }
             displayMap = PutPlayerOnMap(ref currentPlayer);
@@ -28,9 +28,9 @@ public static class MapController
 
     public static bool HasPlayerExplored(ref Player currentPlayer)
     {
-        foreach (int location in currentPlayer.ExploredLocations)
+        foreach (ExploredLocation location in currentPlayer.ExploredLocations)
         {
-            if (location == currentPlayer.CurrentLocation)
+            if (location.locationHash == currentPlayer.CurrentLocation)
             {
                 return true;
             }
@@ -92,7 +92,7 @@ public static class MapController
             outerCounter = 0;
             for (int i = playerYCoord; i < playerYCoord + 3; i++)
             {
-                StringBuilder addToPlayerMap = new StringBuilder(currentPlayer.PlayerMap[i]);
+                StringBuilder addToPlayerMap = new StringBuilder(currentPlayer.PlayerMap[i].MapLine);
                 int innerCounter = 0;
                 for (int j = playerXCoord; j < playerXCoord + 5; j++)
                 {
@@ -100,7 +100,7 @@ public static class MapController
                     innerCounter++;
                 }
                 outerCounter++;
-                currentPlayer.PlayerMap[i] = addToPlayerMap.ToString();
+                currentPlayer.PlayerMap[i].MapLine = addToPlayerMap.ToString();
             }
         }
     }
@@ -108,9 +108,9 @@ public static class MapController
     public static List<string> MatchDisplayMapToPlayerMap(ref Player currentPlayer)
     {
         List<string> forDisplay = new();
-        foreach (string mapLine in currentPlayer.PlayerMap)
+        foreach (PlayerMap mapLine in currentPlayer.PlayerMap)
         {
-            forDisplay.Add(mapLine);
+            forDisplay.Add(mapLine.MapLine);
         }
         return forDisplay;
     }

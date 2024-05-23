@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 
 namespace Project1.Models;
 public class Monster : LivingThing
@@ -81,7 +80,6 @@ public struct MonsterData
     public string Name { get; set; }
     public int MaxHitPoints { get; set; }
     public int CurrentHitPoints { get; set; }
-    [Required]
     public int MonsterID { get; set; }
     public int MonsterAttack { get; set; }
     public int MonsterDodge { get; set; }

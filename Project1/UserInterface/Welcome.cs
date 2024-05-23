@@ -2,7 +2,6 @@ using System;
 using Project1;
 using Project1.Controllers;
 using Project1.Models;
-
 namespace Project1.UserInterfaces;
 
 public static class WelcomeToTheGame
@@ -141,8 +140,7 @@ public static class WelcomeToTheGame
             }
             else if (PlayerController.DoesPlayerExist(newPlayerName))
             {
-                Console.WriteLine($"There is already a player called {newPlayerName}.\nUnfortunately, we can only have one of those and you'll have to choose another name.");
-                validInput = false;
+                Console.WriteLine($"There is already a player called {newPlayerName}.\nUnfortunately, we can only have one of those so you'll have to choose another name.");
             }
             else
             {
@@ -946,7 +944,7 @@ public static class WelcomeToTheGame
                         tempItem.QuantityOfItem = item.playerQuantity;
                         Console.WriteLine(tempItem);
                     }
-                   // if (userChoice != 16) { Console.ReadKey(); }
+                    // if (userChoice != 16) { Console.ReadKey(); }
                 }
                 if (userChoice == 18 || userChoice == 16)
                 {
@@ -956,7 +954,7 @@ public static class WelcomeToTheGame
                         tempWeapon.QuantityOfItem = weapon.playerQuantity;
                         Console.WriteLine(tempWeapon);
                     }
-                   // if (userChoice != 16) { Console.ReadKey(); }
+                    // if (userChoice != 16) { Console.ReadKey(); }
                 }
                 if (userChoice == 19 || userChoice == 16)
                 {

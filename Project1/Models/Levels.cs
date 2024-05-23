@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project1.Models;
 
+[Table("Level_Progression")]
 public class LevelChange
 {
-    [Required]
+    [Key]
     public int LevelNum {get; set;}
     public int XPRequiredForLevel {get; set;}
     public int MaxHitPointIncrease {get; set;}

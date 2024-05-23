@@ -1,23 +1,30 @@
 using Project1.Controllers;
 using Project1.UserInterfaces;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
 
 namespace Project1.Models;
 
 public class Player : LivingThing
 {
-    [Required]
+    [Key]
     public Guid PlayerID { get; set; }
     public int PlayerLevel { get; set; }
     public int Strength { get; set; }
     public int Dexterity { get; set; }
     public int Constitution { get; set; }
+    [Required]
+    public string EquippedWeaponID {get; set;}
     public Weapon EquippedWeapon { get; set; }
+    [Required]
+    public string EquippedArmorID {get; set; }
     public Armor EquippedArmor { get; set; }
     public int PlayerXP { get; set; }
     public int CurrentLocation { get; set; }
-    public List<string> PlayerMap { get; set; }
-    public List<int> ExploredLocations { get; set; }
+    public List<PlayerMap> PlayerMap { get; set; }
+    public List<ExploredLocation> ExploredLocations { get; set; }
     public int PlayerGold { get; set; }
     public List<PlayerInventoryItem> InventoryItems { get; set; }
     public List<PlayerInventoryWeapon> InventoryWeapons { get; set; }
@@ -44,35 +51,39 @@ public class Player : LivingThing
         this.PlayerLevel = 1;
         this.PlayerXP = 0;
         this.PlayerGold = 0;
-        List<string> playerMap = new();
-        playerMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                                                                 ^");
-        playerMap.Add("^                         ^   ^                                   ^");
-        playerMap.Add("^                         ^   ^                                   ^");
-        playerMap.Add("^                         ^^^^^                                   ^");
-        playerMap.Add("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        PlayerMap = new();
+        //List<string> playerMap = new();
+        PlayerMap.Add(new PlayerMap(1,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",PlayerID));
+        PlayerMap.Add(new PlayerMap(2,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(3,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(4,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(5,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(6,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(7,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(8,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(9,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(10,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(11,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(12,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(13,"^                                                                 ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(14,"^                         ^   ^                                   ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(15,"^                         ^   ^                                   ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(16,"^                         ^^^^^                                   ^",PlayerID));
+        PlayerMap.Add(new PlayerMap(17,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",PlayerID));
+        this.EquippedWeaponID = "weapon1";
         this.EquippedWeapon = new Weapon("weapon1", "Crooked Stick", 1, 1, 1, 0);
+        this.EquippedArmorID = "armor1";
         this.EquippedArmor = new Armor("armor1", "Dirty Rags", 1, 1, 0, 0);
-        this.PlayerMap = playerMap;
-        List<int> exploredLoc = new();
-        exploredLoc.Add(106805);
-        ExploredLocations = exploredLoc;
+        //this.PlayerMap = playerMap;
+        // List<int> exploredLoc = new();
+        // exploredLoc.Add(106805);
+        ExploredLocations = new();
+        ExploredLocations.Add(new ExploredLocation(PlayerID,106805));
         InventoryItems = new List<PlayerInventoryItem>();
         InventoryWeapons = new List<PlayerInventoryWeapon>();
         InventoryArmors = new List<PlayerInventoryArmor>();
         InventoryPotions = new List<PlayerInventoryPotion>();
-        InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID,1,"potion1"));
+        InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID, 1, "potion1"));
     }
     public override string ToString()
     {
@@ -138,10 +149,10 @@ public class Player : LivingThing
                 CurrentLocation -= 1000;
                 break;
         }
-        if(CurrentLocation == 106800)
+        if (CurrentLocation == 106800)
         {
-            this.InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,"weapon20"));
-        } 
+            this.InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID, 1, "weapon20"));
+        }
     }
     public bool DoIHaveStuff()
     {
@@ -237,7 +248,7 @@ public class Player : LivingThing
                     newLoot = false;
                 }
             }
-            if (newLoot) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,loot.ItemID)); }
+            if (newLoot) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID, 1, loot.ItemID)); }
         }
         else
         {
@@ -249,7 +260,7 @@ public class Player : LivingThing
                     newLoot = false;
                 }
             }
-            if (newLoot) { InventoryItems.Add(new PlayerInventoryItem(this.PlayerID,1,loot.ItemID)); }
+            if (newLoot) { InventoryItems.Add(new PlayerInventoryItem(this.PlayerID, 1, loot.ItemID)); }
         }
 
 
@@ -276,7 +287,8 @@ public class Player : LivingThing
                 }
             }
         }
-        if (!dupWeapon) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,EquippedWeapon.ItemID)); }
+        if (!dupWeapon) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID, 1, EquippedWeapon.ItemID)); }
+        EquippedWeaponID = newWeapon.ItemID;
         EquippedWeapon = newWeapon;
     }
     public void EquipArmor(Armor newArmor)
@@ -301,7 +313,8 @@ public class Player : LivingThing
                 }
             }
         }
-        if (!dupArmor) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID,1,EquippedArmor.ItemID)); }
+        if (!dupArmor) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID, 1, EquippedArmor.ItemID)); }
+        EquippedArmorID = newArmor.ItemID;
         EquippedArmor = newArmor;
     }
     public void Ding(LevelChange newLevel)
@@ -347,7 +360,7 @@ public class Player : LivingThing
                         alreadyHaveOne = true;
                     }
                 }
-                if (!alreadyHaveOne) { InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID,1,thingItself.ItemID)); }
+                if (!alreadyHaveOne) { InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID, 1, thingItself.ItemID)); }
                 break;
             case 2:
                 //2 = Weapon
@@ -359,7 +372,7 @@ public class Player : LivingThing
                         alreadyHaveOne = true;
                     }
                 }
-                if (!alreadyHaveOne) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID,1,thingItself.ItemID)); }
+                if (!alreadyHaveOne) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID, 1, thingItself.ItemID)); }
                 break;
             case 3:
                 //3 = Armor
@@ -371,7 +384,7 @@ public class Player : LivingThing
                         alreadyHaveOne = true;
                     }
                 }
-                if (!alreadyHaveOne) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID,1,thingItself.ItemID)); }
+                if (!alreadyHaveOne) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID, 1, thingItself.ItemID)); }
                 break;
         }
         PlayerGold -= thingItself.ItemBaseValue * thingItself.QuantityOfItem;
@@ -467,7 +480,7 @@ public class Player : LivingThing
                 {
                     // if (weapon.ItemBaseValue / 3 >= 1)
                     // {
-                        itemsToSell.Add(weapon);
+                    itemsToSell.Add(weapon);
                     //}
                 }
                 break;
@@ -476,7 +489,7 @@ public class Player : LivingThing
                 {
                     // if (armor.ItemBaseValue / 3 >= 1)
                     // {
-                        itemsToSell.Add(armor);
+                    itemsToSell.Add(armor);
                     // }
                 }
                 break;

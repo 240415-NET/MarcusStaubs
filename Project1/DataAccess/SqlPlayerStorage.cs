@@ -41,12 +41,12 @@ public class SqlPlayerStorage : IPlayerStorage
             cmd.Parameters.AddWithValue("@playerGold", currentPlayer.PlayerGold);
             cmd.ExecuteNonQuery();
             //Add player's explored locations to player explored location table
-            foreach (int location in currentPlayer.ExploredLocations)
+            foreach (ExploredLocation location in currentPlayer.ExploredLocations)
             {
                 cmdText = @"INSERT INTO Player_Explored_Locations (PlayerID, LocationID) VALUES (@playerID, @locationID)";
                 using SqlCommand cmd2 = new SqlCommand(cmdText, connection);
                 cmd2.Parameters.AddWithValue("@playerID", currentPlayer.PlayerID);
-                cmd2.Parameters.AddWithValue("@locationID", location);
+                cmd2.Parameters.AddWithValue("@locationID", location.locationHash);
                 cmd2.ExecuteNonQuery();
             }
             //Add player's map to player map table
@@ -55,8 +55,8 @@ public class SqlPlayerStorage : IPlayerStorage
                 cmdText = @"INSERT INTO Player_Map (PlayerID, MapLine, MapLineOrder) VALUES (@playerID, @mapLine, @mapLineOrder)";
                 using SqlCommand cmd3 = new SqlCommand(cmdText, connection);
                 cmd3.Parameters.AddWithValue("@playerID", currentPlayer.PlayerID);
-                cmd3.Parameters.AddWithValue("@mapLine", currentPlayer.PlayerMap[i]);
-                cmd3.Parameters.AddWithValue("@mapLineOrder", i);
+                cmd3.Parameters.AddWithValue("@mapLine", currentPlayer.PlayerMap[i].MapLine);
+                cmd3.Parameters.AddWithValue("@mapLineOrder", currentPlayer.PlayerMap[i].MapLineOrder);
                 cmd3.ExecuteNonQuery();
             }
             //Add player's weapon inventory to player weapon inventory table
@@ -197,16 +197,16 @@ public class SqlPlayerStorage : IPlayerStorage
                 using SqlDataReader reader7 = cmd7.ExecuteReader();
                 while (reader7.Read())
                 {
-                    foundPlayer.ExploredLocations.Add(reader7.GetInt32(0));
+                    foundPlayer.ExploredLocations.Add(new ExploredLocation(foundPlayer.PlayerID,reader7.GetInt32(0)));
                 }
                 //pull player's map from DB
-                cmdText = "SELECT Mapline FROM Player_Map where PlayerID = @playerID ORDER BY MapLineOrder";
+                cmdText = "SELECT Mapline, MapLineOrder FROM Player_Map where PlayerID = @playerID ORDER BY MapLineOrder";
                 using SqlCommand cmd8 = new SqlCommand(cmdText, connection);
                 cmd8.Parameters.AddWithValue("@playerID", foundPlayer.PlayerID);
                 using SqlDataReader reader8 = cmd8.ExecuteReader();
                 while (reader8.Read())
                 {
-                    foundPlayer.PlayerMap.Add(reader8.GetString(0));
+                    foundPlayer.PlayerMap.Add(new PlayerMap(reader8.GetInt32(1), reader8.GetString(0), foundPlayer.PlayerID));
                 }
                 connection.Close();
                 return foundPlayer;
