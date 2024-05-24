@@ -16,10 +16,10 @@ public class Player : LivingThing
     public int Dexterity { get; set; }
     public int Constitution { get; set; }
     [Required]
-    public string EquippedWeaponID {get; set;}
+    public string EquippedWeaponID { get; set; }
     public Weapon EquippedWeapon { get; set; }
     [Required]
-    public string EquippedArmorID {get; set; }
+    public string EquippedArmorID { get; set; }
     public Armor EquippedArmor { get; set; }
     public int PlayerXP { get; set; }
     public int CurrentLocation { get; set; }
@@ -53,23 +53,23 @@ public class Player : LivingThing
         this.PlayerGold = 0;
         PlayerMap = new();
         //List<string> playerMap = new();
-        PlayerMap.Add(new PlayerMap(1,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",PlayerID));
-        PlayerMap.Add(new PlayerMap(2,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(3,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(4,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(5,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(6,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(7,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(8,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(9,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(10,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(11,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(12,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(13,"^                                                                 ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(14,"^                         ^   ^                                   ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(15,"^                         ^   ^                                   ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(16,"^                         ^^^^^                                   ^",PlayerID));
-        PlayerMap.Add(new PlayerMap(17,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",PlayerID));
+        PlayerMap.Add(new PlayerMap(1, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", PlayerID));
+        PlayerMap.Add(new PlayerMap(2, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(3, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(4, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(5, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(6, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(7, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(8, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(9, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(10, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(11, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(12, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(13, "^                                                                 ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(14, "^                         ^   ^                                   ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(15, "^                         ^   ^                                   ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(16, "^                         ^^^^^                                   ^", PlayerID));
+        PlayerMap.Add(new PlayerMap(17, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", PlayerID));
         this.EquippedWeaponID = "weapon1";
         this.EquippedWeapon = new Weapon("weapon1", "Crooked Stick", 1, 1, 1, 0);
         this.EquippedArmorID = "armor1";
@@ -78,7 +78,7 @@ public class Player : LivingThing
         // List<int> exploredLoc = new();
         // exploredLoc.Add(106805);
         ExploredLocations = new();
-        ExploredLocations.Add(new ExploredLocation(PlayerID,106805));
+        ExploredLocations.Add(new ExploredLocation(PlayerID, 106805));
         InventoryItems = new List<PlayerInventoryItem>();
         InventoryWeapons = new List<PlayerInventoryWeapon>();
         InventoryArmors = new List<PlayerInventoryArmor>();
@@ -94,9 +94,9 @@ public class Player : LivingThing
     {
         return $"        .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--.     \n       / .. \\.. \\..  .. \\.. \\.. \\..  .. \\.. \\.. \\.. \\.. \\..  .. \\.. \\.. \\    \n       \\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/ /    \n        \\ \\/\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /     \n         \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /      \n     /\\   \\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\/ /       \n    /  \\   \\ `'\\ `'  `'\\ `'\\ `'\\ `'  `'\\ `'\\ `'\\ `'\\ `'\\ `'  `'\\ `' /        \n   / /\\ \\   `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'         \n   \\ \\/ /                                                      \n    \\ \\/         \n    /\\ \\         {this.Name} \n    \\ \\/         Level {this.PlayerLevel} Warrior \n    /\\ \\         \n    \\ \\/         Hitpoints (HP): {this.CurrentHitPoints}/{this.MaxHitPoints} \n    /\\ \\         \n   / /\\ \\        Strength: {this.Strength} \n   \\ \\ \\/        Dexterity: {this.Dexterity} \n   /\\ \\ \\        Constitution: {this.Constitution} \n   \\ \\/ /        \n    \\ \\/         Equipped Weapon: {this.EquippedWeapon.ItemName} \n    /\\ \\         Attack: {this.Strength / 2 + this.EquippedWeapon.AttackIncrease} \n    \\ \\/         \n    /\\ \\         Equipped Armor: {this.EquippedArmor.ItemName} \n    \\ \\/         Damage mitigation: {this.Constitution / 8 + this.EquippedArmor.MitigationIncrease} \n    /\\ \\         \n   / /\\ \\        Dodge: {this.Dexterity / 2}% chance \n   \\ \\/ /        \n    \\  /         Gold Coins: {this.PlayerGold}\n     \\/          Experience (XP): {this.PlayerXP}/{XPForNextLevel}\n	   ";
     }
-    public int Rest(Location currentLocation)
+    public int Rest()
     {
-        int didMonsterSpawn = LocationController.DoesMonsterSpawn(currentLocation);
+        int didMonsterSpawn = LocationController.DoesMonsterSpawn();
         if (didMonsterSpawn == 0)
         {
             CurrentHitPoints = MaxHitPoints;
@@ -464,39 +464,47 @@ public class Player : LivingThing
         }
         PlayerGold += thingItself.ItemBaseValue / 3 * thingItself.QuantityOfItem;
     }
-    public List<InventoryItem> GetStuffToSell(int typeOfThing)
+    public List<Item> GetStuffToSell(int typeOfThing)
     {
-        List<InventoryItem> itemsToSell = new();
+        List<Item> itemsToSell = new();
         switch (typeOfThing)
         {
             case 1:
-                foreach (InventoryItem potion in InventoryPotions)
+                foreach (PlayerInventoryPotion potion in InventoryPotions)
                 {
-                    itemsToSell.Add(potion);
+                    Item newPotion = GameSession.itemsReference[potion.PotionID];
+                    newPotion.QuantityOfItem = potion.playerQuantity;
+                    itemsToSell.Add(newPotion);
                 }
                 break;
             case 2:
-                foreach (InventoryItem weapon in InventoryWeapons)
+                foreach (PlayerInventoryWeapon weapon in InventoryWeapons)
                 {
-                    // if (weapon.ItemBaseValue / 3 >= 1)
-                    // {
-                    itemsToSell.Add(weapon);
-                    //}
+                    Item newWeapon = GameSession.itemsReference[weapon.WeaponID];
+                    newWeapon.QuantityOfItem = weapon.playerQuantity;
+                    if (newWeapon.ItemBaseValue / 3 >= 1)
+                    {
+                        itemsToSell.Add(newWeapon);
+                    }
                 }
                 break;
             case 3:
-                foreach (InventoryItem armor in InventoryArmors)
+                foreach (PlayerInventoryArmor armor in InventoryArmors)
                 {
-                    // if (armor.ItemBaseValue / 3 >= 1)
-                    // {
-                    itemsToSell.Add(armor);
-                    // }
+                    Item newArmor = GameSession.itemsReference[armor.ArmorID];
+                    newArmor.QuantityOfItem = armor.playerQuantity;
+                    if (newArmor.ItemBaseValue / 3 >= 1)
+                    {
+                        itemsToSell.Add(newArmor);
+                    }
                 }
                 break;
             case 4:
-                foreach (InventoryItem item in InventoryItems)
+                foreach (PlayerInventoryItem item in InventoryItems)
                 {
-                    itemsToSell.Add(item);
+                    Item newItem = GameSession.itemsReference[item.ItemID];
+                    newItem.QuantityOfItem = item.playerQuantity;
+                    itemsToSell.Add(newItem);
                 }
                 break;
         }

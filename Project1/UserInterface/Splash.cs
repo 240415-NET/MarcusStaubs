@@ -365,7 +365,7 @@ public class SplashScreens
             Console.WriteLine("                                    \\/ ");
         }
     }
-    public static void VictoryMenu(Player currentPlayer)
+    public static void VictoryMenu()
     {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -391,7 +391,7 @@ public class SplashScreens
             Console.WriteLine("                                                                                                                  y:::::y                    ");
             Console.WriteLine("                                                                                                                 yyyyyyy                     ");
             Console.ResetColor();
-            Console.WriteLine($"You did it! You managed to kill a Young Red Dragon with your trusty {currentPlayer.EquippedWeapon.ItemName}.");
+            Console.WriteLine($"You did it! You managed to kill a Young Red Dragon with your trusty {GameSession.currentPlayer.EquippedWeapon.ItemName}.");
             Console.WriteLine("Good show! Congratulations! I should probably create a cooler or cheesier splash screen to celebrate this occasion.");
             Console.WriteLine("Maybe I'll do that later... but I wouldn't count on it");
             Console.ReadKey();        

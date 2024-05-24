@@ -68,8 +68,8 @@ public class PlayerController
             return alternateLevelStorage.GetLevelList();
         }
     }
-    public static int GetXPRequirementFromDictionary(LevelChange levelReference)
+    public static int GetXPRequirementFromDictionary()
     {
-        return levelReference.XPRequiredForLevel;
+        return GameSession.levelReference[GameSession.currentPlayer.PlayerLevel + 1].XPRequiredForLevel;
     }
 }

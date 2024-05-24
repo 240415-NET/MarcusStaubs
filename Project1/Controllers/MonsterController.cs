@@ -10,8 +10,9 @@ public static class MonsterController
     {
         return monsterStorage.GetMonsterList();
     }
-    public static bool DodgeAttack(int monsterDodge, int playerDexterity)
+    public static bool DodgeAttack(int monsterDodge)
     {
+        int playerDexterity = GameSession.currentPlayer.Dexterity;
         double QuarterPlayerDex = (double)playerDexterity / 6;
         int offSet = (int)QuarterPlayerDex;
         if(monsterDodge - offSet <= 0)

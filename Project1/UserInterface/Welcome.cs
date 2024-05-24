@@ -6,14 +6,6 @@ namespace Project1.UserInterfaces;
 
 public static class WelcomeToTheGame
 {
-    public static Dictionary<int, MonsterData> monsterReference = new();
-    public static Dictionary<int, Location> locationReference = new();
-    public static Dictionary<int, LevelChange> levelReference = new();
-    public static Dictionary<string, Item> itemsReference = new();
-    public static Player currentPlayer = new Player();
-    public static List<string> gameMap = new();
-    public static List<string> displayMap = new();
-    public static ChatterBox randomMessages = RandomTextController.GetRandomText();
     public static void Start()
     {
         string menuChoice;
@@ -23,19 +15,20 @@ public static class WelcomeToTheGame
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine(".");
         //Load monster reference data from data source
-        monsterReference = MonsterController.InitializeMonsterInfo();
+        GameSession.monsterReference = MonsterController.InitializeMonsterInfo();
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("....");
         //Load location data from data source
-        locationReference = LocationController.InitializeLocations();
+        GameSession.locationReference = LocationController.InitializeLocations();
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("...........");
         //Load level up information from data source
-        levelReference = PlayerController.InitializeLevelInfo();
+         GameSession.levelReference = PlayerController.InitializeLevelInfo();
         //Load full map data from data source
-        gameMap = MapController.LoadFullMap();
+        GameSession.gameMap = MapController.LoadFullMap();
         //Load all items from data source
-        itemsReference = ItemController.GetAllGameItems();
+        GameSession.itemsReference = ItemController.GetAllGameItems();
+        GameSession.randomMessages = RandomTextController.GetRandomText();
         do
         {
             SplashScreens.MainMenuDisplay();
@@ -100,8 +93,8 @@ public static class WelcomeToTheGame
             }
             else
             {
-                currentPlayer = PlayerController.LoadExistingCharacter(userInput);
-                if (currentPlayer == null)
+                GameSession.currentPlayer = PlayerController.LoadExistingCharacter(userInput);
+                if (GameSession.currentPlayer == null)
                 {
                     Console.WriteLine("Yeah... I don't know you or you spelled your own name wrong.\nI really hope it's the first one.");
                     Console.WriteLine("If you made a mistake and meant to create a new character,\nenter oops to return to the main menu.");
@@ -110,7 +103,7 @@ public static class WelcomeToTheGame
                 }
                 else
                 {
-                    displayMap = MapController.MatchDisplayMapToPlayerMap(ref currentPlayer);
+                    GameSession.displayMap = MapController.MatchDisplayMapToPlayerMap();
                     DisplayCharacter();
                     return true;
                 }
@@ -148,10 +141,10 @@ public static class WelcomeToTheGame
             }
         } while (!validInput);
 
-        currentPlayer = PlayerController.CreateNewPlayer(newPlayerName);
-        displayMap = MapController.MatchDisplayMapToPlayerMap(ref currentPlayer);
+        GameSession.currentPlayer = PlayerController.CreateNewPlayer(newPlayerName);
+        GameSession.displayMap = MapController.MatchDisplayMapToPlayerMap();
         Console.Clear();
-        Console.WriteLine(currentPlayer.ToString(PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]).ToString()));
+        Console.WriteLine(GameSession.currentPlayer.ToString(PlayerController.GetXPRequirementFromDictionary().ToString()));
         Console.WriteLine($"No, you don't have Intelligence, Wisdom, or Charisma stats. You won't need them.");
         Console.WriteLine("I know that was a lot to get through, so let's get to the game already.");
         Console.WriteLine("Press any key to continue...");
@@ -171,7 +164,7 @@ public static class WelcomeToTheGame
         bool amIDead = false;
         do
         {
-            playerAction = DisplayCurrentLocation(currentPlayer.CurrentLocation);
+            playerAction = DisplayCurrentLocation();
             switch (playerAction)
             {
                 case 0:
@@ -182,11 +175,11 @@ public static class WelcomeToTheGame
                 case 4:
                 case 8:
                     //Movement  
-                    if (Movement.CanIMoveThisWay(playerAction, locationReference[currentPlayer.CurrentLocation].EnumMovementOptions, locationReference[currentPlayer.CurrentLocation].RoomHash, currentPlayer.PlayerLevel, currentPlayer.EquippedWeapon.ItemID, currentPlayer.InventoryWeapons))
+                    if (Movement.CanIMoveThisWay(playerAction))
                     {
 
-                        currentPlayer.TimeToMove(playerAction);
-                        monsterSpawn = LocationController.DoesMonsterSpawn(locationReference[currentPlayer.CurrentLocation]);
+                        GameSession.currentPlayer.TimeToMove(playerAction);
+                        monsterSpawn = LocationController.DoesMonsterSpawn();
                         if (monsterSpawn != 0)
                         {
                             amIDead = TimeForAFight(monsterSpawn);
@@ -205,7 +198,7 @@ public static class WelcomeToTheGame
                     break;
                 case 5:
                     //rest
-                    monsterSpawn = currentPlayer.Rest(locationReference[currentPlayer.CurrentLocation]);
+                    monsterSpawn = GameSession.currentPlayer.Rest();
                     if (monsterSpawn == 0)
                     {
                         SplashScreens.RestMenu();
@@ -218,7 +211,7 @@ public static class WelcomeToTheGame
                     break;
                 case 6:
                     //save
-                    PlayerController.SavePlayer(currentPlayer);
+                    PlayerController.SavePlayer(GameSession.currentPlayer);
                     Console.WriteLine("Your character has been saved.");
                     Console.WriteLine("Press any key to continue your adventure...");
                     Console.ReadKey();
@@ -243,37 +236,37 @@ public static class WelcomeToTheGame
         }
         return true;
     }
-    public static int DisplayCurrentLocation(int locationHash)
+    public static int DisplayCurrentLocation()
     {
-        Location currentLocation = locationReference[locationHash];
+        Location currentLocation = GameSession.locationReference[GameSession.currentPlayer.CurrentLocation];
         bool exitCurrentRoom = false;
         int userChoice;
         ConsoleKeyInfo keyPress;
         do
         {
             Console.Clear();
-            MapController.UpdateMap(ref currentPlayer, gameMap, ref displayMap);
-            if (currentPlayer.CurrentLocation == 101805)
+            MapController.UpdateMap();
+            if (GameSession.currentPlayer.CurrentLocation == 101805)
             {
                 TownMenu();
                 Console.Clear();
             }
             for (int i = 0; i < 17; i++)
             {
-                Console.WriteLine(currentLocation.LocationDisplay[i] + "     " + displayMap[i]);
+                Console.WriteLine(currentLocation.LocationDisplay[i] + "     " + GameSession.displayMap[i]);
             }
             Console.WriteLine($"\nCurrent Location: {currentLocation.RoomName}");
-            if (locationHash != 112804 && locationHash != 112805)
+            if (currentLocation.RoomHash != 112804 && currentLocation.RoomHash != 112805)
             {
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
             }
-            else if (currentPlayer.PlayerLevel >= 10 && locationHash == 112804)
+            else if (GameSession.currentPlayer.PlayerLevel >= 10 && currentLocation.RoomHash == 112804)
             {
                 Console.WriteLine("There is a mysterious door to the south and it appears to be slightly ajar.");
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): {(MoveDirection)currentLocation.EnumMovementOptions}");
             }
-            else if (locationHash == 112805)
+            else if (currentLocation.RoomHash == 112805)
             {
                 Console.WriteLine(currentLocation.RoomDescription);
                 return BossFight();
@@ -283,7 +276,7 @@ public static class WelcomeToTheGame
                 Console.WriteLine(currentLocation.RoomDescription);
                 Console.WriteLine($"\n\n\nYou can travel in the following direction(s): North");
             }
-            if (currentPlayer.DoIHavePotions())
+            if (GameSession.currentPlayer.DoIHavePotions())
             {
                 Console.WriteLine($"\n<C>haracter\t\t<I>nventory\t\t<R>est\t\t<D>rink Potion\t\tSa<v>e\t\tE<x>it\t\t<H>elp");
             }
@@ -294,7 +287,7 @@ public static class WelcomeToTheGame
             keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
             userChoice = InputController.OutOfCombatInput(userInput);
-            if (userChoice == 17 && currentPlayer.DoIHavePotions())
+            if (userChoice == 17 && GameSession.currentPlayer.DoIHavePotions())
             {
                 Potion drinkThis = PotionMenu();
                 if (drinkThis.ItemID == "potion0")
@@ -305,8 +298,8 @@ public static class WelcomeToTheGame
                 }
                 else
                 {
-                    currentPlayer.DrinkPotion(drinkThis);
-                    Console.WriteLine($"You drink a {drinkThis.ItemName}. Current HP: {currentPlayer.CurrentHitPoints}.");
+                    GameSession.currentPlayer.DrinkPotion(drinkThis);
+                    Console.WriteLine($"You drink a {drinkThis.ItemName}. Current HP: {GameSession.currentPlayer.CurrentHitPoints}.");
                     Console.ReadKey();
                 }
             }
@@ -323,7 +316,7 @@ public static class WelcomeToTheGame
     }
     public static bool TimeForAFight(int monsterSpawn)
     {
-        Monster currentMonster = new Monster(monsterReference[monsterSpawn]);
+        Monster currentMonster = new Monster(GameSession.monsterReference[monsterSpawn]);
         bool isSomeoneDead = false;
         bool playerRanAway = false;
         string userInput;
@@ -339,8 +332,8 @@ public static class WelcomeToTheGame
         do
         {
             Console.Clear();
-            currentMonster.DisplayMonster(currentPlayer.Name, currentPlayer.CurrentHitPoints, currentPlayer.MaxHitPoints);
-            if (currentPlayer.DoIHavePotions())
+            currentMonster.DisplayMonster();
+            if (GameSession.currentPlayer.DoIHavePotions())
             {
                 Console.WriteLine("\n\nDo you want to <A>ttack <F>lee or <D>rink a potion\t\t<H>elp");
             }
@@ -353,7 +346,7 @@ public static class WelcomeToTheGame
             userChoice = InputController.InCombatInput(userInput);
             if (userChoice == 9)
             {
-                playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref currentMonster);
+                playerAttack = CombatController.PlayerAttacksMonster(ref currentMonster);
                 if (playerAttack > 0)
                 {
                     Console.WriteLine(currentMonster.HitText);
@@ -383,7 +376,7 @@ public static class WelcomeToTheGame
             {
                 SplashScreens.HelpMenu();
             }
-            else if (userChoice == 17 && currentPlayer.DoIHavePotions())
+            else if (userChoice == 17 && GameSession.currentPlayer.DoIHavePotions())
             {
                 Potion drinkThis = PotionMenu();
                 if (drinkThis.ItemID == "potion0")
@@ -394,12 +387,12 @@ public static class WelcomeToTheGame
                 }
                 else
                 {
-                    currentPlayer.DrinkPotion(drinkThis);
-                    Console.WriteLine($"You drink a {drinkThis.ItemName}. Current HP: {currentPlayer.CurrentHitPoints}.");
+                    GameSession.currentPlayer.DrinkPotion(drinkThis);
+                    Console.WriteLine($"You drink a {drinkThis.ItemName}. Current HP: {GameSession.currentPlayer.CurrentHitPoints}.");
                     Console.ReadKey();
                 }
             }
-            else if (userChoice == 17 && !currentPlayer.DoIHavePotions())
+            else if (userChoice == 17 && !GameSession.currentPlayer.DoIHavePotions())
             {
                 userChoice = 0;
             }
@@ -409,7 +402,7 @@ public static class WelcomeToTheGame
             }
             if (currentMonster.CurrentHitPoints > 0 && !playerRanAway && userChoice != 0 && userChoice != 11)
             {
-                monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer, ref currentMonster);
+                monsterAttack = CombatController.MonsterAttacksPlayer(ref currentMonster);
                 Console.WriteLine($"{currentMonster.Name} {currentMonster.AttackText} at you");
                 Console.ReadKey();
                 if (monsterAttack == -1)
@@ -427,7 +420,7 @@ public static class WelcomeToTheGame
                     Console.WriteLine($"{currentMonster.Name} does {monsterAttack} damage to you.");
                     Console.ReadKey();
                 }
-                if (currentPlayer.CurrentHitPoints <= 0)
+                if (GameSession.currentPlayer.CurrentHitPoints <= 0)
                 {
                     isSomeoneDead = true;
                 }
@@ -435,12 +428,12 @@ public static class WelcomeToTheGame
             else if (!playerRanAway && userChoice != 0 && userChoice != 11)
             {
                 Console.WriteLine($"You have slain {currentMonster.Name}!");
-                Console.WriteLine(randomMessages.GetChatter(currentMonster.MonsterID));
+                Console.WriteLine(GameSession.randomMessages.GetChatter(currentMonster.MonsterID));
                 Console.ReadKey();
                 isSomeoneDead = true;
             }
         } while (!isSomeoneDead && !playerRanAway);
-        if (currentPlayer.CurrentHitPoints <= 0 && isSomeoneDead)
+        if (GameSession.currentPlayer.CurrentHitPoints <= 0 && isSomeoneDead)
         {
             Console.WriteLine("You have died.  Better luck next time.");
             Console.ReadKey();
@@ -450,15 +443,15 @@ public static class WelcomeToTheGame
         {
             //Congrats on killing monster (random responses eventually)
             //if you're max level (20) you get no xp
-            if (currentPlayer.PlayerLevel < 20)
+            if (GameSession.currentPlayer.PlayerLevel < 20)
             {
                 //code to notify user of rewards from monster
                 Console.WriteLine($"You have gained {currentMonster.RewardXP} experience for killing {currentMonster.Name}.");
                 //check if player gained a level and, if so, increase stats
-                if (currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]))
+                if (GameSession.currentPlayer.PlayerXP >= PlayerController.GetXPRequirementFromDictionary())
                 {
-                    currentPlayer.Ding(levelReference[currentPlayer.PlayerLevel + 1]);
-                    Console.WriteLine($"Congratulations! You have reached level {currentPlayer.PlayerLevel}!");
+                    GameSession.currentPlayer.Ding(GameSession.levelReference[GameSession.currentPlayer.PlayerLevel + 1]);
+                    Console.WriteLine($"Congratulations! You have reached level {GameSession.currentPlayer.PlayerLevel}!");
                     leveledUp = true;
                 }
             }
@@ -469,14 +462,14 @@ public static class WelcomeToTheGame
             string monsterLoot = currentMonster.LootDrop();
             if (monsterLoot != "No loot" && currentMonster.RewardGold == 0)
             {
-                Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find 1 {itemsReference[monsterLoot].ItemName}.");
-                currentPlayer.GetThatLoot(itemsReference[monsterLoot]);
+                Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find 1 {GameSession.itemsReference[monsterLoot].ItemName}.");
+                GameSession.currentPlayer.GetThatLoot(GameSession.itemsReference[monsterLoot]);
             }
             else if (monsterLoot != "No loot")
             {
                 Console.WriteLine($"Digging around the corpse of the {currentMonster.Name}, you find {currentMonster.RewardGold} gold coins.");
-                Console.WriteLine($"You also find 1 {itemsReference[monsterLoot].ItemName}.");
-                currentPlayer.GetThatLoot(itemsReference[monsterLoot]);
+                Console.WriteLine($"You also find 1 {GameSession.itemsReference[monsterLoot].ItemName}.");
+                GameSession.currentPlayer.GetThatLoot(GameSession.itemsReference[monsterLoot]);
             }
             else if (currentMonster.RewardGold > 0)
             {
@@ -489,7 +482,6 @@ public static class WelcomeToTheGame
         {
             Console.WriteLine("Cheese it!!");
             Console.ReadKey();
-            //Player ran away - mock them? random based on what they ran from?
         }
         return amIDead;
     }
@@ -499,8 +491,8 @@ public static class WelcomeToTheGame
         bool isSomeoneDead = false;
         int playerAttack;
         int monsterAttack;
-        Monster bossMonster = new Monster(monsterReference[1941]);
-        Location currentLocation = locationReference[112805];
+        Monster bossMonster = new Monster(GameSession.monsterReference[1941]);
+        Location currentLocation = GameSession.locationReference[112805];
         Console.WriteLine("You start to see a glow approaching from the far end of the cave.");
         Console.ReadKey();
         Console.Clear();
@@ -529,12 +521,12 @@ public static class WelcomeToTheGame
             {
                 if (i == 0)
                 {
-                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", bossMonster.Name, currentPlayer.Name));
+                    Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", bossMonster.Name, GameSession.currentPlayer.Name));
                 }
                 else if (i == 1)
                 {
                     string monsterHP = $"HP: {bossMonster.CurrentHitPoints}/{bossMonster.MaxHitPoints}";
-                    string playerHP = $"HP: {currentPlayer.CurrentHitPoints}/{currentPlayer.MaxHitPoints}";
+                    string playerHP = $"HP: {GameSession.currentPlayer.CurrentHitPoints}/{GameSession.currentPlayer.MaxHitPoints}";
                     Console.WriteLine($"{bossMonster.MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", monsterHP, playerHP));
                 }
                 else
@@ -545,7 +537,7 @@ public static class WelcomeToTheGame
             Console.ResetColor();
             Console.WriteLine($"There is nowhere to run and no time for a potion. Press any key to attack the {bossMonster.Name}.");
             Console.ReadKey();
-            playerAttack = CombatController.PlayerAttacksMonster(ref currentPlayer, ref bossMonster);
+            playerAttack = CombatController.PlayerAttacksMonster(ref bossMonster);
             if (playerAttack > 0)
             {
                 Console.WriteLine(bossMonster.HitText);
@@ -559,7 +551,7 @@ public static class WelcomeToTheGame
             Console.ReadKey();
             if (bossMonster.CurrentHitPoints > 0)
             {
-                monsterAttack = CombatController.MonsterAttacksPlayer(ref currentPlayer, ref bossMonster);
+                monsterAttack = CombatController.MonsterAttacksPlayer(ref bossMonster);
                 Console.WriteLine($"{bossMonster.Name} {bossMonster.AttackText} at you");
                 Console.ReadKey();
                 if (monsterAttack == -1)
@@ -577,7 +569,7 @@ public static class WelcomeToTheGame
                     Console.WriteLine($"{bossMonster.Name} does {monsterAttack} damage to you.");
                     Console.ReadKey();
                 }
-                if (currentPlayer.CurrentHitPoints <= 0)
+                if (GameSession.currentPlayer.CurrentHitPoints <= 0)
                 {
                     Console.WriteLine("Shockingly, while attempting to fight a huge fire-breathing dragon, you have died.");
                     return 999;
@@ -636,7 +628,7 @@ public static class WelcomeToTheGame
         }
         else
         {
-            SplashScreens.VictoryMenu(currentPlayer);
+            SplashScreens.VictoryMenu();
             return 7;
         }
 
@@ -644,19 +636,19 @@ public static class WelcomeToTheGame
     public static void DisplayCharacter()
     {
         Console.Clear();
-        if (currentPlayer.PlayerLevel < 20)
+        if (GameSession.currentPlayer.PlayerLevel < 20)
         {
-            Console.WriteLine(currentPlayer.ToString(PlayerController.GetXPRequirementFromDictionary(levelReference[currentPlayer.PlayerLevel + 1]).ToString()));
+            Console.WriteLine(GameSession.currentPlayer.ToString(PlayerController.GetXPRequirementFromDictionary().ToString()));
         }
         else
         {
-            Console.WriteLine(currentPlayer.ToString("Max Level Reached!"));
+            Console.WriteLine(GameSession.currentPlayer.ToString("Max Level Reached!"));
         }
         Console.ReadKey();
     }
     public static void TownMenu()
     {
-        Location currentLocation = locationReference[currentPlayer.CurrentLocation];
+        Location currentLocation = GameSession.locationReference[GameSession.currentPlayer.CurrentLocation];
         bool exitTown = false;
         do
         {
@@ -695,21 +687,6 @@ public static class WelcomeToTheGame
                     break;
             }
         } while (!exitTown);
-        /*
-        Inn Menu
-            Rest at Inn (different picture) - costs gold 
-            Have a drink - Costs 1 gold. Does nothing.  Overhear chatter from patrons
-        Vendor - Buys junk items / Sells potions
-            Sell menu - List all items in player inventory or say nothing to sell
-                Option to sell x quantity or All
-            Buy menu - Potions available depends on level of player
-                Buy more than one at once?    
-        Arms Merchant - Buys and Sells Weapons and Armor (Sell offers are level limited)
-            Sell menu - List all weapons and armor in player inventory
-                Option to sell x quantity or All
-            Buy menu - Weapons and armor separate menus - offers limited by player level    
-                Ask to equip after purchase?
-        */
     }
     public static void InnMenu()
     {
@@ -720,7 +697,7 @@ public static class WelcomeToTheGame
             Console.Clear();
             SplashScreens.DrawMeAPicture("tapRoom");
             Console.WriteLine("You're in the Dancing Dragon Inn. For a small village, there are quite a few patrons.");
-            if (currentPlayer.PlayerGold < 1)
+            if (GameSession.currentPlayer.PlayerGold < 1)
             {
                 Console.WriteLine("You don't have any gold to spend. Press any key to return to town...");
                 Console.ReadKey();
@@ -728,7 +705,7 @@ public static class WelcomeToTheGame
             }
             else
             {
-                if (currentPlayer.PlayerGold >= 1 && currentPlayer.PlayerGold < 5)
+                if (GameSession.currentPlayer.PlayerGold >= 1 && GameSession.currentPlayer.PlayerGold < 5)
                 {
                     Console.WriteLine("<B>elly up to the bar for a drink (1 gold piece)  Can't afford a room (5 gold pieces)  <E>xit the Inn");
                 }
@@ -738,14 +715,14 @@ public static class WelcomeToTheGame
                 }
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string userInput = keyPress.Key.ToString();
-                int userChoice = InputController.InnInput(userInput, currentPlayer.PlayerGold);
+                int userChoice = InputController.InnInput(userInput);
                 switch (userChoice)
                 {
                     case 1:
                         Console.WriteLine("You pull up to the bar and order a mug of ale.");
                         Console.WriteLine("While nursing your drink, you overhear chatter from the other patrons.");
-                        Console.WriteLine(randomMessages.GetChatter());
-                        currentPlayer.PlayerGold -= 1;
+                        Console.WriteLine(GameSession.randomMessages.GetChatter());
+                        GameSession.currentPlayer.PlayerGold -= 1;
                         Console.ReadKey();
                         break;
                     case 2:
@@ -754,7 +731,7 @@ public static class WelcomeToTheGame
                         SplashScreens.DrawMeAPicture("bathTime");
                         Thread.Sleep(3000);
                         Console.Clear();
-                        currentPlayer.RestInTheInn();
+                        GameSession.currentPlayer.RestInTheInn();
                         Console.WriteLine("Then settle into your cot for a restful night of sleep");
                         //Different rest picture than the campfire. Maybe a bed or candle something?
                         Console.ReadKey();
@@ -785,7 +762,7 @@ public static class WelcomeToTheGame
             int userChoice = InputController.VendorInput(userInput);
             if (userChoice == 1)
             {
-                if (currentPlayer.PlayerGold < 2)
+                if (GameSession.currentPlayer.PlayerGold < 2)
                 {
                     Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
                     Console.ReadKey();
@@ -829,7 +806,7 @@ public static class WelcomeToTheGame
             int userChoice = InputController.MerchantInput(userInput);
             if (userChoice == 1)
             {
-                if (currentPlayer.PlayerGold < 10 || currentPlayer.PlayerLevel < 3)
+                if (GameSession.currentPlayer.PlayerGold < 10 || GameSession.currentPlayer.PlayerLevel < 3)
                 {
                     Console.WriteLine("I don't have any weapons to sell you that you can use and afford.\nCome back when you have more money or are higher level.");
                     Console.ReadKey();
@@ -841,7 +818,7 @@ public static class WelcomeToTheGame
             }
             else if (userChoice == 2)
             {
-                if (currentPlayer.PlayerGold < 5)
+                if (GameSession.currentPlayer.PlayerGold < 5)
                 {
                     Console.WriteLine("You don't have enough gold to buy anything. Press any key...");
                     Console.ReadKey();
@@ -873,7 +850,7 @@ public static class WelcomeToTheGame
     {
         //Draw a picture for base inventory
         bool iMDone = false;
-        if (currentPlayer.DoIHaveStuff())
+        if (GameSession.currentPlayer.DoIHaveStuff())
         {
             do
             {
@@ -889,7 +866,7 @@ public static class WelcomeToTheGame
                 }
                 else if (userChoice == 13)
                 {
-                    if (!currentPlayer.DoIHaveArmors() && !currentPlayer.DoIHaveWeapons())
+                    if (!GameSession.currentPlayer.DoIHaveArmors() && !GameSession.currentPlayer.DoIHaveWeapons())
                     {
                         Console.WriteLine("Nothing to equip. Go find some.");
                         Console.ReadKey();
@@ -925,7 +902,7 @@ public static class WelcomeToTheGame
             Console.Clear();
             SplashScreens.DrawMeAPicture("randomStuffGo");
             Console.WriteLine("What kind of items would you like to look at? <D> when done.");
-            Console.WriteLine(currentPlayer.KindsOfStuffIHave());
+            Console.WriteLine(GameSession.currentPlayer.KindsOfStuffIHave());
             ConsoleKeyInfo keyPress = Console.ReadKey(true);
             string userInput = keyPress.Key.ToString();
             int userChoice = InputController.InventoryInput(userInput);
@@ -937,9 +914,9 @@ public static class WelcomeToTheGame
             {
                 if (userChoice == 17 || userChoice == 16)
                 {
-                    foreach (PlayerInventoryItem item in currentPlayer.InventoryItems)
+                    foreach (PlayerInventoryItem item in GameSession.currentPlayer.InventoryItems)
                     {
-                        Item tempItem = itemsReference[item.ItemID];
+                        Item tempItem = GameSession.itemsReference[item.ItemID];
                         tempItem.QuantityOfItem = item.playerQuantity;
                         Console.WriteLine(tempItem);
                     }
@@ -947,9 +924,9 @@ public static class WelcomeToTheGame
                 }
                 if (userChoice == 18 || userChoice == 16)
                 {
-                    foreach (PlayerInventoryWeapon weapon in currentPlayer.InventoryWeapons)
+                    foreach (PlayerInventoryWeapon weapon in GameSession.currentPlayer.InventoryWeapons)
                     {
-                        Weapon tempWeapon = (Weapon)itemsReference[weapon.WeaponID];
+                        Weapon tempWeapon = (Weapon)GameSession.itemsReference[weapon.WeaponID];
                         tempWeapon.QuantityOfItem = weapon.playerQuantity;
                         Console.WriteLine(tempWeapon);
                     }
@@ -957,9 +934,9 @@ public static class WelcomeToTheGame
                 }
                 if (userChoice == 19 || userChoice == 16)
                 {
-                    foreach (PlayerInventoryArmor armor in currentPlayer.InventoryArmors)
+                    foreach (PlayerInventoryArmor armor in GameSession.currentPlayer.InventoryArmors)
                     {
-                        Armor tempArmor = (Armor)itemsReference[armor.ArmorID];
+                        Armor tempArmor = (Armor)GameSession.itemsReference[armor.ArmorID];
                         tempArmor.QuantityOfItem = armor.playerQuantity;
                         Console.WriteLine(tempArmor);
                     }
@@ -967,9 +944,9 @@ public static class WelcomeToTheGame
                 }
                 if (userChoice == 20 || userChoice == 16)
                 {
-                    foreach (PlayerInventoryPotion potion in currentPlayer.InventoryPotions)
+                    foreach (PlayerInventoryPotion potion in GameSession.currentPlayer.InventoryPotions)
                     {
-                        Potion tempPotion = (Potion)itemsReference[potion.PotionID];
+                        Potion tempPotion = (Potion)GameSession.itemsReference[potion.PotionID];
                         tempPotion.QuantityOfItem = potion.playerQuantity;
                         Console.WriteLine(tempPotion);
                     }
@@ -982,7 +959,7 @@ public static class WelcomeToTheGame
     public static void EquipMenu()
     {
         //Maybe draw a picture of weapons and/or armor based on what options the user has
-        if (currentPlayer.DoIHaveArmors() && currentPlayer.DoIHaveWeapons())
+        if (GameSession.currentPlayer.DoIHaveArmors() && GameSession.currentPlayer.DoIHaveWeapons())
         {
             bool pickedWhatToEquip = false;
             do
@@ -1014,7 +991,7 @@ public static class WelcomeToTheGame
 
             } while (!pickedWhatToEquip);
         }
-        else if (currentPlayer.DoIHaveArmors())
+        else if (GameSession.currentPlayer.DoIHaveArmors())
         {
             EquipArmorMenu();
         }
@@ -1031,35 +1008,35 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             SplashScreens.DrawMeAPicture("swordAndShield");
-            Console.WriteLine($"You are currently wearing {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage.");
-            for (int i = 0; i < currentPlayer.InventoryArmors.Count(); i++)
+            Console.WriteLine($"You are currently wearing {GameSession.currentPlayer.EquippedArmor.ItemName} which absorbs {GameSession.currentPlayer.EquippedArmor.MitigationIncrease} damage.");
+            for (int i = 0; i < GameSession.currentPlayer.InventoryArmors.Count(); i++)
             {
-                Armor armorOption = (Armor)itemsReference[currentPlayer.InventoryArmors[i].ArmorID];
+                Armor armorOption = (Armor)GameSession.itemsReference[GameSession.currentPlayer.InventoryArmors[i].ArmorID];
                 Console.WriteLine($"{i + 1}: {armorOption.EquipOption()}");
             }
-            Console.WriteLine($"{currentPlayer.InventoryArmors.Count() + 1}: Don't change equipped armor");
+            Console.WriteLine($"{GameSession.currentPlayer.InventoryArmors.Count() + 1}: Don't change equipped armor");
             Console.WriteLine("Which armor would you like to equip?");
             try
             {
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string keyPressString = keyPress.Key.ToString();
                 int armorChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
-                if (armorChoice == currentPlayer.InventoryArmors.Count() + 1)
+                if (armorChoice == GameSession.currentPlayer.InventoryArmors.Count() + 1)
                 {
                     newArmorEquipped = true;
                 }
-                else if (armorChoice > currentPlayer.InventoryArmors.Count() + 1 || armorChoice < 1)
+                else if (armorChoice > GameSession.currentPlayer.InventoryArmors.Count() + 1 || armorChoice < 1)
                 {
                     Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
                     Console.ReadKey();
                 }
                 else
                 {
-                    Armor armorOption = (Armor)itemsReference[currentPlayer.InventoryArmors[armorChoice - 1].ArmorID];
-                    currentPlayer.EquipArmor(armorOption);
+                    Armor armorOption = (Armor)GameSession.itemsReference[GameSession.currentPlayer.InventoryArmors[armorChoice - 1].ArmorID];
+                    GameSession.currentPlayer.EquipArmor(armorOption);
                     newArmorEquipped = true;
                     Console.Clear();
-                    Console.WriteLine($"{currentPlayer.EquippedArmor.ItemName} equipped!");
+                    Console.WriteLine($"{GameSession.currentPlayer.EquippedArmor.ItemName} equipped!");
                     Console.ReadKey();
                 }
             }
@@ -1079,34 +1056,34 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             SplashScreens.DrawMeAPicture("swordAndShield");
-            Console.WriteLine($"You are currently wielding {currentPlayer.EquippedWeapon.ItemName} which does {currentPlayer.EquippedWeapon.AttackIncrease} extra damage.");
-            for (int i = 0; i < currentPlayer.InventoryWeapons.Count(); i++)
+            Console.WriteLine($"You are currently wielding {GameSession.currentPlayer.EquippedWeapon.ItemName} which does {GameSession.currentPlayer.EquippedWeapon.AttackIncrease} extra damage.");
+            for (int i = 0; i < GameSession.currentPlayer.InventoryWeapons.Count(); i++)
             {
-                Weapon weaponOption = (Weapon)itemsReference[currentPlayer.InventoryWeapons[i].WeaponID];
+                Weapon weaponOption = (Weapon)GameSession.itemsReference[GameSession.currentPlayer.InventoryWeapons[i].WeaponID];
                 Console.WriteLine($"{i + 1}: {weaponOption.EquipOption()}");
             }
-            Console.WriteLine($"{currentPlayer.InventoryWeapons.Count() + 1}: Don't change equipped weapon");
+            Console.WriteLine($"{GameSession.currentPlayer.InventoryWeapons.Count() + 1}: Don't change equipped weapon");
             Console.WriteLine("Which weapon would you like to equip?");
             try
             {
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
                 string keyPressString = keyPress.Key.ToString();
                 int weaponChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
-                if (weaponChoice == currentPlayer.InventoryWeapons.Count() + 1)
+                if (weaponChoice == GameSession.currentPlayer.InventoryWeapons.Count() + 1)
                 {
                     newWeaponEquipped = true;
                 }
-                else if (weaponChoice > currentPlayer.InventoryWeapons.Count() + 1 || weaponChoice < 1)
+                else if (weaponChoice > GameSession.currentPlayer.InventoryWeapons.Count() + 1 || weaponChoice < 1)
                 {
                     Console.WriteLine("I put numbers next to your choices for a reason... pick one of those.");
                     Console.ReadKey();
                 }
                 else
                 {
-                    Weapon weaponOption = (Weapon)itemsReference[currentPlayer.InventoryWeapons[weaponChoice - 1].WeaponID];
-                    currentPlayer.EquipWeapon(weaponOption);
+                    Weapon weaponOption = (Weapon)GameSession.itemsReference[GameSession.currentPlayer.InventoryWeapons[weaponChoice - 1].WeaponID];
+                    GameSession.currentPlayer.EquipWeapon(weaponOption);
                     newWeaponEquipped = true;
-                    Console.WriteLine($"{currentPlayer.EquippedWeapon.ItemName} equipped!");
+                    Console.WriteLine($"{GameSession.currentPlayer.EquippedWeapon.ItemName} equipped!");
                     Console.ReadKey();
                 }
             }
@@ -1124,29 +1101,29 @@ public static class WelcomeToTheGame
         Potion potionPicked = new Potion();
         SplashScreens.DrawMeAPicture("potions");
         Console.WriteLine("Which potion would you like to use?");
-        for (int i = 0; i < currentPlayer.InventoryPotions.Count(); i++)
+        for (int i = 0; i < GameSession.currentPlayer.InventoryPotions.Count(); i++)
         {
-            Potion tempPotion = (Potion)itemsReference[currentPlayer.InventoryPotions[i].PotionID];
+            Potion tempPotion = (Potion)GameSession.itemsReference[GameSession.currentPlayer.InventoryPotions[i].PotionID];
             Console.WriteLine($"{i + 1}: {tempPotion}");
         }
-        Console.WriteLine($"{currentPlayer.InventoryPotions.Count() + 1}: Don't drink a potion");
+        Console.WriteLine($"{GameSession.currentPlayer.InventoryPotions.Count() + 1}: Don't drink a potion");
         do
         {
             ConsoleKeyInfo keyPress = Console.ReadKey(true);
             string keyPressString = keyPress.Key.ToString();
             int potionChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
-            if (potionChoice == currentPlayer.InventoryPotions.Count() + 1)
+            if (potionChoice == GameSession.currentPlayer.InventoryPotions.Count() + 1)
             {
                 return potionPicked;
             }
-            else if (potionChoice > currentPlayer.InventoryPotions.Count() + 1 || potionChoice < 1)
+            else if (potionChoice > GameSession.currentPlayer.InventoryPotions.Count() + 1 || potionChoice < 1)
             {
                 Console.WriteLine("That wasn't an option. Pick an option or don't drink one.");
                 potionDrank = false;
             }
             else
             {
-                potionPicked.CreateCopyOf((Potion)itemsReference[currentPlayer.InventoryPotions[potionChoice - 1].PotionID]);
+                potionPicked.CreateCopyOf((Potion)GameSession.itemsReference[GameSession.currentPlayer.InventoryPotions[potionChoice - 1].PotionID]);
                 return potionPicked;
             }
         } while (!potionDrank);
@@ -1157,7 +1134,7 @@ public static class WelcomeToTheGame
     {
         bool exitShop = false;
         bool gotAQuantityICanAfford = false;
-        List<Item> saleOptions = ItemController.GetItemsForSale(buyOption, currentPlayer.PlayerLevel, itemsReference);
+        List<Item> saleOptions = ItemController.GetItemsForSale(buyOption);
         do
         {
             Console.Clear();
@@ -1169,9 +1146,9 @@ public static class WelcomeToTheGame
             }
             else
             {
-                Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
-                if (buyOption == 2) { Console.WriteLine($"You are using {currentPlayer.EquippedWeapon.ItemName} which increases attack by {currentPlayer.EquippedWeapon.AttackIncrease}."); }
-                if (buyOption == 3) { Console.WriteLine($"You are using {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
+                Console.WriteLine($"You currently have {GameSession.currentPlayer.PlayerGold} gold pieces.");
+                if (buyOption == 2) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedWeapon.ItemName} which increases attack by {GameSession.currentPlayer.EquippedWeapon.AttackIncrease}."); }
+                if (buyOption == 3) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedArmor.ItemName} which absorbs {GameSession.currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
                 Console.WriteLine("\nWhat would you like to purchase?");
 
                 Console.WriteLine(" ___________________________________________________________");
@@ -1208,7 +1185,7 @@ public static class WelcomeToTheGame
                         do
                         {
                             Console.Clear();
-                            Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
+                            Console.WriteLine($"You currently have {GameSession.currentPlayer.PlayerGold} gold pieces.");
                             Console.WriteLine($"How many {saleOptions[userChoice - 1].ItemName} would you like to buy?");
                             string userInput = (Console.ReadLine() ?? "").Trim();
                             int numToBuy = InputController.NeedAnIntegerFromUser(userInput);
@@ -1218,7 +1195,7 @@ public static class WelcomeToTheGame
                             }
                             else
                             {
-                                if (currentPlayer.PlayerGold < saleOptions[userChoice - 1].ItemBaseValue * numToBuy)
+                                if (GameSession.currentPlayer.PlayerGold < saleOptions[userChoice - 1].ItemBaseValue * numToBuy)
                                 {
                                     Console.WriteLine("You can't afford that many. Pick a lower number.");
                                     Console.ReadKey();
@@ -1231,17 +1208,17 @@ public static class WelcomeToTheGame
                                         case 1:
                                             Potion potionToBuy = new();
                                             potionToBuy.CreateCopyOf((Potion)saleOptions[userChoice - 1], numToBuy);
-                                            currentPlayer.BuySomething(buyOption, potionToBuy);
+                                            GameSession.currentPlayer.BuySomething(buyOption, potionToBuy);
                                             break;
                                         case 2:
                                             Weapon weaponToBuy = new();
                                             weaponToBuy.CopyFromOtherWeapon((Weapon)saleOptions[userChoice - 1], numToBuy);
-                                            currentPlayer.BuySomething(buyOption, weaponToBuy);
+                                            GameSession.currentPlayer.BuySomething(buyOption, weaponToBuy);
                                             break;
                                         case 3:
                                             Armor armorToBuy = new();
                                             armorToBuy.CopyFromOtherArmor((Armor)saleOptions[userChoice - 1], numToBuy);
-                                            currentPlayer.BuySomething(buyOption, armorToBuy);
+                                            GameSession.currentPlayer.BuySomething(buyOption, armorToBuy);
                                             break;
                                     }
                                     gotAQuantityICanAfford = true;
@@ -1264,12 +1241,11 @@ public static class WelcomeToTheGame
     {
         bool exitMerchant = false;
         bool gotAQuantityICanSell = false;
-        List<InventoryItem> itemsToSell = new();
-        List<Item> actualItemsToSell = new();
+        List<Item> itemsToSell = new();
         do
         {
             itemsToSell.Clear();
-            itemsToSell = currentPlayer.GetStuffToSell(sellOption);
+            itemsToSell = GameSession.currentPlayer.GetStuffToSell(sellOption);
             Console.Clear();
             if (itemsToSell.Count() < 1)
             {
@@ -1279,66 +1255,50 @@ public static class WelcomeToTheGame
             }
             else
             {
-                foreach (InventoryItem item in itemsToSell)
-                {
-                    switch (sellOption)
-                    {
-                        case 1:
-                            PlayerInventoryPotion newPotion = (PlayerInventoryPotion)item;
-                            Potion tempPotion = (Potion)itemsReference[newPotion.PotionID];
-                            tempPotion.QuantityOfItem = newPotion.playerQuantity;
-                            actualItemsToSell.Add(tempPotion);
-                            break;
-                        case 2:
-                            PlayerInventoryWeapon newWeapon = (PlayerInventoryWeapon)item;
-                            Weapon tempWeapon = (Weapon)itemsReference[newWeapon.WeaponID];
-                            tempWeapon.QuantityOfItem = newWeapon.playerQuantity;
-                            actualItemsToSell.Add(tempWeapon);
-                            break;
-                        case 3:
-                            PlayerInventoryArmor newArmor = (PlayerInventoryArmor)item;
-                            Potion tempArmor = (Potion)itemsReference[newArmor.ArmorID];
-                            tempArmor.QuantityOfItem = newArmor.playerQuantity;
-                            actualItemsToSell.Add(tempArmor);
-                            break;
-                        case 4:
-                            PlayerInventoryItem newItem = (PlayerInventoryItem)item;
-                            Item tempItem = itemsReference[newItem.ItemID];
-                            tempItem.QuantityOfItem = newItem.playerQuantity;
-                            actualItemsToSell.Add(tempItem);
-                            break;
-                    }
-                }
-                Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
-                if (sellOption == 2) { Console.WriteLine($"You are using {currentPlayer.EquippedWeapon.ItemName} which increases attack by {currentPlayer.EquippedWeapon.AttackIncrease}."); }
-                if (sellOption == 3) { Console.WriteLine($"You are using {currentPlayer.EquippedArmor.ItemName} which absorbs {currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
+                Console.WriteLine($"You currently have {GameSession.currentPlayer.PlayerGold} gold pieces.");
+                if (sellOption == 2) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedWeapon.ItemName} which increases attack by {GameSession.currentPlayer.EquippedWeapon.AttackIncrease}."); }
+                if (sellOption == 3) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedArmor.ItemName} which absorbs {GameSession.currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
                 Console.WriteLine("\nWhat would you like to sell?");
 
-                Console.WriteLine(" _________________________________________________________________");
-                Console.WriteLine("/   |     |                             |                 |       \\");
-                if (sellOption == 1) { Console.WriteLine("| # | Qty |        Potion Name          |   HP Restored   | Value |"); }
-                if (sellOption == 2) { Console.WriteLine("| # | Qty |        Weapon Name          |   Attack Incr   | Value |"); }
-                if (sellOption == 3) { Console.WriteLine("| # | Qty |         Armor Name          |   Absorb Dmg    | Value |"); }
-                if (sellOption == 4) { Console.WriteLine("| # | Qty |         Item Name           |                 | Value |"); }
-                Console.WriteLine("|___|_____|_____________________________|_________________|_______|");
-                Console.WriteLine("|   |     |                             |                 |       |");
-                for (int i = 0; i < actualItemsToSell.Count(); i++)
+                Console.WriteLine(" __________________________________________________________________");
+                Console.WriteLine("/    |     |                             |                 |       \\");
+                if (sellOption == 1) { Console.WriteLine("| #  | Qty |        Potion Name          |   HP Restored   | Value |"); }
+                if (sellOption == 2) { Console.WriteLine("| #  | Qty |        Weapon Name          |   Attack Incr   | Value |"); }
+                if (sellOption == 3) { Console.WriteLine("| #  | Qty |         Armor Name          |   Absorb Dmg    | Value |"); }
+                if (sellOption == 4) { Console.WriteLine("| #  | Qty |         Item Name           |                 | Value |"); }
+                Console.WriteLine("|____|_____|_____________________________|_________________|_______|");
+                Console.WriteLine("|    |     |                             |                 |       |");
+                for (int i = 0; i < itemsToSell.Count(); i++)
                 {
-                    Console.WriteLine($"| {i + 1} |{actualItemsToSell[i].PlayerSellingDisplay()}");
+                    if (i < 9)
+                    {
+                        Console.WriteLine($"|  {i + 1} |{itemsToSell[i].PlayerSellingDisplay()}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"| {i + 1} |{itemsToSell[i].PlayerSellingDisplay()}");
+                    }
                 }
-                Console.WriteLine("|---|-----|-----------------------------|-----------------|-------|");
-                Console.WriteLine($"| {actualItemsToSell.Count() + 1} |     | Leave without selling       |                 |       |");
-                Console.WriteLine("\\___|_____|_____________________________|_________________|_______/");
+                Console.WriteLine("|----|-----|-----------------------------|-----------------|-------|");
+                if (itemsToSell.Count() < 9)
+                {
+                    Console.WriteLine($"|  {itemsToSell.Count() + 1} |     | Leave without selling       |                 |       |");
+                }
+                else
+                {
+                    Console.WriteLine($"| {itemsToSell.Count() + 1} |     | Leave without selling       |                 |       |");
+                }
+                Console.WriteLine("\\____|_____|_____________________________|_________________|_______/");
                 try
                 {
-                    ConsoleKeyInfo keyPress = Console.ReadKey(true);
-                    string keyPressString = keyPress.Key.ToString();
-                    int userChoice = Convert.ToInt32(keyPressString.Substring(1, keyPressString.Count() - 1));
-                    if (userChoice == actualItemsToSell.Count() + 1)
+                    //ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                    string keyPressString = (Console.ReadLine() ?? "").Trim();
+                    int userChoice = Convert.ToInt32(keyPressString);
+                    if (userChoice == itemsToSell.Count() + 1)
                     {
                         exitMerchant = true;
                     }
-                    else if (userChoice > actualItemsToSell.Count() + 1 || userChoice < 1)
+                    else if (userChoice > itemsToSell.Count() + 1 || userChoice < 1)
                     {
                         Console.WriteLine("That wasn't an option. Please choose one of the displayed numbers.");
                         Console.ReadKey();
@@ -1349,9 +1309,9 @@ public static class WelcomeToTheGame
                         do
                         {
                             Console.Clear();
-                            Console.WriteLine($"You currently have {currentPlayer.PlayerGold} gold pieces.");
-                            Console.WriteLine($"You have {actualItemsToSell[userChoice - 1].QuantityOfItem} to sell.");
-                            Console.WriteLine($"How many would you like to sell for {actualItemsToSell[userChoice - 1].ItemBaseValue / 3} GP each?");
+                            Console.WriteLine($"You currently have {GameSession.currentPlayer.PlayerGold} gold pieces.");
+                            Console.WriteLine($"You have {itemsToSell[userChoice - 1].QuantityOfItem} to sell.");
+                            Console.WriteLine($"How many would you like to sell for {itemsToSell[userChoice - 1].ItemBaseValue / 3} GP each?");
                             string userInput = (Console.ReadLine() ?? "").Trim();
                             int numToSell = InputController.NeedAnIntegerFromUser(userInput);
                             if (numToSell == -1)
@@ -1360,7 +1320,7 @@ public static class WelcomeToTheGame
                             }
                             else
                             {
-                                if (numToSell > actualItemsToSell[userChoice - 1].QuantityOfItem)
+                                if (numToSell > itemsToSell[userChoice - 1].QuantityOfItem)
                                 {
                                     Console.WriteLine("You don't have that many. Pick a lower number.");
                                     Console.ReadKey();
@@ -1372,23 +1332,23 @@ public static class WelcomeToTheGame
                                     {
                                         case 1:
                                             Potion potionToSell = new();
-                                            potionToSell.CreateCopyOf((Potion)actualItemsToSell[userChoice - 1], numToSell);
-                                            currentPlayer.SellSomething(sellOption, potionToSell);
+                                            potionToSell.CreateCopyOf((Potion)itemsToSell[userChoice - 1], numToSell);
+                                            GameSession.currentPlayer.SellSomething(sellOption, potionToSell);
                                             break;
                                         case 2:
                                             Weapon weaponToSell = new();
-                                            weaponToSell.CopyFromOtherWeapon((Weapon)actualItemsToSell[userChoice - 1], numToSell);
-                                            currentPlayer.SellSomething(sellOption, weaponToSell);
+                                            weaponToSell.CopyFromOtherWeapon((Weapon)itemsToSell[userChoice - 1], numToSell);
+                                            GameSession.currentPlayer.SellSomething(sellOption, weaponToSell);
                                             break;
                                         case 3:
                                             Armor armorToSell = new();
-                                            armorToSell.CopyFromOtherArmor((Armor)actualItemsToSell[userChoice - 1], numToSell);
-                                            currentPlayer.SellSomething(sellOption, armorToSell);
+                                            armorToSell.CopyFromOtherArmor((Armor)itemsToSell[userChoice - 1], numToSell);
+                                            GameSession.currentPlayer.SellSomething(sellOption, armorToSell);
                                             break;
                                         case 4:
                                             Item itemToSell = new();
-                                            itemToSell.CopyFromOtherItem(actualItemsToSell[userChoice - 1], numToSell);
-                                            currentPlayer.SellSomething(sellOption, itemToSell);
+                                            itemToSell.CopyFromOtherItem(itemsToSell[userChoice - 1], numToSell);
+                                            GameSession.currentPlayer.SellSomething(sellOption, itemToSell);
                                             break;
                                     }
                                     gotAQuantityICanSell = true;

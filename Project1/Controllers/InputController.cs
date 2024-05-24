@@ -157,8 +157,9 @@ public class InputController
                 return 0;
         }
     }
-    public static int InnInput(string userInput, int playerCash)
+    public static int InnInput(string userInput)
     {
+        int playerCash = GameSession.currentPlayer.PlayerGold;
         userInput = userInput.ToLower();
         if (String.IsNullOrEmpty(userInput))
         {

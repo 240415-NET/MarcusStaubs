@@ -13,16 +13,16 @@ public enum MoveDirection
 
 public static class Movement
 {
-    public static bool CanIMoveThisWay(int direction, int locationOptions, int currentLocation, int currentPlayerLevel, string weaponID, List<PlayerInventoryWeapon> weaponInventory)
+    public static bool CanIMoveThisWay(int direction)
     {
         bool hasCoolSword = false;
-        if (currentLocation == 112804 && currentPlayerLevel < 10 && direction == 4)
+        if (GameSession.currentPlayer.CurrentLocation == 112804 && GameSession.currentPlayer.PlayerLevel < 10 && direction == 4)
         {
             return false;
         }
-        else if (currentLocation == 106801 && direction == 1 && weaponID == "weapon4")
+        else if (GameSession.currentPlayer.CurrentLocation == 106801 && direction == 1 && GameSession.currentPlayer.EquippedWeaponID == "weapon4")
         {
-            foreach (PlayerInventoryWeapon weapon in weaponInventory)
+            foreach (PlayerInventoryWeapon weapon in GameSession.currentPlayer.InventoryWeapons)
             {
                 if (weapon.WeaponID == "weapon20")
                 {
@@ -40,7 +40,7 @@ public static class Movement
         }
         else
         {
-            if (((MoveDirection)locationOptions & (MoveDirection)direction) == (MoveDirection)direction)
+            if (((MoveDirection)GameSession.locationReference[GameSession.currentPlayer.CurrentLocation].EnumMovementOptions & (MoveDirection)direction) == (MoveDirection)direction)
             {
                 return true;
             }

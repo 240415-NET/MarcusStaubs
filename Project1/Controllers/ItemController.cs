@@ -38,7 +38,7 @@ public class ItemController
 
         return allGameItems;
     }    
-    public static List<Item> GetItemsForSale(int itemType, int playerLevel, Dictionary<string,Item> itemsToReference)
+    public static List<Item> GetItemsForSale(int itemType)
     {
         string strItemType = "";
         switch (itemType)
@@ -56,8 +56,8 @@ public class ItemController
                 //Buy armors
                 break;
         }
-        List<Item> itemsForSale = itemsToReference.Values.Where(x => x.ItemID.Contains(strItemType)).ToList();
-        List<Item> filteredItemsForSale = itemsForSale.Where(x => x.buyLvlRequirement <= playerLevel && x.buyLvlRequirement > 0).ToList();
+        List<Item> itemsForSale = GameSession.itemsReference.Values.Where(x => x.ItemID.Contains(strItemType)).ToList();
+        List<Item> filteredItemsForSale = itemsForSale.Where(x => x.buyLvlRequirement <= GameSession.currentPlayer.PlayerLevel && x.buyLvlRequirement > 0).ToList();
         return filteredItemsForSale;
 
     }

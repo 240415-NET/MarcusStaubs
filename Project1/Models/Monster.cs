@@ -40,18 +40,18 @@ public class Monster : LivingThing
         this.ChanceToFlee = ChanceToFlee;
         this.MonsterDisplay = MonsterDisplay;
     }
-    public void DisplayMonster(string playerName, int playerHP, int playerMaxHP)
+    public void DisplayMonster()
     {
         for (int i = 0; i < MonsterDisplay.Count(); i++)
         {
             if (i == 0)
             {
-                Console.WriteLine($"{MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", Name, playerName));
+                Console.WriteLine($"{MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", Name, GameSession.currentPlayer.Name));
             }
             else if (i == 1)
             {
                 string monsterHP = $"HP: {CurrentHitPoints}/{MaxHitPoints}";
-                string playersHP = $"HP: {playerHP}/{playerMaxHP}";
+                string playersHP = $"HP: {GameSession.currentPlayer.CurrentHitPoints}/{GameSession.currentPlayer.MaxHitPoints}";
                 Console.WriteLine($"{MonsterDisplay[i]}" + String.Format("{0,20}{1,40}", monsterHP, playersHP));
             }
             else

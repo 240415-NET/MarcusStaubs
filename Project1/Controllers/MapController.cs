@@ -13,24 +13,24 @@ public static class MapController
         List<string> gameMap = mapStorage.GetGameMap();
         return gameMap;
     }
-    public static void UpdateMap(ref Player currentPlayer, List<string> gameMap, ref List<string> displayMap)
+    public static void UpdateMap()
     {
-        if (currentPlayer.CurrentLocation != 106800)
+        if (GameSession.currentPlayer.CurrentLocation != 106800)
         {
-            if (!HasPlayerExplored(ref currentPlayer))
+            if (!HasPlayerExplored())
             {
-                currentPlayer.ExploredLocations.Add(new ExploredLocation(currentPlayer.PlayerID,currentPlayer.CurrentLocation));
-                FillPlayerMap(ref currentPlayer, gameMap, ref displayMap);
+                GameSession.currentPlayer.ExploredLocations.Add(new ExploredLocation(GameSession.currentPlayer.PlayerID,GameSession.currentPlayer.CurrentLocation));
+                FillPlayerMap();
             }
-            displayMap = PutPlayerOnMap(ref currentPlayer);
+            PutPlayerOnMap();
         }
     }
 
-    public static bool HasPlayerExplored(ref Player currentPlayer)
+    public static bool HasPlayerExplored()
     {
-        foreach (ExploredLocation location in currentPlayer.ExploredLocations)
+        foreach (ExploredLocation location in GameSession.currentPlayer.ExploredLocations)
         {
-            if (location.locationHash == currentPlayer.CurrentLocation)
+            if (location.locationHash == GameSession.currentPlayer.CurrentLocation)
             {
                 return true;
             }
@@ -38,39 +38,39 @@ public static class MapController
         return false;
     }
 
-    public static List<string> PutPlayerOnMap(ref Player currentPlayer)
+    public static List<string> PutPlayerOnMap()
     {
-        if (currentPlayer.CurrentLocation != 106800)
+        if (GameSession.currentPlayer.CurrentLocation != 106800)
         {
-            List<string> displayMap = new();
-            displayMap = MatchDisplayMapToPlayerMap(ref currentPlayer);
+            GameSession.displayMap.Clear();
+            GameSession.displayMap = MatchDisplayMapToPlayerMap();
             int playerXCoord;
             int playerYCoord;
             string locationStr;
-            locationStr = currentPlayer.CurrentLocation.ToString();
+            locationStr = GameSession.currentPlayer.CurrentLocation.ToString();
             playerXCoord = Convert.ToInt32(locationStr.Substring(1, 2));
             playerXCoord *= 5;
             playerXCoord -= 2;
             playerYCoord = Convert.ToInt32(locationStr.Substring(4, 2));
             playerYCoord *= 3;
             playerYCoord -= 1;
-            StringBuilder placeCharacter = new StringBuilder(displayMap[playerYCoord]);
+            StringBuilder placeCharacter = new StringBuilder(GameSession.displayMap[playerYCoord]);
             placeCharacter[playerXCoord] = '@';
-            displayMap[playerYCoord] = placeCharacter.ToString();
-            return displayMap;
+            GameSession.displayMap[playerYCoord] = placeCharacter.ToString();
+            //return displayMap;
         }
         return null;
     }
 
-    public static void FillPlayerMap(ref Player currentPlayer, List<string> gameMap, ref List<string> displayMap)
+    public static void FillPlayerMap()
     {
-        if (currentPlayer.CurrentLocation != 106800)
+        if (GameSession.currentPlayer.CurrentLocation != 106800)
         {
             int playerXCoord;
             int playerYCoord;
             string locationStr;
             Char[,] charArray = new char[3, 5];
-            locationStr = currentPlayer.CurrentLocation.ToString();
+            locationStr = GameSession.currentPlayer.CurrentLocation.ToString();
             playerXCoord = Convert.ToInt32(locationStr.Substring(1, 2));
             playerXCoord *= 5;
             playerXCoord -= 4;
@@ -80,7 +80,7 @@ public static class MapController
             int outerCounter = 0;
             for (int j = playerYCoord; j < playerYCoord + 3; j++)
             {
-                Char[] subArray1 = gameMap[j].ToCharArray();
+                Char[] subArray1 = GameSession.gameMap[j].ToCharArray();
                 int innerCounter = 0;
                 for (int i = playerXCoord; i < playerXCoord + 5; i++)
                 {
@@ -92,7 +92,7 @@ public static class MapController
             outerCounter = 0;
             for (int i = playerYCoord; i < playerYCoord + 3; i++)
             {
-                StringBuilder addToPlayerMap = new StringBuilder(currentPlayer.PlayerMap[i].MapLine);
+                StringBuilder addToPlayerMap = new StringBuilder(GameSession.currentPlayer.PlayerMap[i].MapLine);
                 int innerCounter = 0;
                 for (int j = playerXCoord; j < playerXCoord + 5; j++)
                 {
@@ -100,15 +100,15 @@ public static class MapController
                     innerCounter++;
                 }
                 outerCounter++;
-                currentPlayer.PlayerMap[i].MapLine = addToPlayerMap.ToString();
+                GameSession.currentPlayer.PlayerMap[i].MapLine = addToPlayerMap.ToString();
             }
         }
     }
 
-    public static List<string> MatchDisplayMapToPlayerMap(ref Player currentPlayer)
+    public static List<string> MatchDisplayMapToPlayerMap()
     {
         List<string> forDisplay = new();
-        foreach (PlayerMap mapLine in currentPlayer.PlayerMap)
+        foreach (PlayerMap mapLine in GameSession.currentPlayer.PlayerMap)
         {
             forDisplay.Add(mapLine.MapLine);
         }
