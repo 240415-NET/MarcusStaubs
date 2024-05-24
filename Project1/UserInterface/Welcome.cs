@@ -59,7 +59,7 @@ public static class WelcomeToTheGame
                         break;
                     case 2:
                         CreateNewPlayerMenu();
-                        MainControlMenu();
+                        validInput = MainControlMenu();
                         break;
                     case 3:
                         return;
@@ -224,7 +224,6 @@ public static class WelcomeToTheGame
                     Console.ReadKey();
                     break;
                 case 7:
-                    //Add in a save feature or ask if want to save.
                     return true;
                 case 11:
                     SplashScreens.HelpMenu();
