@@ -5,7 +5,7 @@ namespace Project1.Controllers;
 
 public class ItemController
 {
-    public static IItemStorage itemStorage = new SqlItemStorage();
+    public static IItemStorage itemStorage = new EFItemStorage();
     public static IItemStorage alternateItemStorage = new ItemStorage();
     public static Dictionary<string,Item> GetAllGameItems()
     {

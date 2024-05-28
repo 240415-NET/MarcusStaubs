@@ -5,7 +5,7 @@ namespace Project1.Controllers;
 
 public static class RandomTextController
 {
-    public static IChatterBoxStorage myChatStorage = new SqlChatterBoxStorage();
+    public static IChatterBoxStorage myChatStorage = new EFChatterBoxStorage();
     public static IChatterBoxStorage alternateChatStorage = new ChatterBoxStorage();
     public static ChatterBox GetRandomText()
     {

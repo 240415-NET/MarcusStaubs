@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Identity.Client.Extensions.Msal;
 using Project1.Models;
 
@@ -65,8 +66,6 @@ public class GameContext : DbContext
             pi.ItemID
         });
 
-        modelBuilder.Entity<Player>().HasOne(p => p.EquippedWeapon).WithMany().HasForeignKey(p => p.EquippedWeaponID).OnDelete(DeleteBehavior.Restrict);
-        modelBuilder.Entity<Player>().HasOne(p => p.EquippedArmor).WithMany().HasForeignKey(p => p.EquippedArmorID).OnDelete(DeleteBehavior.Restrict);
     }
 
 }

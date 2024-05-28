@@ -1,9 +1,6 @@
 using Project1.Controllers;
 using Project1.UserInterfaces;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-
 
 namespace Project1.Models;
 
@@ -17,10 +14,8 @@ public class Player : LivingThing
     public int Constitution { get; set; }
     [Required]
     public string EquippedWeaponID { get; set; }
-    public Weapon EquippedWeapon { get; set; }
     [Required]
     public string EquippedArmorID { get; set; }
-    public Armor EquippedArmor { get; set; }
     public int PlayerXP { get; set; }
     public int CurrentLocation { get; set; }
     public List<PlayerMap> PlayerMap { get; set; }
@@ -32,27 +27,26 @@ public class Player : LivingThing
     public List<PlayerInventoryPotion> InventoryPotions { get; set; }
     public Player() : base()
     {
-        PlayerMap = new();
-        ExploredLocations = new();
-        InventoryItems = new();
-        InventoryWeapons = new();
-        InventoryPotions = new();
-        InventoryArmors = new();
+        PlayerMap = new List<PlayerMap>();
+        ExploredLocations = new List<ExploredLocation>();
+        InventoryItems = new List<PlayerInventoryItem>();
+        InventoryWeapons = new List<PlayerInventoryWeapon>();
+        InventoryPotions = new List<PlayerInventoryPotion>();
+        InventoryArmors = new List<PlayerInventoryArmor>();
     }
     public Player(string Name) : base(Name)
     {
         PlayerID = Guid.NewGuid();
-        this.MaxHitPoints = 10;
-        this.CurrentHitPoints = 10;
-        this.CurrentLocation = 106805;
-        this.Strength = 3;
-        this.Dexterity = 2;
-        this.Constitution = 3;
-        this.PlayerLevel = 1;
-        this.PlayerXP = 0;
-        this.PlayerGold = 0;
+        MaxHitPoints = 10;
+        CurrentHitPoints = 10;
+        CurrentLocation = 106805;
+        Strength = 3;
+        Dexterity = 2;
+        Constitution = 3;
+        PlayerLevel = 1;
+        PlayerXP = 0;
+        PlayerGold = 0;
         PlayerMap = new();
-        //List<string> playerMap = new();
         PlayerMap.Add(new PlayerMap(1, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", PlayerID));
         PlayerMap.Add(new PlayerMap(2, "^                                                                 ^", PlayerID));
         PlayerMap.Add(new PlayerMap(3, "^                                                                 ^", PlayerID));
@@ -70,20 +64,13 @@ public class Player : LivingThing
         PlayerMap.Add(new PlayerMap(15, "^                         ^   ^                                   ^", PlayerID));
         PlayerMap.Add(new PlayerMap(16, "^                         ^^^^^                                   ^", PlayerID));
         PlayerMap.Add(new PlayerMap(17, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", PlayerID));
-        this.EquippedWeaponID = "weapon1";
-        this.EquippedWeapon = new Weapon("weapon1", "Crooked Stick", 1, 1, 1, 0);
-        this.EquippedArmorID = "armor1";
-        this.EquippedArmor = new Armor("armor1", "Dirty Rags", 1, 1, 0, 0);
-        //this.PlayerMap = playerMap;
-        // List<int> exploredLoc = new();
-        // exploredLoc.Add(106805);
-        ExploredLocations = new();
-        ExploredLocations.Add(new ExploredLocation(PlayerID, 106805));
+        EquippedWeaponID = "weapon1";
+        EquippedArmorID = "armor1";
+        ExploredLocations = [new ExploredLocation(PlayerID, 106805)];
         InventoryItems = new List<PlayerInventoryItem>();
         InventoryWeapons = new List<PlayerInventoryWeapon>();
         InventoryArmors = new List<PlayerInventoryArmor>();
-        InventoryPotions = new List<PlayerInventoryPotion>();
-        InventoryPotions.Add(new PlayerInventoryPotion(this.PlayerID, 1, "potion1"));
+        InventoryPotions = [new PlayerInventoryPotion(PlayerID, 1, "potion1")];
     }
     public override string ToString()
     {
@@ -92,7 +79,7 @@ public class Player : LivingThing
     }
     public string ToString(string XPForNextLevel)
     {
-        return $"        .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--.     \n       / .. \\.. \\..  .. \\.. \\.. \\..  .. \\.. \\.. \\.. \\.. \\..  .. \\.. \\.. \\    \n       \\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/ /    \n        \\ \\/\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /     \n         \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /      \n     /\\   \\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\/ /       \n    /  \\   \\ `'\\ `'  `'\\ `'\\ `'\\ `'  `'\\ `'\\ `'\\ `'\\ `'\\ `'  `'\\ `' /        \n   / /\\ \\   `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'         \n   \\ \\/ /                                                      \n    \\ \\/         \n    /\\ \\         {this.Name} \n    \\ \\/         Level {this.PlayerLevel} Warrior \n    /\\ \\         \n    \\ \\/         Hitpoints (HP): {this.CurrentHitPoints}/{this.MaxHitPoints} \n    /\\ \\         \n   / /\\ \\        Strength: {this.Strength} \n   \\ \\ \\/        Dexterity: {this.Dexterity} \n   /\\ \\ \\        Constitution: {this.Constitution} \n   \\ \\/ /        \n    \\ \\/         Equipped Weapon: {this.EquippedWeapon.ItemName} \n    /\\ \\         Attack: {this.Strength / 2 + this.EquippedWeapon.AttackIncrease} \n    \\ \\/         \n    /\\ \\         Equipped Armor: {this.EquippedArmor.ItemName} \n    \\ \\/         Damage mitigation: {this.Constitution / 8 + this.EquippedArmor.MitigationIncrease} \n    /\\ \\         \n   / /\\ \\        Dodge: {this.Dexterity / 2}% chance \n   \\ \\/ /        \n    \\  /         Gold Coins: {this.PlayerGold}\n     \\/          Experience (XP): {this.PlayerXP}/{XPForNextLevel}\n	   ";
+        return $"        .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--.     \n       / .. \\.. \\..  .. \\.. \\.. \\..  .. \\.. \\.. \\.. \\.. \\..  .. \\.. \\.. \\    \n       \\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/ /    \n        \\ \\/\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /     \n         \\ \\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /\\/ /      \n     /\\   \\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\  /\\ \\/\\/ /       \n    /  \\   \\ `'\\ `'  `'\\ `'\\ `'\\ `'  `'\\ `'\\ `'\\ `'\\ `'\\ `'  `'\\ `' /        \n   / /\\ \\   `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'         \n   \\ \\/ /                                                      \n    \\ \\/         \n    /\\ \\         {this.Name} \n    \\ \\/         Level {this.PlayerLevel} Warrior \n    /\\ \\         \n    \\ \\/         Hitpoints (HP): {this.CurrentHitPoints}/{this.MaxHitPoints} \n    /\\ \\         \n   / /\\ \\        Strength: {this.Strength} \n   \\ \\ \\/        Dexterity: {this.Dexterity} \n   /\\ \\ \\        Constitution: {this.Constitution} \n   \\ \\/ /        \n    \\ \\/         Equipped Weapon: {GameSession.itemsReference[this.EquippedWeaponID].ItemName} \n    /\\ \\         Attack: {this.Strength / 2 + ((Weapon)GameSession.itemsReference[this.EquippedWeaponID]).AttackIncrease} \n    \\ \\/         \n    /\\ \\         Equipped Armor: {GameSession.itemsReference[this.EquippedArmorID].ItemName} \n    \\ \\/         Damage mitigation: {this.Constitution / 8 + ((Armor)GameSession.itemsReference[this.EquippedArmorID]).MitigationIncrease} \n    /\\ \\         \n   / /\\ \\        Dodge: {this.Dexterity / 2}% chance \n   \\ \\/ /        \n    \\  /         Gold Coins: {this.PlayerGold}\n     \\/          Experience (XP): {this.PlayerXP}/{XPForNextLevel}\n	   ";
     }
     public int Rest()
     {
@@ -129,7 +116,7 @@ public class Player : LivingThing
     }
     public int MyDamageMitigation()
     {
-        int damageMitigated = Constitution / 8 + EquippedArmor.MitigationIncrease;
+        int damageMitigated = Constitution / 8 + ((Armor)GameSession.itemsReference[EquippedArmorID]).MitigationIncrease;
         return damageMitigated;
     }
     public void TimeToMove(int direction)
@@ -270,7 +257,7 @@ public class Player : LivingThing
         bool dupWeapon = false;
         for (int i = 0; i < InventoryWeapons.Count(); i++)
         {
-            if (InventoryWeapons[i].WeaponID == EquippedWeapon.ItemID)
+            if (InventoryWeapons[i].WeaponID == EquippedWeaponID)
             {
                 InventoryWeapons[i].playerQuantity++;
                 dupWeapon = true;
@@ -287,16 +274,16 @@ public class Player : LivingThing
                 }
             }
         }
-        if (!dupWeapon) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID, 1, EquippedWeapon.ItemID)); }
+        if (!dupWeapon) { InventoryWeapons.Add(new PlayerInventoryWeapon(this.PlayerID, 1, EquippedWeaponID)); }
         EquippedWeaponID = newWeapon.ItemID;
-        EquippedWeapon = newWeapon;
+        //EquippedWeapon = newWeapon;
     }
     public void EquipArmor(Armor newArmor)
     {
         bool dupArmor = false;
         for (int i = 0; i < InventoryArmors.Count(); i++)
         {
-            if (InventoryArmors[i].ArmorID == EquippedArmor.ItemID)
+            if (InventoryArmors[i].ArmorID == EquippedArmorID)
             {
                 InventoryArmors[i].playerQuantity++;
                 dupArmor = true;
@@ -313,9 +300,9 @@ public class Player : LivingThing
                 }
             }
         }
-        if (!dupArmor) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID, 1, EquippedArmor.ItemID)); }
+        if (!dupArmor) { InventoryArmors.Add(new PlayerInventoryArmor(this.PlayerID, 1, EquippedArmorID)); }
         EquippedArmorID = newArmor.ItemID;
-        EquippedArmor = newArmor;
+        //EquippedArmor = newArmor;
     }
     public void Ding(LevelChange newLevel)
     {

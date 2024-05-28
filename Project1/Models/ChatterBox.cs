@@ -6,29 +6,33 @@ namespace Project1.Models;
 public class ChatterBox
 {
     public List<KillChatter> killChatters { get; set; }
-    public GeneralChatter innChatters { get; set; }
+    public List<GeneralChatter> innChatters { get; set; }
 
     public ChatterBox()
     {
         killChatters = new List<KillChatter>();
-        innChatters = new GeneralChatter();
+        innChatters = new List<GeneralChatter>();
     }
-    public ChatterBox(GeneralChatter innChatters, List<KillChatter> killChatters)
+    public ChatterBox(List<GeneralChatter> innChatters, List<KillChatter> killChatters)
     {
         this.innChatters = innChatters;
         this.killChatters = killChatters;
     }
     public string GetChatter()
     {
-        return innChatters.GetRandomMessage();
+        Random rand = new Random();
+        int myRand = rand.Next(0, innChatters.Count);
+        return innChatters[myRand].message;
     }
     public string GetChatter(int monsterType)
     {
-        foreach (KillChatter messages in killChatters)
+        foreach (KillChatter killChatter in killChatters)
         {
-            if (messages.monsterType == monsterType)
+            if (killChatter.monsterType == monsterType)
             {
-                return messages.GetRandomMessage();
+                Random rand = new Random();
+                int myRand = rand.Next(0, killChatter.messages.Count);
+                return killChatter.messages[myRand].message;
             }
         }
         return String.Empty;
@@ -36,38 +40,34 @@ public class ChatterBox
 }
 
 [Table("Kill_Chatter")]
-public class KillChatter : GeneralChatter
-{
-    [Required]
-    public int monsterType { get; set; }
-    public KillChatter()
-    {
-        messages = new();
-    }
-    public KillChatter(int monsterType, List<string> messages) : base(messages)
-    {
-        this.monsterType = monsterType;
-    }
-}
-
-//[Table("General_Chatter")]
-public class GeneralChatter
+public class KillChatter
 {
     [Key]
     public int ID {get; set;}
-    public List<string>? messages { get; set; }
-    public GeneralChatter()
+    [Required]
+    public int monsterType { get; set; }
+    public List<GeneralChatter> messages { get; set; } = new();
+    public KillChatter()
+    { }
+    public KillChatter(int monsterType, List<GeneralChatter> messages)
     {
-        messages = new();
-    }
-    public GeneralChatter(List<string> messages)
-    {
+        this.monsterType = monsterType;
         this.messages = messages;
     }
-    public string GetRandomMessage()
+}
+
+[Table("General_Chatter")]
+public class GeneralChatter
+{
+    [Key]
+    public int ID { get; set; }
+    public string? message { get; set; }
+    public GeneralChatter()
     {
-        Random rand = new Random();
-        int myRand = rand.Next(0, messages.Count);
-        return messages[myRand];
+
+    }
+    public GeneralChatter(string messages)
+    {
+        this.message = messages;
     }
 }

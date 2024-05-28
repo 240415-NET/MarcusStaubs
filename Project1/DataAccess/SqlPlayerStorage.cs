@@ -34,8 +34,8 @@ public class SqlPlayerStorage : IPlayerStorage
             cmd.Parameters.AddWithValue("@strength", currentPlayer.Strength);
             cmd.Parameters.AddWithValue("@dexterity", currentPlayer.Dexterity);
             cmd.Parameters.AddWithValue("@constitution", currentPlayer.Constitution);
-            cmd.Parameters.AddWithValue("@equippedWeapon", currentPlayer.EquippedWeapon.ItemID);
-            cmd.Parameters.AddWithValue("@equippedArmor", currentPlayer.EquippedArmor.ItemID);
+            cmd.Parameters.AddWithValue("@equippedWeapon", currentPlayer.EquippedWeaponID);
+            cmd.Parameters.AddWithValue("@equippedArmor", currentPlayer.EquippedArmorID);
             cmd.Parameters.AddWithValue("@playerXP", currentPlayer.PlayerXP);
             cmd.Parameters.AddWithValue("@currentLocation", currentPlayer.CurrentLocation);
             cmd.Parameters.AddWithValue("@playerGold", currentPlayer.PlayerGold);
@@ -136,9 +136,9 @@ public class SqlPlayerStorage : IPlayerStorage
                 foundPlayer.Dexterity = reader.GetInt32(6);
                 foundPlayer.Constitution = reader.GetInt32(7);
                 Weapon playerWeapon = new Weapon(reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetInt32(13), reader.GetInt32(12));
-                foundPlayer.EquippedWeapon = playerWeapon;
+                //foundPlayer.EquippedWeapon = playerWeapon;
                 Armor playerArmor = new Armor(reader.GetString(14), reader.GetString(15), reader.GetInt32(16), reader.GetInt32(17), reader.GetInt32(19), reader.GetInt32(18));
-                foundPlayer.EquippedArmor = playerArmor;
+                //foundPlayer.EquippedArmor = playerArmor;
                 foundPlayer.PlayerXP = reader.GetInt32(20);
                 foundPlayer.CurrentLocation = reader.GetInt32(21);
                 foundPlayer.PlayerGold = reader.GetInt32(22);

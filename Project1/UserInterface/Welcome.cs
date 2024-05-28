@@ -1008,7 +1008,7 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             SplashScreens.DrawMeAPicture("swordAndShield");
-            Console.WriteLine($"You are currently wearing {GameSession.currentPlayer.EquippedArmor.ItemName} which absorbs {GameSession.currentPlayer.EquippedArmor.MitigationIncrease} damage.");
+            Console.WriteLine($"You are currently wearing {GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID].ItemName} which absorbs {((Armor)GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID]).MitigationIncrease} damage.");
             for (int i = 0; i < GameSession.currentPlayer.InventoryArmors.Count(); i++)
             {
                 Armor armorOption = (Armor)GameSession.itemsReference[GameSession.currentPlayer.InventoryArmors[i].ArmorID];
@@ -1036,7 +1036,7 @@ public static class WelcomeToTheGame
                     GameSession.currentPlayer.EquipArmor(armorOption);
                     newArmorEquipped = true;
                     Console.Clear();
-                    Console.WriteLine($"{GameSession.currentPlayer.EquippedArmor.ItemName} equipped!");
+                    Console.WriteLine($"{GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID].ItemName} equipped!");
                     Console.ReadKey();
                 }
             }
@@ -1056,7 +1056,7 @@ public static class WelcomeToTheGame
         {
             Console.Clear();
             SplashScreens.DrawMeAPicture("swordAndShield");
-            Console.WriteLine($"You are currently wielding {GameSession.currentPlayer.EquippedWeapon.ItemName} which does {GameSession.currentPlayer.EquippedWeapon.AttackIncrease} extra damage.");
+            Console.WriteLine($"You are currently wielding {GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID].ItemName} which does {((Weapon)GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID]).AttackIncrease} extra damage.");
             for (int i = 0; i < GameSession.currentPlayer.InventoryWeapons.Count(); i++)
             {
                 Weapon weaponOption = (Weapon)GameSession.itemsReference[GameSession.currentPlayer.InventoryWeapons[i].WeaponID];
@@ -1083,7 +1083,7 @@ public static class WelcomeToTheGame
                     Weapon weaponOption = (Weapon)GameSession.itemsReference[GameSession.currentPlayer.InventoryWeapons[weaponChoice - 1].WeaponID];
                     GameSession.currentPlayer.EquipWeapon(weaponOption);
                     newWeaponEquipped = true;
-                    Console.WriteLine($"{GameSession.currentPlayer.EquippedWeapon.ItemName} equipped!");
+                    Console.WriteLine($"{GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID].ItemName} equipped!");
                     Console.ReadKey();
                 }
             }
@@ -1147,8 +1147,8 @@ public static class WelcomeToTheGame
             else
             {
                 Console.WriteLine($"You currently have {GameSession.currentPlayer.PlayerGold} gold pieces.");
-                if (buyOption == 2) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedWeapon.ItemName} which increases attack by {GameSession.currentPlayer.EquippedWeapon.AttackIncrease}."); }
-                if (buyOption == 3) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedArmor.ItemName} which absorbs {GameSession.currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
+                if (buyOption == 2) { Console.WriteLine($"You are using {GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID].ItemName} which increases attack by {((Weapon)GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID]).AttackIncrease}."); }
+                if (buyOption == 3) { Console.WriteLine($"You are using {GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID].ItemName} which absorbs {((Armor)GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID]).MitigationIncrease} damage."); }
                 Console.WriteLine("\nWhat would you like to purchase?");
 
                 Console.WriteLine(" ___________________________________________________________");
@@ -1256,8 +1256,8 @@ public static class WelcomeToTheGame
             else
             {
                 Console.WriteLine($"You currently have {GameSession.currentPlayer.PlayerGold} gold pieces.");
-                if (sellOption == 2) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedWeapon.ItemName} which increases attack by {GameSession.currentPlayer.EquippedWeapon.AttackIncrease}."); }
-                if (sellOption == 3) { Console.WriteLine($"You are using {GameSession.currentPlayer.EquippedArmor.ItemName} which absorbs {GameSession.currentPlayer.EquippedArmor.MitigationIncrease} damage."); }
+                if (sellOption == 2) { Console.WriteLine($"You are using {GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID].ItemName} which increases attack by {((Weapon)GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID]).AttackIncrease}."); }
+                if (sellOption == 3) { Console.WriteLine($"You are using {GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID].ItemName} which absorbs {((Armor)GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID]).MitigationIncrease} damage."); }
                 Console.WriteLine("\nWhat would you like to sell?");
 
                 Console.WriteLine(" __________________________________________________________________");

@@ -5,9 +5,9 @@ namespace Project1.Controllers;
 
 public class PlayerController
 {
-    private static IPlayerStorage playerStorage = new SqlPlayerStorage();
     private static IPlayerStorage alternatePlayerStorage = new PlayerStorage();
-    private static ILevelStorage levelStorage = new SqlLevelStorage();
+    private static IPlayerStorage efPlayerStorage = new EFPlayerStorage();
+    private static ILevelStorage levelStorage = new EFLevelStorage();
     private static ILevelStorage alternateLevelStorage = new LevelStorage();
     public static Player CreateNewPlayer(string name)
     {
@@ -17,7 +17,7 @@ public class PlayerController
     }
     public static void SavePlayer(Player currentPlayer)
     {
-        playerStorage.SavePlayerData(currentPlayer);
+        efPlayerStorage.SavePlayerData(currentPlayer);
     }
     public static bool DoesPlayerExist(string name)
     {
@@ -34,7 +34,7 @@ public class PlayerController
         }
         else
         {
-            if (playerStorage.GetPlayerInfo(name) == null)
+            if (efPlayerStorage.GetPlayerInfo(name) == null)
             {
                 return false;
             }
@@ -53,7 +53,7 @@ public class PlayerController
         }
         else
         {
-            Player currentPlayer = playerStorage.GetPlayerInfo(name);
+            Player currentPlayer = efPlayerStorage.GetPlayerInfo(name);
             return currentPlayer;            
         }
     }

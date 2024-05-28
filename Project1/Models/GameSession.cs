@@ -1,5 +1,7 @@
 
 
+using Project1.Data;
+
 namespace Project1.Models;
 
 public static class GameSession
@@ -15,6 +17,6 @@ public static class GameSession
 
     static GameSession()
     {
-        
+
     }
 }

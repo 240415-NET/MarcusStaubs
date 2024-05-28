@@ -8,7 +8,7 @@ public static class CombatController
     {
         //Player attack = weapon attack + 1/2 strength to the lowest whole number
         //Player reduces enemy dodge chance by Dexterity/6 to the lowest whole number
-        int playerAttack = GameSession.currentPlayer.EquippedWeapon.AttackIncrease +  GameSession.currentPlayer.Strength / 2;
+        int playerAttack = ((Weapon)GameSession.itemsReference[GameSession.currentPlayer.EquippedWeaponID]).AttackIncrease +  GameSession.currentPlayer.Strength / 2;
         if (currentMonster.MonsterDodge > 0)
         {
             if (MonsterController.DodgeAttack(currentMonster.MonsterDodge))
@@ -50,7 +50,7 @@ public static class CombatController
         else
         {
             //If not dodged, player mitigates Constitution/8 + armor damage from monster attack
-            int mitigated = GameSession.currentPlayer.MyDamageMitigation() + GameSession.currentPlayer.EquippedArmor.MitigationIncrease;
+            int mitigated = GameSession.currentPlayer.MyDamageMitigation() + ((Armor)GameSession.itemsReference[GameSession.currentPlayer.EquippedArmorID]).MitigationIncrease;
             monsterAttack -= GameSession.currentPlayer.MyDamageMitigation();
             if(monsterAttack < 0)
             {

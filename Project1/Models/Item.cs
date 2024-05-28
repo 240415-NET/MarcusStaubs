@@ -8,8 +8,8 @@ namespace Project1.Models;
 public class Item
 {
     [Required]
-    public string? ItemID { get; set; }
-    public string? ItemName { get; set; }
+    public string ItemID { get; set; }
+    public string ItemName { get; set; }
     public int ItemBaseValue { get; set; }
     public int QuantityOfItem { get; set; }
     public int buyLvlRequirement { get; set; }

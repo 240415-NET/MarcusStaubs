@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project1.Data;
 
@@ -11,9 +12,11 @@ using Project1.Data;
 namespace Project1.Migrations
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20240528152318_UpdateToChatBoxes")]
+    partial class UpdateToChatBoxes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +54,10 @@ namespace Project1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int?>("KillChatterID")
-                        .HasColumnType("int");
-
                     b.Property<string>("message")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("KillChatterID");
 
                     b.ToTable("General_Chatter");
                 });
@@ -91,16 +89,8 @@ namespace Project1.Migrations
 
             modelBuilder.Entity("Project1.Models.KillChatter", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
                     b.Property<int>("monsterType")
                         .HasColumnType("int");
-
-                    b.HasKey("ID");
 
                     b.ToTable("Kill_Chatter");
                 });
@@ -315,13 +305,6 @@ namespace Project1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project1.Models.GeneralChatter", b =>
-                {
-                    b.HasOne("Project1.Models.KillChatter", null)
-                        .WithMany("messages")
-                        .HasForeignKey("KillChatterID");
-                });
-
             modelBuilder.Entity("Project1.Models.Player", b =>
                 {
                     b.HasOne("Project1.Models.Armor", "EquippedArmor")
@@ -411,11 +394,6 @@ namespace Project1.Migrations
                         .HasForeignKey("Project1.Models.Weapon", "ItemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Project1.Models.KillChatter", b =>
-                {
-                    b.Navigation("messages");
                 });
 
             modelBuilder.Entity("Project1.Models.Player", b =>
